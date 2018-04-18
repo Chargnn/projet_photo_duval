@@ -1,11 +1,11 @@
 ﻿@{
     ViewBag.Title = "ShowImage";
+    var data = ViewData["Photo"];
 }
 <h2>ShowImage</h2>
 <p>DAJSdjAIDJISDJASDJIASJDIASJDIJASIDJASDADASDASDASDIUASJDIOAJSIDJAISDJAKSDJKALSDAKSMDASKLDMASKDMAKSDMAKSDKASMDKASMDKLSAMDKASDAISMDKAKSMDASMDASMDKLASL</p>
 @*<img src='@Url.Action( "show", "image", new { id = ViewData["imageID"] })' />*@
 @*<img src="data:image;base64,@Convert.ToBase64String(Model.Photo1)"/>*@
-@{
-    var data = ViewData["Photo"];
-}
-<img src="@data" />
+@*<img src='@Url.Action( "show", "image", new { id = ViewData["imageID"] })' />*@
+
+
