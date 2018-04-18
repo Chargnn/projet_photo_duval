@@ -31,12 +31,16 @@ namespace projet_photo_duval.Controllers
                 image1.InputStream.Read(model.Photo1, 0, image1.ContentLength);
             }
             db.Photo.Add(model);
-
             db.SaveChanges();
             
             return View(model);
         }
-
+        public ActionResult ShowImage()
+        {
+            byte[] imageData = (from p in db.Photo where p.Photo_ID == 3 select p.Photo1).First();
+            ViewData["Photo"] = imageData;
+            return View("ShowImage", File(imageData, "image"));
+        }
 
         // GET: Photos
         public ActionResult Index()
