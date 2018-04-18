@@ -1,0 +1,34 @@
+﻿@model projet_photo_duval.Models.Photo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Photo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Photo1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seance.Adresse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seance.Adresse)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Photo_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
