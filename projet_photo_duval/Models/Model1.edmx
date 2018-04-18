@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="Agent_ID" />
+          </Key>
+          <Property Name="Agent_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Prenom" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Telephone" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Courriel" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="EstPartenaire" Type="int" />
+        </EntityType>
+        <EntityType Name="Facture">
+          <Key>
+            <PropertyRef Name="Facture_ID" />
+          </Key>
+          <Property Name="Facture_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Seance_ID" Type="int" Nullable="false" />
+          <Property Name="Prix" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="EstPayee" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Photographe">
+          <Key>
+            <PropertyRef Name="Photographe_ID" />
+          </Key>
+          <Property Name="Photographe_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Prenom" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Telephone" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Courriel" Type="varchar" MaxLength="64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Photo">
+          <Key>
+            <PropertyRef Name="Photo_ID" />
+          </Key>
+          <Property Name="Photo_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Photo" Type="image" />
+          <Property Name="Seance_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Seance">
+          <Key>
+            <PropertyRef Name="Seance_ID" />
+          </Key>
+          <Property Name="Seance_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Photographe_ID" Type="int" Nullable="false" />
+          <Property Name="Agent_ID" Type="int" Nullable="false" />
+          <Property Name="Adresse" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Duree" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Photo_Seance">
+          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
+          <End Role="Photo" Type="Self.Photo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seance">
+              <PropertyRef Name="Seance_ID" />
+            </Principal>
+            <Dependent Role="Photo">
+              <PropertyRef Name="Seance_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seance_Agents_Agent_ID">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
+          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="Agent_ID" />
+            </Principal>
+            <Dependent Role="Seance">
+              <PropertyRef Name="Agent_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seance_Photographe_Photographe_ID">
+          <End Role="Photographe" Type="Self.Photographe" Multiplicity="1" />
+          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photographe">
+              <PropertyRef Name="Photographe_ID" />
+            </Principal>
+            <Dependent Role="Seance">
+              <PropertyRef Name="Photographe_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Seance_ID">
+          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
+          <End Role="Facture" Type="Self.Facture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seance">
+              <PropertyRef Name="Seance_ID" />
+            </Principal>
+            <Dependent Role="Facture">
+              <PropertyRef Name="Seance_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="H18_Proj_Eq07ModelStoreContainer">
+          <EntitySet Name="Agent" EntityType="Self.Agent" Schema="Agents" store:Type="Tables" />
+          <EntitySet Name="Facture" EntityType="Self.Facture" Schema="Factures" store:Type="Tables" />
+          <EntitySet Name="Photographe" EntityType="Self.Photographe" Schema="Photographes" store:Type="Tables" />
+          <EntitySet Name="Photo" EntityType="Self.Photo" Schema="Photos" store:Type="Tables" />
+          <EntitySet Name="Seance" EntityType="Self.Seance" Schema="Seances" store:Type="Tables" />
+          <AssociationSet Name="FK_Photo_Seance" Association="Self.FK_Photo_Seance">
+            <End Role="Seance" EntitySet="Seance" />
+            <End Role="Photo" EntitySet="Photo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seance_Agents_Agent_ID" Association="Self.FK_Seance_Agents_Agent_ID">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Seance" EntitySet="Seance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seance_Photographe_Photographe_ID" Association="Self.FK_Seance_Photographe_Photographe_ID">
+            <End Role="Photographe" EntitySet="Photographe" />
+            <End Role="Seance" EntitySet="Seance" />
+          </AssociationSet>
+          <AssociationSet Name="Seance_ID" Association="Self.Seance_ID">
+            <End Role="Seance" EntitySet="Seance" />
+            <End Role="Facture" EntitySet="Facture" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="H18_Proj_Eq07Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="Agent_ID" />
+          </Key>
+          <Property Name="Agent_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Prenom" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telephone" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Courriel" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EstPartenaire" Type="Int32" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Agents_Agent_ID" FromRole="Agent" ToRole="Seance" />
+        </EntityType>
+        <EntityType Name="Facture">
+          <Key>
+            <PropertyRef Name="Facture_ID" />
+          </Key>
+          <Property Name="Facture_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Seance_ID" Type="Int32" Nullable="false" />
+          <Property Name="Prix" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="EstPayee" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Seance" Relationship="Self.Seance_ID" FromRole="Facture" ToRole="Seance" />
+        </EntityType>
+        <EntityType Name="Photographe">
+          <Key>
+            <PropertyRef Name="Photographe_ID" />
+          </Key>
+          <Property Name="Photographe_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Prenom" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telephone" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Courriel" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photographe_Photographe_ID" FromRole="Photographe" ToRole="Seance" />
+        </EntityType>
+        <EntityType Name="Photo">
+          <Key>
+            <PropertyRef Name="Photo_ID" />
+          </Key>
+          <Property Name="Photo_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Photo1" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Seance_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Photo_Seance" FromRole="Photo" ToRole="Seance" />
+        </EntityType>
+        <EntityType Name="Seance">
+          <Key>
+            <PropertyRef Name="Seance_ID" />
+          </Key>
+          <Property Name="Seance_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Photographe_ID" Type="Int32" Nullable="false" />
+          <Property Name="Agent_ID" Type="Int32" Nullable="false" />
+          <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Duree" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Agent" Relationship="Self.FK_Seance_Agents_Agent_ID" FromRole="Seance" ToRole="Agent" />
+          <NavigationProperty Name="Facture" Relationship="Self.Seance_ID" FromRole="Seance" ToRole="Facture" />
+          <NavigationProperty Name="Photographe" Relationship="Self.FK_Seance_Photographe_Photographe_ID" FromRole="Seance" ToRole="Photographe" />
+          <NavigationProperty Name="Photo" Relationship="Self.FK_Photo_Seance" FromRole="Seance" ToRole="Photo" />
+        </EntityType>
+        <Association Name="FK_Seance_Agents_Agent_ID">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
+          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="Agent_ID" />
+            </Principal>
+            <Dependent Role="Seance">
+              <PropertyRef Name="Agent_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Seance_ID">
+          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
+          <End Role="Facture" Type="Self.Facture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seance">
+              <PropertyRef Name="Seance_ID" />
+            </Principal>
+            <Dependent Role="Facture">
+              <PropertyRef Name="Seance_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seance_Photographe_Photographe_ID">
+          <End Role="Photographe" Type="Self.Photographe" Multiplicity="1" />
+          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photographe">
+              <PropertyRef Name="Photographe_ID" />
+            </Principal>
+            <Dependent Role="Seance">
+              <PropertyRef Name="Photographe_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Photo_Seance">
+          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
+          <End Role="Photo" Type="Self.Photo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seance">
+              <PropertyRef Name="Seance_ID" />
+            </Principal>
+            <Dependent Role="Photo">
+              <PropertyRef Name="Seance_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="H18_Proj_Eq07Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agent" EntityType="Self.Agent" />
+          <EntitySet Name="Facture" EntityType="Self.Facture" />
+          <EntitySet Name="Photographe" EntityType="Self.Photographe" />
+          <EntitySet Name="Photo" EntityType="Self.Photo" />
+          <EntitySet Name="Seance" EntityType="Self.Seance" />
+          <AssociationSet Name="FK_Seance_Agents_Agent_ID" Association="Self.FK_Seance_Agents_Agent_ID">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Seance" EntitySet="Seance" />
+          </AssociationSet>
+          <AssociationSet Name="Seance_ID" Association="Self.Seance_ID">
+            <End Role="Seance" EntitySet="Seance" />
+            <End Role="Facture" EntitySet="Facture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seance_Photographe_Photographe_ID" Association="Self.FK_Seance_Photographe_Photographe_ID">
+            <End Role="Photographe" EntitySet="Photographe" />
+            <End Role="Seance" EntitySet="Seance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Photo_Seance" Association="Self.FK_Photo_Seance">
+            <End Role="Seance" EntitySet="Seance" />
+            <End Role="Photo" EntitySet="Photo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="H18_Proj_Eq07ModelStoreContainer" CdmEntityContainer="H18_Proj_Eq07Entities1">
+          <EntitySetMapping Name="Agent">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Agent">
+              <MappingFragment StoreEntitySet="Agent">
+                <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Courriel" ColumnName="Courriel" />
+                <ScalarProperty Name="EstPartenaire" ColumnName="EstPartenaire" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facture">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Facture">
+              <MappingFragment StoreEntitySet="Facture">
+                <ScalarProperty Name="Facture_ID" ColumnName="Facture_ID" />
+                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="EstPayee" ColumnName="EstPayee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Photographe">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Photographe">
+              <MappingFragment StoreEntitySet="Photographe">
+                <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Courriel" ColumnName="Courriel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Photo">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Photo">
+              <MappingFragment StoreEntitySet="Photo">
+                <ScalarProperty Name="Photo_ID" ColumnName="Photo_ID" />
+                <ScalarProperty Name="Photo1" ColumnName="Photo" />
+                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seance">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Seance">
+              <MappingFragment StoreEntitySet="Seance">
+                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
+                <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
+                <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
+                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Duree" ColumnName="Duree" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
