@@ -11,6 +11,7 @@
 
 .pagination > li > a,
 .pagination > li > span {
+      color: black;
   position: relative;
   float: left;
   padding: 6px 12px;

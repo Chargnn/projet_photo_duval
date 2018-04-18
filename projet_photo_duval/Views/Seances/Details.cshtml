@@ -1,0 +1,90 @@
+﻿@model projet_photo_duval.Models.Seance
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Seance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Adresse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adresse)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duree)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duree)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateSeance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateSeance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ville)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ville)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Statut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Statut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateFinSeance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateFinSeance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Agent.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Agent.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Photographe.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Photographe.Nom)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Seance_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

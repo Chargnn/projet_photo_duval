@@ -25,8 +25,10 @@ namespace projet_photo_duval.Models
         public int Photographe_ID { get; set; }
         public int Agent_ID { get; set; }
         public string Adresse { get; set; }
-        public System.DateTime Date { get; set; }
-        public int Duree { get; set; }
+        public System.DateTime DateSeance { get; set; }
+        public string Ville { get; set; }
+        public string Statut { get; set; }
+        public Nullable<System.DateTime> DateFinSeance { get; set; }
     
         public virtual Agent Agent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
