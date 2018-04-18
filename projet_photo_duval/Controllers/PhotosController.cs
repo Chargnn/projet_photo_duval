@@ -27,10 +27,13 @@ namespace projet_photo_duval.Controllers
             if (image1 != null)
             {
                 model.Photo1 = new byte[image1.ContentLength];
+                model.Seance_ID = 1002;
                 image1.InputStream.Read(model.Photo1, 0, image1.ContentLength);
             }
             db.Photo.Add(model);
+
             db.SaveChanges();
+            
             return View(model);
         }
 
