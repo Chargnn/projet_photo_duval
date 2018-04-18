@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="Agent_ID" />
@@ -51,8 +51,10 @@
           <Property Name="Photographe_ID" Type="int" Nullable="false" />
           <Property Name="Agent_ID" Type="int" Nullable="false" />
           <Property Name="Adresse" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Date" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Duree" Type="int" Nullable="false" />
+          <Property Name="DateSeance" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Ville" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Statut" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="DateFinSeance" Type="datetime2" Precision="7" />
         </EntityType>
         <Association Name="FK_Photo_Seance">
           <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
@@ -125,8 +127,7 @@
             <End Role="Facture" EntitySet="Facture" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="H18_Proj_Eq07Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -180,12 +181,14 @@
           <Property Name="Photographe_ID" Type="Int32" Nullable="false" />
           <Property Name="Agent_ID" Type="Int32" Nullable="false" />
           <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Duree" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Agent" Relationship="Self.FK_Seance_Agents_Agent_ID" FromRole="Seance" ToRole="Agent" />
           <NavigationProperty Name="Facture" Relationship="Self.Seance_ID" FromRole="Seance" ToRole="Facture" />
           <NavigationProperty Name="Photographe" Relationship="Self.FK_Seance_Photographe_Photographe_ID" FromRole="Seance" ToRole="Photographe" />
           <NavigationProperty Name="Photo" Relationship="Self.FK_Photo_Seance" FromRole="Seance" ToRole="Photo" />
+          <Property Name="DateSeance" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Ville" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Statut" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DateFinSeance" Type="DateTime" Precision="7" />
         </EntityType>
         <Association Name="FK_Seance_Agents_Agent_ID">
           <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
@@ -309,13 +312,15 @@
           <EntitySetMapping Name="Seance">
             <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Seance">
               <MappingFragment StoreEntitySet="Seance">
+                <ScalarProperty Name="DateFinSeance" ColumnName="DateFinSeance" />
+                <ScalarProperty Name="Statut" ColumnName="Statut" />
+                <ScalarProperty Name="Ville" ColumnName="Ville" />
+                <ScalarProperty Name="DateSeance" ColumnName="DateSeance" />
                 <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
                 <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
                 <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
                 <ScalarProperty Name="Adresse" ColumnName="Adresse" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Duree" ColumnName="Duree" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
         </EntityContainerMapping>

@@ -1,0 +1,81 @@
+﻿@model IEnumerable<projet_photo_duval.Models.Seance>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Index";
+    var pagedlist = (PagedList.IPagedList)Model;
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index", "Seances", FormMethod.Get))
+{
+<p>
+    Rechercher: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourant as string)
+    <input type="submit" value="Rechercher par photographe" />
+</p>
+}
+<table class="table">
+    <tr>
+        <th width="20%">
+            Adresse
+        </th>
+        <th>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourant = ViewBag.filtreCourant })">Date de la séance</a>
+        </th>
+        <th>
+            Ville
+        </th>
+        <th>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourant = ViewBag.filtreCourant })">Statut</a>
+        </th>
+        <th>
+            Date de fin de la séance
+        </th>
+        <th>
+            Nom de l'agent
+        </th>
+        <th>
+            Nom du photographe
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>-
+            @Html.DisplayFor(modelItem => item.Adresse)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateSeance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ville)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Statut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateFinSeance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Agent.Nom), @Html.DisplayFor(modelItem => item.Agent.Prenom)          
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Photographe.Nom), @Html.DisplayFor(modelItem => item.Photographe.Prenom)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Seance_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Seance_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Seance_ID })
+        </td>
+    </tr>
+}
+
+</table>
+Page @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) de @pagedlist.PageCount
+
+@Html.PagedListPager(pagedlist, page => Url.Action("Index", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant }))

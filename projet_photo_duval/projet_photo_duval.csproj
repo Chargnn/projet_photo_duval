@@ -167,6 +167,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
+    <Compile Include="Controllers\SeancesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -263,6 +264,11 @@
     <Content Include="Views\Photos\Edit.cshtml" />
     <Content Include="Views\Photos\Index.cshtml" />
     <Content Include="Views\Photos\AddImage.cshtml" />
+    <Content Include="Views\Seances\Create.cshtml" />
+    <Content Include="Views\Seances\Delete.cshtml" />
+    <Content Include="Views\Seances\Details.cshtml" />
+    <Content Include="Views\Seances\Edit.cshtml" />
+    <Content Include="Views\Seances\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
