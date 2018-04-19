@@ -7,11 +7,11 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Seance</h4>
+    <h4>Rendez-vous</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Adresse)
+            Adresse :
         </dt>
 
         <dd>
@@ -19,31 +19,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Duree)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Duree)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateSeance)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateSeance)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Ville)
+            Ville :
         </dt>
 
         <dd>
@@ -51,7 +27,15 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Statut)
+            Date du rendez-vous :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateSeance)
+        </dd>
+
+        <dt>
+            Statut :
         </dt>
 
         <dd>
@@ -59,7 +43,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.DateFinSeance)
+            Fin de la sécance le :
         </dt>
 
         <dd>
@@ -67,24 +51,23 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Agent.Nom)
+            Agent :
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Agent.Nom)
+            @Html.DisplayFor(model => model.Agent.Nom), @Html.DisplayFor(model => model.Agent.Prenom)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Photographe.Nom)
+            Photographe :
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Photographe.Nom)
+            @Html.DisplayFor(model => model.Photographe.Nom), @Html.DisplayFor(model => model.Photographe.Prenom)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Seance_ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour à la liste de rendez-vous", "Index")
 </p>

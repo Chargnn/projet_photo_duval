@@ -1,6 +1,12 @@
 ﻿@model IEnumerable<projet_photo_duval.Models.Seance>
 @using PagedList.Mvc;
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" rel="stylesheet">
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    $('.jquery_datepicker').datepicker(); //Initialise any date pickers
+</script>
 @{
     ViewBag.Title = "Index";
     var pagedlist = (PagedList.IPagedList)Model;
@@ -14,23 +20,33 @@
 @using (Html.BeginForm("Index", "Seances", FormMethod.Get))
 {
 <p>
-    Rechercher: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourant as string)
-    <input type="submit" value="Rechercher par photographe" />
+    Rechercher par nom/prénom: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourantNom as string)
+
+    Rechercher par date: @Html.TextBox("DateFiltre", ViewBag.filtreCourantDate as string, new { @class = "jquery_datepicker", type = "date" })
+    <input type="submit" value="Rechercher" />
 </p>
 }
+
+@if (ViewBag.MessageError != "")
+{
+    @Html.Raw("<div class='alert alert-danger'><strong>Erreur! </strong>")
+    @ViewBag.MessageError
+    @Html.Raw("</div>")
+}
+
 <table class="table">
     <tr>
         <th width="20%">
             Adresse
         </th>
         <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourant = ViewBag.filtreCourant })">Date de la séance</a>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Date de la séance</a>
         </th>
         <th>
             Ville
         </th>
         <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourant = ViewBag.filtreCourant })">Statut</a>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Statut</a>
         </th>
         <th>
             Date de fin de la séance
@@ -68,9 +84,7 @@
             @Html.DisplayFor(modelItem => item.Photographe.Nom), @Html.DisplayFor(modelItem => item.Photographe.Prenom)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Seance_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Seance_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Seance_ID }) |
+            @Html.ActionLink("Détails du rendez-vous", "Details", new { id=item.Seance_ID }) 
             @Html.ActionLink("Ajouter photos","AddImage","Photos", new {id=item.Seance_ID},null)
         </td>
     </tr>

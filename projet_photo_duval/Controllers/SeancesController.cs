@@ -16,29 +16,61 @@ namespace projet_photo_duval.Controllers
         private H18_Proj_Eq07Entities1 db = new H18_Proj_Eq07Entities1();
 
         // GET: Seances
-        public ActionResult Index(string ordreTri, string chaineFiltre, string filtreCourant,  int? page)
+        public ActionResult Index(string ordreTri, string chaineFiltre, string dateFiltre, string filtreCourantNom, string filtreCourantDate,  int? page, string MessageError)
         {
             ViewBag.TriDate = string.IsNullOrEmpty(ordreTri) ? "date_desc" : "";
             ViewBag.TriStatut = string.IsNullOrEmpty(ordreTri) ? "statut_desc" : "";
+            ViewBag.MessageError = "";
 
-            if (chaineFiltre != null)
+            if (chaineFiltre != null || dateFiltre != null)
             {
                 page = 1;
             }
             else
             {
-                chaineFiltre = filtreCourant;
+                chaineFiltre = filtreCourantNom;
+                dateFiltre = filtreCourantDate;
             }
 
             ViewBag.triCourant = ordreTri;
-            ViewBag.filtreCourant = chaineFiltre;
+            ViewBag.filtreCourantNom = chaineFiltre;
+            ViewBag.filtreCourantDate = dateFiltre;
 
-            var seances = db.Seance.Include(s => s.Agent).Include(s => s.Photographe).Where(s => s.DateSeance >= DateTime.Now);
+            var seances = db.Seance.Include(s => s.Agent).Include(s => s.Photographe);
+            //.Where(s => s.DateSeance.Day == DateTime.Now.Day);
 
             if (!string.IsNullOrEmpty(chaineFiltre))
             {
                 seances = seances.Where(seance => seance.Photographe.Nom.Contains(chaineFiltre) ||
-                seance.Photographe.Nom.StartsWith(chaineFiltre));
+                seance.Photographe.Prenom.Contains(chaineFiltre));
+            }
+
+            if (!string.IsNullOrEmpty(dateFiltre))
+            {
+                try
+                {
+                    DateTime date = DateTime.Parse(dateFiltre);
+
+                    seances = seances.Where(seance => seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
+                }
+                catch (Exception e)
+                {
+                    ViewBag.MessageError = "La date entrée n'est pas valide";
+                }               
+            }
+
+            if (!string.IsNullOrEmpty(chaineFiltre) && !string.IsNullOrEmpty(dateFiltre))
+            {
+                try
+                {
+                    DateTime date = DateTime.Parse(dateFiltre);
+
+                    seances = seances.Where(seance => seance.Photographe.Nom.Contains(chaineFiltre) ||
+                    seance.Photographe.Prenom.Contains(chaineFiltre) && seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
+                } catch (Exception e)
+                {
+                    ViewBag.MessageError = "La date entrée n'est pas valide";
+                }            
             }
 
             switch (ordreTri)
