@@ -166,6 +166,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\FacturesController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -264,6 +265,11 @@
     <Content Include="Views\Photos\Index.cshtml" />
     <Content Include="Views\Photos\AddImage.cshtml" />
     <Content Include="Views\Photos\ShowImage.cshtml" />
+    <Content Include="Views\Factures\Create.cshtml" />
+    <Content Include="Views\Factures\Delete.cshtml" />
+    <Content Include="Views\Factures\Details.cshtml" />
+    <Content Include="Views\Factures\Edit.cshtml" />
+    <Content Include="Views\Factures\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

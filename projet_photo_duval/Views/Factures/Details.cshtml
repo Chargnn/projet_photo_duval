@@ -1,0 +1,42 @@
+﻿@model projet_photo_duval.Models.Facture
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Facture</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Prix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstPayee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstPayee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seance.Adresse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seance.Adresse)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Facture_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
