@@ -21,25 +21,46 @@ namespace projet_photo_duval.Controllers
             Photo photo = new Photo();
             return View(photo);
         }
+        //[HttpPost]
+        //public ActionResult AddImage(Photo model, HttpPostedFileBase image1)
+        //{
+        //    if (image1 != null)
+        //    {
+        //        model.Photo1 = new byte[image1.ContentLength];
+        //        model.Seance_ID = 1002;
+        //        image1.InputStream.Read(model.Photo1, 0, image1.ContentLength);
+        //    }
+        //    db.Photo.Add(model);
+        //    db.SaveChanges();
+
+        //    return View(model);
+        //}
         [HttpPost]
-        public ActionResult AddImage(Photo model, HttpPostedFileBase image1)
+        public ActionResult AddImage(int? id,IEnumerable<HttpPostedFileBase> files)
         {
-            if (image1 != null)
+            foreach (var file in files)
             {
-                model.Photo1 = new byte[image1.ContentLength];
-                model.Seance_ID = 1002;
-                image1.InputStream.Read(model.Photo1, 0, image1.ContentLength);
+                if (file != null && file.ContentLength > 0)
+                {
+                    //file.SaveAs(Path.Combine(Server.MapPath("/uploads"), Guid.NewGuid() + Path.GetExtension(file.FileName)));
+                    Photo photo = new Photo();
+                    photo.Photo1 = new byte[file.ContentLength];
+                    photo.Seance_ID = 1002;
+                    file.InputStream.Read(photo.Photo1, 0, file.ContentLength);
+                    db.Photo.Add(photo);
+                }
             }
-            db.Photo.Add(model);
             db.SaveChanges();
-            
-            return View(model);
+            return View();
         }
         public ActionResult ShowImage()
         {
-            byte[] imageData = (from p in db.Photo where p.Photo_ID == 3 select p.Photo1).First();
-            ViewData["Photo"] = imageData;
-            return View("ShowImage", File(imageData, "image"));
+            //byte[] imageData = (from p in db.Photo where p.Photo_ID == 3 select p.Photo1).First();
+            //ViewData["Photo"] = imageData;
+            //return View("ShowImage");
+            var photo = db.Photo;
+            return View(photo.ToList());
+
         }
 
         // GET: Photos
