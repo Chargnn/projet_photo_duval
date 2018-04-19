@@ -70,7 +70,8 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Seance_ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.Seance_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Seance_ID })
+            @Html.ActionLink("Delete", "Delete", new { id=item.Seance_ID }) |
+            @Html.ActionLink("Ajouter photos","AddImage","Photos", new {id=item.Seance_ID},null)
         </td>
     </tr>
 }

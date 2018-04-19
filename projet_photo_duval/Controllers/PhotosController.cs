@@ -36,16 +36,16 @@ namespace projet_photo_duval.Controllers
         //    return View(model);
         //}
         [HttpPost]
-        public ActionResult AddImage(int? id,IEnumerable<HttpPostedFileBase> files)
+        public ActionResult AddImage(int id,IEnumerable<HttpPostedFileBase> files)
         {
-            foreach (var file in files)
+             foreach (var file in files)
             {
                 if (file != null && file.ContentLength > 0)
                 {
                     //file.SaveAs(Path.Combine(Server.MapPath("/uploads"), Guid.NewGuid() + Path.GetExtension(file.FileName)));
                     Photo photo = new Photo();
                     photo.Photo1 = new byte[file.ContentLength];
-                    photo.Seance_ID = 1002;
+                    photo.Seance_ID = id;
                     file.InputStream.Read(photo.Photo1, 0, file.ContentLength);
                     db.Photo.Add(photo);
                 }
@@ -55,12 +55,8 @@ namespace projet_photo_duval.Controllers
         }
         public ActionResult ShowImage()
         {
-            //byte[] imageData = (from p in db.Photo where p.Photo_ID == 3 select p.Photo1).First();
-            //ViewData["Photo"] = imageData;
-            //return View("ShowImage");
             var photo = db.Photo;
             return View(photo.ToList());
-
         }
 
         // GET: Photos

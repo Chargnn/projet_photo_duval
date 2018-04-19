@@ -168,6 +168,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\FacturesController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
+    <Compile Include="Controllers\SeancesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -270,6 +271,11 @@
     <Content Include="Views\Factures\Details.cshtml" />
     <Content Include="Views\Factures\Edit.cshtml" />
     <Content Include="Views\Factures\Index.cshtml" />
+    <Content Include="Views\Seances\Create.cshtml" />
+    <Content Include="Views\Seances\Delete.cshtml" />
+    <Content Include="Views\Seances\Details.cshtml" />
+    <Content Include="Views\Seances\Edit.cshtml" />
+    <Content Include="Views\Seances\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

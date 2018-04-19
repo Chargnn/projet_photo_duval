@@ -1,37 +1,29 @@
 ﻿@model projet_photo_duval.Models.Photo
 
 @{
-    ViewBag.Title = "AddImage";
+    ViewBag.Title = "Ajouter des photos";
 }
 
-<h2>AddImage</h2>
+<h2>Ajouter des photos</h2>
 
 @using (Html.BeginForm("AddImage","Photos",FormMethod.Post,new {enctype="multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Photo</h4>
+        <h4>Veuillez sélectionner vos photos</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Photo1, htmlAttributes: new { @class = "control-label col-md-2" })
-            @*<div class="col-md-10">
-                <input type="file"  id="image1" name="image1" />
-            </div>*@
-            <div id="multiple">
-                <input type="file" class="multiple" name="files" multiple />
-            </div>
+        <div id="multiple">
+            <input type="file" class="multiple" name="files" multiple />
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Submit" class="btn btn-default" />
-            </div>
-        </div>
+        <br />
+        <input type="submit" value="Soumettre les photos" class="btn btn-default" />
+        <br />
     </div>
 }
 
 <div>
+    <br />
     @Html.ActionLink("Back to List", "Index")
 </div>
