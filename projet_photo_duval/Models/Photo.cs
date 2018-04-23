@@ -18,6 +18,7 @@ namespace projet_photo_duval.Models
         public int Photo_ID { get; set; }
         public byte[] Photo1 { get; set; }
         public int Seance_ID { get; set; }
+        public string Nom { get; set; }
     
         public virtual Seance Seance { get; set; }
     }

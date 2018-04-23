@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="97a9897371724e26881b5fb9e695bb4b" Name="Diagram1">
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Agent" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+      <Diagram DiagramId="88e66d930c5e436db69ce71236d8f881" Name="Diagram1">
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Agent" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
         <EntityTypeShape EntityType="H18_Proj_Eq07Model.Facture" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Photographe" Width="1.5" PointX="1" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Photographe" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="H18_Proj_Eq07Model.Photo" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Seance" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
-        <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Agents_Agent_ID" ManuallyRouted="false" />
-        <AssociationConnector Association="H18_Proj_Eq07Model.Seance_ID" ManuallyRouted="false" />
-        <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photographe_Photographe_ID" ManuallyRouted="false" />
-        <AssociationConnector Association="H18_Proj_Eq07Model.FK_Photo_Seance" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Seance" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Agent" ManuallyRouted="false" />
+        <AssociationConnector Association="H18_Proj_Eq07Model.FK_Facture_Seance" ManuallyRouted="false" />
+        <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photographe" ManuallyRouted="false" />
+        <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photo" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
