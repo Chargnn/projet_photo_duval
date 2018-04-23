@@ -29,7 +29,14 @@
             @Html.DisplayFor(modelItem => item.Prix)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EstPayee)
+            @if (item.EstPayee == 1)
+            {
+                <p>Payée</p>
+            }
+            else
+            {
+                <p>Pas payée</p>
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Seance.Adresse)
