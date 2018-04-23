@@ -11,7 +11,8 @@ namespace projet_photo_duval.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Photo
     {
         public int Photo_ID { get; set; }

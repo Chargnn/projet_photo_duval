@@ -38,19 +38,44 @@ namespace projet_photo_duval.Controllers
         [HttpPost]
         public ActionResult AddImage(int id,IEnumerable<HttpPostedFileBase> files)
         {
-             foreach (var file in files)
+            ViewBag.MessageError = null;
+            ViewBag.Message = null;
+            Boolean uploadValide = true;
+            int cpt = 0;
+            foreach (var file in files)
             {
                 if (file != null && file.ContentLength > 0)
                 {
-                    //file.SaveAs(Path.Combine(Server.MapPath("/uploads"), Guid.NewGuid() + Path.GetExtension(file.FileName)));
-                    Photo photo = new Photo();
-                    photo.Photo1 = new byte[file.ContentLength];
-                    photo.Seance_ID = id;
-                    file.InputStream.Read(photo.Photo1, 0, file.ContentLength);
-                    db.Photo.Add(photo);
-                }
+                    var fileExtension = System.IO.Path.GetExtension(file.FileName).ToLower();
+                    if (!fileExtension.Equals(".jpg") ||
+                        fileExtension.Equals(".png") ||
+                        fileExtension.Equals(".jpeg"))
+                    {
+                        ViewBag.MessageError = "Le fichier " + file.FileName + " n'est pas une image";
+                        uploadValide = false;
+                    }
+                    else
+                    {
+                        Photo photo = new Photo();
+                        photo.Photo1 = new byte[file.ContentLength];
+                        photo.Seance_ID = id;
+
+                        file.InputStream.Read(photo.Photo1, 0, file.ContentLength);
+                        db.Photo.Add(photo);
+                    }
+                    cpt++;
+                } 
             }
-            db.SaveChanges();
+            if (cpt.Equals(0))
+            {
+                ViewBag.MessageError = "Aucune image n'a été sélectionnée";
+                uploadValide = false;
+            }
+            else if (uploadValide)
+            {
+                db.SaveChanges();
+                ViewBag.Message = "Les photos ont été correctemment téléversées";
+            }
             return View();
         }
         public ActionResult ShowImage()
