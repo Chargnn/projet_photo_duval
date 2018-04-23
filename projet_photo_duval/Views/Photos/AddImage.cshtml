@@ -22,6 +22,19 @@
         <br />
     </div>
 }
+@if (ViewBag.MessageError != null)
+{
+    @Html.Raw("<div class='alert alert-danger'><strong>Erreur! </strong>")
+    @ViewBag.MessageError
+    @Html.Raw("</div>")
+}
+@if (ViewBag.Message != null)
+{
+    @Html.Raw("<div class='alert alert-success'><strong>Merci! </strong>")
+    @ViewBag.Message
+    @Html.Raw("</div>")
+}
+
 
 <div>
     <br />
