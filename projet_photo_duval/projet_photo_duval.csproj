@@ -172,6 +172,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Agent.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -273,11 +274,11 @@
     <Content Include="Views\Factures\Details.cshtml" />
     <Content Include="Views\Factures\Edit.cshtml" />
     <Content Include="Views\Factures\Index.cshtml" />
-    <Content Include="Views\Seances\Create.cshtml" />
     <Content Include="Views\Seances\Delete.cshtml" />
     <Content Include="Views\Seances\Details.cshtml" />
     <Content Include="Views\Seances\Edit.cshtml" />
     <Content Include="Views\Seances\Index.cshtml" />
+    <Content Include="Views\Seances\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
