@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="Agent_ID" />
@@ -42,57 +42,22 @@
           <Property Name="Photo_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Photo" Type="image" />
           <Property Name="Seance_ID" Type="int" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Seance">
           <Key>
             <PropertyRef Name="Seance_ID" />
           </Key>
           <Property Name="Seance_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Photographe_ID" Type="int" Nullable="false" />
+          <Property Name="Photographe_ID" Type="int" />
           <Property Name="Agent_ID" Type="int" Nullable="false" />
           <Property Name="Adresse" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DateSeance" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Ville" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Statut" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Ville" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Statut" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="DateFinSeance" Type="datetime2" Precision="7" />
         </EntityType>
-        <Association Name="FK_Photo_Seance">
-          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
-          <End Role="Photo" Type="Self.Photo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Seance">
-              <PropertyRef Name="Seance_ID" />
-            </Principal>
-            <Dependent Role="Photo">
-              <PropertyRef Name="Seance_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Seance_Agents_Agent_ID">
-          <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
-          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Agent">
-              <PropertyRef Name="Agent_ID" />
-            </Principal>
-            <Dependent Role="Seance">
-              <PropertyRef Name="Agent_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Seance_Photographe_Photographe_ID">
-          <End Role="Photographe" Type="Self.Photographe" Multiplicity="1" />
-          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Photographe">
-              <PropertyRef Name="Photographe_ID" />
-            </Principal>
-            <Dependent Role="Seance">
-              <PropertyRef Name="Photographe_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Seance_ID">
+        <Association Name="FK_Facture_Seance">
           <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
           <End Role="Facture" Type="Self.Facture" Multiplicity="*" />
           <ReferentialConstraint>
@@ -104,30 +69,67 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Seance_Agent">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
+          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="Agent_ID" />
+            </Principal>
+            <Dependent Role="Seance">
+              <PropertyRef Name="Agent_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seance_Photo">
+          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
+          <End Role="Photo" Type="Self.Photo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seance">
+              <PropertyRef Name="Seance_ID" />
+            </Principal>
+            <Dependent Role="Photo">
+              <PropertyRef Name="Seance_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seance_Photographe">
+          <End Role="Photographe" Type="Self.Photographe" Multiplicity="0..1" />
+          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photographe">
+              <PropertyRef Name="Photographe_ID" />
+            </Principal>
+            <Dependent Role="Seance">
+              <PropertyRef Name="Photographe_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="H18_Proj_Eq07ModelStoreContainer">
           <EntitySet Name="Agent" EntityType="Self.Agent" Schema="Agents" store:Type="Tables" />
           <EntitySet Name="Facture" EntityType="Self.Facture" Schema="Factures" store:Type="Tables" />
           <EntitySet Name="Photographe" EntityType="Self.Photographe" Schema="Photographes" store:Type="Tables" />
           <EntitySet Name="Photo" EntityType="Self.Photo" Schema="Photos" store:Type="Tables" />
           <EntitySet Name="Seance" EntityType="Self.Seance" Schema="Seances" store:Type="Tables" />
-          <AssociationSet Name="FK_Photo_Seance" Association="Self.FK_Photo_Seance">
-            <End Role="Seance" EntitySet="Seance" />
-            <End Role="Photo" EntitySet="Photo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Seance_Agents_Agent_ID" Association="Self.FK_Seance_Agents_Agent_ID">
-            <End Role="Agent" EntitySet="Agent" />
-            <End Role="Seance" EntitySet="Seance" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Seance_Photographe_Photographe_ID" Association="Self.FK_Seance_Photographe_Photographe_ID">
-            <End Role="Photographe" EntitySet="Photographe" />
-            <End Role="Seance" EntitySet="Seance" />
-          </AssociationSet>
-          <AssociationSet Name="Seance_ID" Association="Self.Seance_ID">
+          <AssociationSet Name="FK_Facture_Seance" Association="Self.FK_Facture_Seance">
             <End Role="Seance" EntitySet="Seance" />
             <End Role="Facture" EntitySet="Facture" />
           </AssociationSet>
+          <AssociationSet Name="FK_Seance_Agent" Association="Self.FK_Seance_Agent">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Seance" EntitySet="Seance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seance_Photo" Association="Self.FK_Seance_Photo">
+            <End Role="Seance" EntitySet="Seance" />
+            <End Role="Photo" EntitySet="Photo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seance_Photographe" Association="Self.FK_Seance_Photographe">
+            <End Role="Photographe" EntitySet="Photographe" />
+            <End Role="Seance" EntitySet="Seance" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="H18_Proj_Eq07Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -141,7 +143,7 @@
           <Property Name="Telephone" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Courriel" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EstPartenaire" Type="Int32" />
-          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Agents_Agent_ID" FromRole="Agent" ToRole="Seance" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Agent" FromRole="Agent" ToRole="Seance" />
         </EntityType>
         <EntityType Name="Facture">
           <Key>
@@ -151,7 +153,7 @@
           <Property Name="Seance_ID" Type="Int32" Nullable="false" />
           <Property Name="Prix" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="EstPayee" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Seance" Relationship="Self.Seance_ID" FromRole="Facture" ToRole="Seance" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Facture_Seance" FromRole="Facture" ToRole="Seance" />
         </EntityType>
         <EntityType Name="Photographe">
           <Key>
@@ -162,7 +164,7 @@
           <Property Name="Prenom" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Telephone" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Courriel" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photographe_Photographe_ID" FromRole="Photographe" ToRole="Seance" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photographe" FromRole="Photographe" ToRole="Seance" />
         </EntityType>
         <EntityType Name="Photo">
           <Key>
@@ -171,26 +173,27 @@
           <Property Name="Photo_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Photo1" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Seance_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Seance" Relationship="Self.FK_Photo_Seance" FromRole="Photo" ToRole="Seance" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photo" FromRole="Photo" ToRole="Seance" />
         </EntityType>
         <EntityType Name="Seance">
           <Key>
             <PropertyRef Name="Seance_ID" />
           </Key>
           <Property Name="Seance_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Photographe_ID" Type="Int32" Nullable="false" />
+          <Property Name="Photographe_ID" Type="Int32" />
           <Property Name="Agent_ID" Type="Int32" Nullable="false" />
           <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Agent" Relationship="Self.FK_Seance_Agents_Agent_ID" FromRole="Seance" ToRole="Agent" />
-          <NavigationProperty Name="Facture" Relationship="Self.Seance_ID" FromRole="Seance" ToRole="Facture" />
-          <NavigationProperty Name="Photographe" Relationship="Self.FK_Seance_Photographe_Photographe_ID" FromRole="Seance" ToRole="Photographe" />
-          <NavigationProperty Name="Photo" Relationship="Self.FK_Photo_Seance" FromRole="Seance" ToRole="Photo" />
           <Property Name="DateSeance" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Ville" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Statut" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Ville" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Statut" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DateFinSeance" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Agent" Relationship="Self.FK_Seance_Agent" FromRole="Seance" ToRole="Agent" />
+          <NavigationProperty Name="Facture" Relationship="Self.FK_Facture_Seance" FromRole="Seance" ToRole="Facture" />
+          <NavigationProperty Name="Photographe" Relationship="Self.FK_Seance_Photographe" FromRole="Seance" ToRole="Photographe" />
+          <NavigationProperty Name="Photo" Relationship="Self.FK_Seance_Photo" FromRole="Seance" ToRole="Photo" />
         </EntityType>
-        <Association Name="FK_Seance_Agents_Agent_ID">
+        <Association Name="FK_Seance_Agent">
           <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
           <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
           <ReferentialConstraint>
@@ -202,7 +205,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Seance_ID">
+        <Association Name="FK_Facture_Seance">
           <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
           <End Role="Facture" Type="Self.Facture" Multiplicity="*" />
           <ReferentialConstraint>
@@ -214,8 +217,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Seance_Photographe_Photographe_ID">
-          <End Role="Photographe" Type="Self.Photographe" Multiplicity="1" />
+        <Association Name="FK_Seance_Photographe">
+          <End Role="Photographe" Type="Self.Photographe" Multiplicity="0..1" />
           <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Photographe">
@@ -226,7 +229,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Photo_Seance">
+        <Association Name="FK_Seance_Photo">
           <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
           <End Role="Photo" Type="Self.Photo" Multiplicity="*" />
           <ReferentialConstraint>
@@ -244,19 +247,19 @@
           <EntitySet Name="Photographe" EntityType="Self.Photographe" />
           <EntitySet Name="Photo" EntityType="Self.Photo" />
           <EntitySet Name="Seance" EntityType="Self.Seance" />
-          <AssociationSet Name="FK_Seance_Agents_Agent_ID" Association="Self.FK_Seance_Agents_Agent_ID">
+          <AssociationSet Name="FK_Seance_Agent" Association="Self.FK_Seance_Agent">
             <End Role="Agent" EntitySet="Agent" />
             <End Role="Seance" EntitySet="Seance" />
           </AssociationSet>
-          <AssociationSet Name="Seance_ID" Association="Self.Seance_ID">
+          <AssociationSet Name="FK_Facture_Seance" Association="Self.FK_Facture_Seance">
             <End Role="Seance" EntitySet="Seance" />
             <End Role="Facture" EntitySet="Facture" />
           </AssociationSet>
-          <AssociationSet Name="FK_Seance_Photographe_Photographe_ID" Association="Self.FK_Seance_Photographe_Photographe_ID">
+          <AssociationSet Name="FK_Seance_Photographe" Association="Self.FK_Seance_Photographe">
             <End Role="Photographe" EntitySet="Photographe" />
             <End Role="Seance" EntitySet="Seance" />
           </AssociationSet>
-          <AssociationSet Name="FK_Photo_Seance" Association="Self.FK_Photo_Seance">
+          <AssociationSet Name="FK_Seance_Photo" Association="Self.FK_Seance_Photo">
             <End Role="Seance" EntitySet="Seance" />
             <End Role="Photo" EntitySet="Photo" />
           </AssociationSet>
@@ -306,21 +309,22 @@
                 <ScalarProperty Name="Photo_ID" ColumnName="Photo_ID" />
                 <ScalarProperty Name="Photo1" ColumnName="Photo" />
                 <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Seance">
             <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Seance">
               <MappingFragment StoreEntitySet="Seance">
-                <ScalarProperty Name="DateFinSeance" ColumnName="DateFinSeance" />
-                <ScalarProperty Name="Statut" ColumnName="Statut" />
-                <ScalarProperty Name="Ville" ColumnName="Ville" />
-                <ScalarProperty Name="DateSeance" ColumnName="DateSeance" />
                 <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
                 <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
                 <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
                 <ScalarProperty Name="Adresse" ColumnName="Adresse" />
-                </MappingFragment>
+                <ScalarProperty Name="DateSeance" ColumnName="DateSeance" />
+                <ScalarProperty Name="Ville" ColumnName="Ville" />
+                <ScalarProperty Name="Statut" ColumnName="Statut" />
+                <ScalarProperty Name="DateFinSeance" ColumnName="DateFinSeance" />
+              </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
         </EntityContainerMapping>

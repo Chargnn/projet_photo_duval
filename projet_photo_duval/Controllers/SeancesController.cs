@@ -166,7 +166,7 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Seance_ID,Photographe_ID,Agent_ID,Adresse,Date,Duree,DateSeance,Ville,Statut,DateFinSeance")] Seance seance)
+        public ActionResult Edit([Bind(Include = "Seance_ID,Agent_ID,Adresse,DateSeance,Ville,Statut,DateFinSeance")] Seance seance)
         {
             if (ModelState.IsValid)
             {

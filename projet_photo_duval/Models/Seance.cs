@@ -22,7 +22,7 @@ namespace projet_photo_duval.Models
         }
     
         public int Seance_ID { get; set; }
-        public int Photographe_ID { get; set; }
+        public Nullable<int> Photographe_ID { get; set; }
         public int Agent_ID { get; set; }
         public string Adresse { get; set; }
         public System.DateTime DateSeance { get; set; }
