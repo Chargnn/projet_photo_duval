@@ -11,7 +11,10 @@ namespace projet_photo_duval.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using static MetaData.Facture;
+
+    [MetadataType(typeof(FactureMetaData))]
     public partial class Facture
     {
         public int Facture_ID { get; set; }
