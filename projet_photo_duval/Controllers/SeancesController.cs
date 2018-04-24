@@ -95,12 +95,6 @@ namespace projet_photo_duval.Controllers
             return View(seances.ToPagedList(pageNo, taillePage));
         }
 
-        /*public ActionResult Index()
-        {
-            var seance = db.Seance.Include(s => s.Agent).Include(s => s.Photographe);
-            return View(seance.ToList());
-        }*/
-
         // GET: Seances/Details/5
         public ActionResult Details(int? id)
         {
@@ -120,7 +114,6 @@ namespace projet_photo_duval.Controllers
         public ActionResult Create()
         {
             ViewBag.Agent_ID = new SelectList(db.Agent, "Agent_ID", "Nom");
-            ViewBag.Photographe_ID = new SelectList(db.Photographe, "Photographe_ID", "Nom");
             return View();
         }
 
@@ -129,8 +122,11 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Photographe_ID,Agent_ID,Adresse,DateSeance,Ville,Statut,DateFinSeance")] Seance seance)
+        public ActionResult Create([Bind(Include = "Seance_ID,Photographe_ID,Agent_ID,Adresse,DateSeance,Ville,Statut,DateFinSeance")] Seance seance)
         {
+            seance.Photographe_ID = null;
+            seance.Statut = "demandée";
+
             if (ModelState.IsValid)
             {
                 db.Seance.Add(seance);
@@ -139,8 +135,6 @@ namespace projet_photo_duval.Controllers
             }
 
             ViewBag.Agent_ID = new SelectList(db.Agent, "Agent_ID", "Nom", seance.Agent_ID);
-            ViewBag.Photographe_ID = new SelectList(db.Photographe, "Photographe_ID", "Nom", seance.Photographe_ID);
-
             return View(seance);
         }
 
