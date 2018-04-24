@@ -1,7 +1,15 @@
 ﻿@model IEnumerable<projet_photo_duval.Models.Facture>
-
+@using PagedList.Mvc;
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" rel="stylesheet">
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    $('.jquery_datepicker').datepicker(); //Initialise any date pickers
+</script>
 @{
     ViewBag.Title = "Index";
+    var pagedlist = (PagedList.IPagedList)Model;
 }
 
 <h2>Index</h2>
@@ -9,13 +17,28 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm("Index", "Factures", FormMethod.Get))
+{
+    <p>
+        Rechercher par date: @Html.TextBox("DateFiltre", ViewBag.filtreCourantDate as string, new { @class = "jquery_datepicker", type = "date" })
+        <input type="submit" value="Rechercher" />
+    </p>
+}
+
+@if (ViewBag.MessageError != "")
+{
+    @Html.Raw("<div class='alert alert-danger'><strong>Erreur! </strong>")
+    @ViewBag.MessageError
+    @Html.Raw("</div>")
+}
+
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Prix)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EstPayee)
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Statut</a>
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Seance.Adresse)
@@ -50,3 +73,6 @@
 }
 
 </table>
+Page @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) de @pagedlist.PageCount
+
+@Html.PagedListPager(pagedlist, page => Url.Action("Index", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant }))

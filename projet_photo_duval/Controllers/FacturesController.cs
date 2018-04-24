@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using projet_photo_duval.Models;
+using PagedList;
 
 namespace projet_photo_duval.Controllers
 {
@@ -15,10 +16,55 @@ namespace projet_photo_duval.Controllers
         private H18_Proj_Eq07Entities1 db = new H18_Proj_Eq07Entities1();
 
         // GET: Factures
-        public ActionResult Index()
+        public ActionResult Index(string ordreTri, string dateFiltre, string filtreCourantNom, string filtreCourantDate, int? page, string MessageError)
         {
-            var facture = db.Facture.Include(f => f.Seance);
-            return View(facture.ToList());
+            ViewBag.TriStatut = string.IsNullOrEmpty(ordreTri) ? "statut_desc" : "";
+            ViewBag.MessageError = "";
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+
+            if (dateFiltre != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                dateFiltre = filtreCourantDate;
+            }
+
+            ViewBag.triCourant = ordreTri;
+            ViewBag.filtreCourantDate = dateFiltre;
+
+            var facture = db.Facture.Include(f => f.Seance).Where(x =>x.Seance.DateSeance.Year == currentYear && x.Seance.DateSeance.Month == currentMonth);
+
+            if (!string.IsNullOrEmpty(dateFiltre))
+            {
+                try
+                {
+                    DateTime date = DateTime.Parse(dateFiltre);
+
+                    facture = facture.Where(x => x.Seance.DateSeance.Year == date.Year && x.Seance.DateSeance.Month == date.Month);
+                }
+                catch (Exception e)
+                {
+                    ViewBag.MessageError = "La date entrée n'est pas valide";
+                }
+            }
+
+            switch (ordreTri)
+            {
+                case "statut_desc":
+                    facture = facture.OrderByDescending(x => x.EstPayee);
+                    break;
+                default:
+                    facture = facture.OrderBy(x => x.EstPayee);
+                    break;
+            }
+
+            int pageNo = page ?? 1;
+            int taillePage = 5;
+
+            return View(facture.ToPagedList(pageNo, taillePage));
         }
 
         // GET: Factures/Details/5
