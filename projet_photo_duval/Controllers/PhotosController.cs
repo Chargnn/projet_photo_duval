@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using projet_photo_duval.Models;
+using Ionic.Zip;
+using System.IO;
 
 namespace projet_photo_duval.Controllers
 {
@@ -78,6 +80,63 @@ namespace projet_photo_duval.Controllers
             }
             return View();
         }
+
+
+        private List<Photo> GetPhotoList() {
+            List<Photo> lstPhoto = new List<Photo>();
+            var query = db.Photo;
+            return query.ToList();
+        }
+        [HttpGet]
+        public void DownLoadPhoto(int id)
+        {
+            List<Photo> ObjPhotos = GetPhotoList();
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.AlternateEncodingUsage = ZipOption.AsNecessary;
+                zip.AddDirectoryByName("Photos");
+
+                var PhotoBySeanceId = (from p in ObjPhotos
+                                       where p.Seance_ID.Equals(id)
+                                       select new { p.Nom, p.Photo1 }).ToList();
+                string contentType = "image/jpg";
+                int NB = 0;
+                foreach (var p in PhotoBySeanceId)
+                {
+                    NB++;
+                    zip.AddEntry("Photos/image"+NB+".jpg",p.Photo1);
+                }
+                Response.Clear();
+                Response.BufferOutput = false;
+                string zipName = String.Format("Zip_{0}.zip", DateTime.Now.ToString("yyyy-MMM-dd-HHmmss"));
+                Response.ContentType = "application/zip";
+                Response.AddHeader("content-disposition", "attachment; filename=" + zipName);
+                zip.Save(Response.OutputStream);
+                Response.End();
+            }
+            //    var PhotoBySeanceId = (from p in ObjPhotos
+            //                           where p.Seance_ID.Equals(id)
+            //                           select new { p.Nom, p.Photo1 }).ToList().FirstOrDefault();
+
+            //string contentType = "image/jpg";
+            //var cd = new System.Net.Mime.ContentDisposition
+            //{
+            //    FileName ="test.jpeg",
+            //    Inline = false
+            //};
+            //Response.AppendHeader("Content-Disposition", cd.ToString());
+            //return File(PhotoBySeanceId.Photo1, contentType, PhotoBySeanceId.Nom);
+
+        }
+        [HttpGet]
+        public PartialViewResult PhotosDetails()
+        {
+            List<Photo> PhotoList = GetPhotoList();
+
+            return PartialView("PhotoDetails", PhotoList);
+
+        }
+
         public ActionResult ShowImage()
         {
             var photo = db.Photo;
