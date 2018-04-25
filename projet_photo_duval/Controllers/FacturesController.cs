@@ -101,6 +101,8 @@ namespace projet_photo_duval.Controllers
         // GET: Factures/Create
         public ActionResult Create()
         {
+            var enumForfaits = Enum.GetValues(typeof(EnumForfaits)).Cast<EnumForfaits>().Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() });
+            ViewBag.Forfaits = enumForfaits;
             ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "DateSeance");
             return View();
         }

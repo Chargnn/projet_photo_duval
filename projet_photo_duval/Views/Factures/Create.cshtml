@@ -4,12 +4,13 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Créer une facture</h2>
 
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
+
     
     <div class="form-horizontal">
         <h4>Facture</h4>
@@ -20,6 +21,12 @@
             <div class="col-md-10">
                 @Html.DropDownList("Seance_ID", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Seance_ID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class ="control-label col-md-2">Forfait</label>
+            <div class="col-md-10">
+                @Html.DropDownList("Forfaits", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
