@@ -8,11 +8,11 @@
     $('.jquery_datepicker').datepicker(); //Initialise any date pickers
 </script>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Factures";
     var pagedlist = (PagedList.IPagedList)Model;
 }
 
-<h2>Index</h2>
+<h2>Factures</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -65,9 +65,7 @@
             @Html.DisplayFor(modelItem => item.Seance.Adresse)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Facture_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Facture_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Facture_ID })
+            @Html.ActionLink("Details", "Details", new { id=item.Facture_ID })
         </td>
     </tr>
 }
