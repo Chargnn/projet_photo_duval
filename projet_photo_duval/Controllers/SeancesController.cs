@@ -36,8 +36,7 @@ namespace projet_photo_duval.Controllers
             ViewBag.filtreCourantNom = chaineFiltre;
             ViewBag.filtreCourantDate = dateFiltre;
 
-            var seances = db.Seance.Include(s => s.Agent).Include(s => s.Photographe);
-            //.Where(s => s.DateSeance.Day == DateTime.Now.Day);
+            var seances = db.Seance.Include(s => s.Agent).Include(s => s.Photographe).Where(s => s.DateSeance.Day == DateTime.Now.Day && s.Statut != "demandée");
 
             if (!string.IsNullOrEmpty(chaineFiltre))
             {
