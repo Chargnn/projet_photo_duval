@@ -42,6 +42,7 @@ namespace projet_photo_duval.Controllers
         {
             ViewBag.MessageError = null;
             ViewBag.Message = null;
+            ViewBag.SeanceId = id;
             Boolean uploadValide = true;
             int cpt = 0;
             foreach (var file in files)

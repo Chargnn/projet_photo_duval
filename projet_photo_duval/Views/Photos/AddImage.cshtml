@@ -22,6 +22,7 @@
         <br />
     </div>
 }
+<br />
 @if (ViewBag.MessageError != null)
 {
     @Html.Raw("<div class='alert alert-danger'><strong>Erreur! </strong>")
@@ -41,12 +42,17 @@
     </div>
 </div>
 <div class="form-group">
+    <h2>Liste des photos de la séance</h2>
     <div class="col-md-8">
         @Html.Action("PhotosDetails", "Photos")
     </div>
 </div> 
+<td>
+    @Html.ActionLink("Télécharger les photos", "DownLoadPhoto", new { id = ViewBag.SeanceId})
+</td>
+
 
 <div>
     <br />
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour vers la liste", "Index")
 </div>
