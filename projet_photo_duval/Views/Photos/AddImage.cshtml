@@ -2,9 +2,10 @@
 
 @{
     ViewBag.Title = "Ajouter des photos";
+    
 }
 
-<h2>Ajouter des photos</h2>
+<h2>Gérer des photos de la séance</h2>
 
 @using (Html.BeginForm("AddImage","Photos",FormMethod.Post,new {enctype="multipart/form-data" }))
 {
@@ -35,7 +36,7 @@
     @ViewBag.Message
     @Html.Raw("</div>")
 }
-
+<hr />
 <div class="form-group">
     <div class="col-md-offset-2 col-md-10 text-success">
         @ViewBag.FileStatus
@@ -44,15 +45,19 @@
 <div class="form-group">
     <h2>Liste des photos de la séance</h2>
     <div class="col-md-8">
-        @Html.Action("PhotosDetails", "Photos")
+       @Html.Action("PhotosDetails", "Photos", new { id=(ViewContext.RouteData.Values["id"])})
     </div>
 </div> 
-<td>
-    @Html.ActionLink("Télécharger les photos", "DownLoadPhoto", new { id = ViewBag.SeanceId})
-</td>
+@*<td>
+    @if (ViewBag.MessageTelechargement!=null)
+    {
+        @Html.ActionLink("Télécharger les photos", "DownLoadPhoto", new { id = (ViewContext.RouteData.Values["id"]) });
+    }
+        
+</td>*@
 
 
 <div>
     <br />
-    @Html.ActionLink("Retour vers la liste", "Index")
+    @Html.ActionLink("Retour vers la liste", "Index", "Seances",null,null)
 </div>

@@ -40,9 +40,9 @@ namespace projet_photo_duval.Controllers
         [HttpPost]
         public ActionResult AddImage(int id,IEnumerable<HttpPostedFileBase> files)
         {
+            List<Photo> ObjPhotos = GetPhotoListSeance(id);
             ViewBag.MessageError = null;
             ViewBag.Message = null;
-            ViewBag.SeanceId = id;
             Boolean uploadValide = true;
             int cpt = 0;
             foreach (var file in files)
@@ -126,18 +126,18 @@ namespace projet_photo_duval.Controllers
         [HttpGet]
         public void DownLoadPhoto(int id)
         {
-            List<Photo> ObjPhotos = GetPhotoList();
+            List<Photo> ObjPhotos = GetPhotoListSeance(id);
             using (ZipFile zip = new ZipFile())
             {
                 zip.AlternateEncodingUsage = ZipOption.AsNecessary;
                 zip.AddDirectoryByName("Photos");
 
-                var PhotoBySeanceId = (from p in ObjPhotos
-                                       where p.Seance_ID.Equals(id)
-                                       select new { p.Nom, p.Photo1 }).ToList();
+                //var PhotoBySeanceId = (from p in ObjPhotos
+                //                       where p.Seance_ID.Equals(id)
+                //                       select new { p.Nom, p.Photo1 }).ToList();
                 string contentType = "image/jpg";
                 int NB = 0;
-                foreach (var p in PhotoBySeanceId)
+                foreach (var p in ObjPhotos)
                 {
                     NB++;
                     zip.AddEntry("Photos/"+p.Nom+NB+".jpg",p.Photo1);
@@ -152,9 +152,9 @@ namespace projet_photo_duval.Controllers
             }
         }
         
-        public PartialViewResult PhotosDetails()
+        public PartialViewResult PhotosDetails(int id)
         {
-            List<Photo> PhotoList = GetPhotoList();
+            List<Photo> PhotoList = GetPhotoListSeance(id);
             return PartialView("PhotoDetails", PhotoList);
 
         }
