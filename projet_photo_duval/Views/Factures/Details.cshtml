@@ -1,41 +1,72 @@
-﻿@model projet_photo_duval.Models.Facture
+﻿@model projet_photo_duval.ViewModels.ViewModelDetailsFacture
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Détails de la facture</h2>
 
 <div>
-    <h4>Facture</h4>
+    <h4></h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Prix)
+            Nom de l'agent :
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Prix)
+            @Html.DisplayFor(model => model.nomAgent)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.EstPayee)
+            Nom du photographe :
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EstPayee)
+            @Html.DisplayFor(model => model.nomPhotographe)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Seance.Adresse)
+            Prix de la facture :
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Seance.Adresse)
+            @Model.prix $
+        </dd>
+
+        <dt>
+            Statut du paiement :
+        </dt>
+
+        <dd>
+            @if (Model.estPayee == 1)
+            {
+                <p>Payée</p>
+            }
+            else
+            {
+                <p>Pas payée</p>
+            }
+        </dd>
+
+        <dt>
+            Adresse :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.adresse)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour à la liste", "Index")
 </p>
