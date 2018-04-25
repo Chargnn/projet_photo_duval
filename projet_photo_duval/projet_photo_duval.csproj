@@ -286,10 +286,10 @@
     <Content Include="Views\Seances\Create.cshtml" />
     <Content Include="Views\Photos\PhotoDetails.cshtml" />
     <Content Include="Views\Factures\Details.cshtml" />
+    <Content Include="Views\Home\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
