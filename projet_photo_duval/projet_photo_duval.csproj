@@ -171,6 +171,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\FacturesController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="Controllers\SeancesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -286,7 +287,7 @@
     <Content Include="Views\Seances\Create.cshtml" />
     <Content Include="Views\Photos\PhotoDetails.cshtml" />
     <Content Include="Views\Factures\Details.cshtml" />
-    <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
