@@ -1,0 +1,58 @@
+﻿@model projet_photo_duval.Models.Agent
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Agent</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prenom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prenom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telephone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telephone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Courriel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Courriel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstPartenaire)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstPartenaire)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Agent_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<projet_photo_duval.Models.Agent>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    var pagedlist = (PagedList.IPagedList)Model;
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Agents", FormMethod.Get))
+{
+    <p>
+        Rechercher par nom de famille: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourantNom as string)
+
+        <input type="submit" value="Rechercher" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriNom, filtreCourantNom = ViewBag.filtreCourantNom })">Nom</a>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Telephone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Courriel)
+        </th>
+        <th>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriPartenaire, filtreCourantNom = ViewBag.filtreCourantNom })">Est un partenaire</a>
+        </th>
+        <th></th>
+    </tr>
+@{int i = 0;}
+@foreach (var item in Model) {
+    i++;
+    <tr>
+        <td>@Html.Raw(item.Nom + ", " + item.Prenom)</td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Telephone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Courriel)
+        </td>
+        <td>
+            @if (item.EstPartenaire == 0)
+            {
+                <p>Oui</p>
+            }
+            else
+            {
+                <p>Non</p>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Agent_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Agent_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Agent_ID })
+        </td>
+    </tr>
+}
+
+    @if (i == 0)
+    {
+        <tr>
+            <td width="70%">
+                Aucune entrée pour votre recherche à été trouvé
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+Page @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) de @pagedlist.PageCount
+
+@Html.PagedListPager(pagedlist, page => Url.Action("Index", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant }))

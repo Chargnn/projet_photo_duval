@@ -19,7 +19,7 @@ namespace projet_photo_duval.Controllers
         public ActionResult Index(string ordreTri, string chaineFiltre, string dateFiltre, string filtreCourantNom, string filtreCourantDate,  int? page, string MessageError)
         {
             ViewBag.TriDate = string.IsNullOrEmpty(ordreTri) ? "date_desc" : "";
-            ViewBag.TriStatut = string.IsNullOrEmpty(ordreTri) ? "statut_desc" : "";
+            ViewBag.TriStatut = ordreTri == "statut" ? "statut_desc" : "statut";
             ViewBag.MessageError = "";
 
             if (chaineFiltre != null || dateFiltre != null)
