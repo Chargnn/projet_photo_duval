@@ -31,7 +31,7 @@ namespace projet_photo_duval.Controllers
                 chaineFiltre = filtreCourantNom;
                 dateFiltre = filtreCourantDate;
             }
-
+ 
             ViewBag.triCourant = ordreTri;
             ViewBag.filtreCourantNom = chaineFiltre;
             ViewBag.filtreCourantDate = dateFiltre;
