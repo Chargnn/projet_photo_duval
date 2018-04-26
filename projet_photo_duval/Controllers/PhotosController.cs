@@ -52,11 +52,11 @@ namespace projet_photo_duval.Controllers
                 {
                     var contenuByte = new byte[file.ContentLength];
                     var fileExtension = System.IO.Path.GetExtension(file.FileName).ToLower();
-                    if (!fileExtension.Equals(".jpg") ||
-                        fileExtension.Equals(".png") ||
-                        fileExtension.Equals(".jpeg"))
+                    if (!fileExtension.Equals(".jpg") &&
+                        !fileExtension.Equals(".png") &&
+                        !fileExtension.Equals(".jpeg"))
                     {
-                        ViewBag.MessageError = "Le fichier " + file.FileName + " n'est pas une image";
+                        ViewBag.MessageError = "Un de vos fichiers n'est pas une image";
                         uploadValide = false;
                     }
                     if (uploadValide == true)

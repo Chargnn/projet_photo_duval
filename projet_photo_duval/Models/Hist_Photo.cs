@@ -12,13 +12,13 @@ namespace projet_photo_duval.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Facture
+    public partial class Hist_Photo
     {
-        public int Facture_ID { get; set; }
+        public int Hist_Photo_ID { get; set; }
+        public int Photo_ID { get; set; }
+        public byte[] Photo { get; set; }
         public int Seance_ID { get; set; }
-        public decimal Prix { get; set; }
-        public int EstPayee { get; set; }
-    
-        public virtual Seance Seance { get; set; }
+        public string Nom { get; set; }
+        public System.DateTime DateHistPhoto { get; set; }
     }
 }

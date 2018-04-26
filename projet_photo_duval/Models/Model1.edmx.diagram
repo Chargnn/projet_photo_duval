@@ -14,6 +14,9 @@
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Facture_Seance" ManuallyRouted="false" />
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photographe" ManuallyRouted="false" />
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Facture" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Photo" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Seance" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

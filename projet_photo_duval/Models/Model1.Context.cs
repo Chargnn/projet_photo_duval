@@ -30,5 +30,8 @@ namespace projet_photo_duval.Models
         public virtual DbSet<Photographe> Photographe { get; set; }
         public virtual DbSet<Photo> Photo { get; set; }
         public virtual DbSet<Seance> Seance { get; set; }
+        public virtual DbSet<Hist_Facture> Hist_Facture { get; set; }
+        public virtual DbSet<Hist_Photo> Hist_Photo { get; set; }
+        public virtual DbSet<Hist_Seance> Hist_Seance { get; set; }
     }
 }

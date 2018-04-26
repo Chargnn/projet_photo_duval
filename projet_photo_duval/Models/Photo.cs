@@ -11,14 +11,14 @@ namespace projet_photo_duval.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Photo
     {
         public int Photo_ID { get; set; }
         public byte[] Photo1 { get; set; }
         public int Seance_ID { get; set; }
         public string Nom { get; set; }
+        public string Commentaire { get; set; }
     
         public virtual Seance Seance { get; set; }
     }
