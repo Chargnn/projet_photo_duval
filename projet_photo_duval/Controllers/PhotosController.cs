@@ -152,14 +152,44 @@ namespace projet_photo_duval.Controllers
             }
         }
         
-        public PartialViewResult PhotosDetails(int id)
+        public PartialViewResult PhotosDetailsPhotographe(int id)
         {
             List<Photo> PhotoList = GetPhotoListSeance(id);
-            return PartialView("PhotoDetails", PhotoList);
-
+            return PartialView("PhotoDetailsPhotographe", PhotoList);
+        }
+        public PartialViewResult PhotosDetailsAgent(int id)
+        {
+            List<Photo> PhotoList = GetPhotoListSeance(id);
+            return PartialView("PhotoDetailsAgent", PhotoList);
+        }
+        public ActionResult AjouterCommentaire(int photoId)
+        {
+            if (photoId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Photo photo = db.Photo.Find(photoId);
+            if (photo == null)
+            {
+                return HttpNotFound();
+            }
+            return View(photo);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AjouterCommentaire([Bind(Include = "Photo_ID,Photo1,Seance_ID,Commentaire")] Photo photo)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(photo).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", photo.Seance_ID);
+            return View(photo);
         }
 
-        public ActionResult ShowImage()
+        public ActionResult ShowImage(int id)
         {
             var photo = db.Photo;
             return View(photo.ToList());

@@ -296,9 +296,11 @@
     <Content Include="Views\Seances\Edit.cshtml" />
     <Content Include="Views\Seances\Index.cshtml" />
     <Content Include="Views\Seances\Create.cshtml" />
-    <Content Include="Views\Photos\PhotoDetails.cshtml" />
+    <Content Include="Views\Photos\PhotoDetailsPhotographe.cshtml" />
     <Content Include="Views\Factures\Details.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Photos\PhotoDetailsAgent.cshtml" />
+    <Content Include="Views\Photos\AjouterCommentaire.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
