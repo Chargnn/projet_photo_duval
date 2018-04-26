@@ -1,0 +1,46 @@
+﻿@model projet_photo_duval.Models.Photo
+
+@{
+    ViewBag.Title = "AjouterCommentaire";
+}
+
+<h2>AjouterCommentaire</h2>
+
+<div>
+    <h4>Photo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Photo")
+        </dt>
+
+        <dd>
+            <img width="200" height="200" src="data:image;base64,@Convert.ToBase64String(Model.Photo1)" />
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Nom de la photo")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Commentaire, "Commentaire", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Commentaire, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Commentaire, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </dl>
+</div>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Envoyer commentaire
+               " class="btn btn-default" />
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Photo_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
