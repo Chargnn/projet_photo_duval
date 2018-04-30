@@ -8,15 +8,16 @@ using System.Web;
 using System.Web.Mvc;
 using projet_photo_duval.Models;
 using PagedList;
+using projet_photo_duval.DAL;
 
 namespace projet_photo_duval.Controllers
 {
     public class AgentsController : Controller
     {
-        private H18_Proj_Eq07Entities1 db = new H18_Proj_Eq07Entities1();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Agents
-            public ActionResult Index(string ordreTri,string chaineFiltre, string filtreCourantNom, int? page, string MessageError)
+        public ActionResult Index(string ordreTri,string chaineFiltre, string filtreCourantNom, int? page, string MessageError)
         {
             ViewBag.TriNom = string.IsNullOrEmpty(ordreTri) ? "nom_desc" : "";
             ViewBag.TriPartenaire = ordreTri == "part" ? "part_desc" : "part";
@@ -34,13 +35,13 @@ namespace projet_photo_duval.Controllers
             ViewBag.triCourant = ordreTri;
             ViewBag.filtreCourantNom = chaineFiltre;
 
-            var agent = db.Agent.Where(x => x.Prenom != null);
+            var agent = unitOfWork.AgentRepository.Get();
 
             if (!string.IsNullOrEmpty(chaineFiltre))
             {
                 try
                 {
-                    agent = agent.Where(x => x.Nom.StartsWith(chaineFiltre));
+                    agent = agent.Where(x => x.Nom.ToLower().StartsWith(chaineFiltre.ToLower()));
                 }
                 catch (Exception e)
                 {
@@ -80,7 +81,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Agent agent = db.Agent.Find(id);
+            Agent agent = unitOfWork.AgentRepository.GetByID(id);
             if (agent == null)
             {
                 return HttpNotFound();
@@ -103,8 +104,8 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Agent.Add(agent);
-                db.SaveChanges();
+                unitOfWork.AgentRepository.Insert(agent);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
@@ -118,7 +119,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Agent agent = db.Agent.Find(id);
+            Agent agent = unitOfWork.AgentRepository.GetByID(id);
             if (agent == null)
             {
                 return HttpNotFound();
@@ -135,8 +136,8 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(agent).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.AgentRepository.Update(agent);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(agent);
@@ -149,7 +150,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Agent agent = db.Agent.Find(id);
+            Agent agent = unitOfWork.AgentRepository.GetByID(id);
             if (agent == null)
             {
                 return HttpNotFound();
@@ -162,18 +163,15 @@ namespace projet_photo_duval.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Agent agent = db.Agent.Find(id);
-            db.Agent.Remove(agent);
-            db.SaveChanges();
+            Agent agent = unitOfWork.AgentRepository.GetByID(id);
+            unitOfWork.AgentRepository.Delete(id);
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            unitOfWork.Dispose();
             base.Dispose(disposing);
         }
     }
