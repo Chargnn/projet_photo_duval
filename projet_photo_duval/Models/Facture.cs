@@ -16,8 +16,11 @@ namespace projet_photo_duval.Models
     {
         public int Facture_ID { get; set; }
         public int Seance_ID { get; set; }
-        public decimal Prix { get; set; }
+        public Nullable<decimal> Prix { get; set; }
         public int EstPayee { get; set; }
+        public System.DateTime DateFacturation { get; set; }
+        public short Forfait { get; set; }
+        public string Commentaire { get; set; }
     
         public virtual Seance Seance { get; set; }
     }

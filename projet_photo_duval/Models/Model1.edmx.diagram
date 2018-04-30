@@ -4,19 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="88e66d930c5e436db69ce71236d8f881" Name="Diagram1" ZoomLevel="98">
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Agent" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Facture" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Photographe" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Photo" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Seance" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+      <Diagram DiagramId="63aca46f2d684e25be7985d5f4cb6352" Name="Diagram1">
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Agent" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Facture" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Facture" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Photographe" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Photo" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Photo" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Seance" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Seance" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Agent" ManuallyRouted="false" />
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Facture_Seance" ManuallyRouted="false" />
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photographe" ManuallyRouted="false" />
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photo" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Facture" Width="1.5" PointX="3.375" PointY="6.75" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Photo" Width="1.5" PointX="5.375" PointY="6.75" />
-        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Hist_Seance" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
