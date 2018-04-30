@@ -23,20 +23,7 @@ namespace projet_photo_duval.Controllers
             Photo photo = new Photo();
             return View(photo);
         }
-        //[HttpPost]
-        //public ActionResult AddImage(Photo model, HttpPostedFileBase image1)
-        //{
-        //    if (image1 != null)
-        //    {
-        //        model.Photo1 = new byte[image1.ContentLength];
-        //        model.Seance_ID = 1002;
-        //        image1.InputStream.Read(model.Photo1, 0, image1.ContentLength);
-        //    }
-        //    db.Photo.Add(model);
-        //    db.SaveChanges();
 
-        //    return View(model);
-        //}
         [HttpPost]
         public ActionResult AddImage(int id,IEnumerable<HttpPostedFileBase> files)
         {
@@ -176,16 +163,15 @@ namespace projet_photo_duval.Controllers
             return View(photo);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AjouterCommentaire([Bind(Include = "Photo_ID,Photo1,Seance_ID,Commentaire")] Photo photo)
+        public ActionResult AjouterCommentaire([Bind(Include = "Photo_ID,Photo1,Seance_ID,Commentaire,Nom")] Photo photo)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(photo).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ShowImage", "Photos",new { id= photo.Seance_ID});
             }
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", photo.Seance_ID);
+            //ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", photo.Seance_ID);
             return View(photo);
         }
 
