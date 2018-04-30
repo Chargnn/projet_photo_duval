@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="Agent_ID" />
@@ -22,8 +22,11 @@
           </Key>
           <Property Name="Facture_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Seance_ID" Type="int" Nullable="false" />
-          <Property Name="Prix" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Prix" Type="decimal" Precision="10" Scale="2" />
           <Property Name="EstPayee" Type="int" Nullable="false" />
+          <Property Name="DateFacturation" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Forfait" Type="smallint" Nullable="false" />
+          <Property Name="Commentaire" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Hist_Facture">
           <Key>
@@ -168,7 +171,8 @@
             <End Role="Seance" EntitySet="Seance" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="H18_Proj_Eq07Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -190,9 +194,22 @@
           </Key>
           <Property Name="Facture_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Seance_ID" Type="Int32" Nullable="false" />
+          <Property Name="Prix" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EstPayee" Type="Int32" Nullable="false" />
+          <Property Name="DateFacturation" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Forfait" Type="Int16" Nullable="false" />
+          <Property Name="Commentaire" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Facture_Seance" FromRole="Facture" ToRole="Seance" />
+        </EntityType>
+        <EntityType Name="Hist_Facture">
+          <Key>
+            <PropertyRef Name="Hist_Facture_ID" />
+          </Key>
+          <Property Name="Hist_Facture_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Seance_ID" Type="Int32" Nullable="false" />
           <Property Name="Prix" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="EstPayee" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Seance" Relationship="Self.FK_Facture_Seance" FromRole="Facture" ToRole="Seance" />
+          <Property Name="DateHistFacture" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="Photographe">
           <Key>
@@ -205,6 +222,17 @@
           <Property Name="Courriel" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photographe" FromRole="Photographe" ToRole="Seance" />
         </EntityType>
+        <EntityType Name="Hist_Photo">
+          <Key>
+            <PropertyRef Name="Hist_Photo_ID" />
+          </Key>
+          <Property Name="Hist_Photo_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Photo_ID" Type="Int32" Nullable="false" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Seance_ID" Type="Int32" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateHistPhoto" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
         <EntityType Name="Photo">
           <Key>
             <PropertyRef Name="Photo_ID" />
@@ -213,8 +241,23 @@
           <Property Name="Photo1" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Seance_ID" Type="Int32" Nullable="false" />
           <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photo" FromRole="Photo" ToRole="Seance" />
           <Property Name="Commentaire" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photo" FromRole="Photo" ToRole="Seance" />
+        </EntityType>
+        <EntityType Name="Hist_Seance">
+          <Key>
+            <PropertyRef Name="Hist_Seance_ID" />
+          </Key>
+          <Property Name="Hist_Seance_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Seance_ID" Type="Int32" Nullable="false" />
+          <Property Name="Photographe_ID" Type="Int32" Nullable="false" />
+          <Property Name="Agent_ID" Type="Int32" Nullable="false" />
+          <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ville" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Statut" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateSeance" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="DateFinSeance" Type="DateTime" Precision="7" />
+          <Property Name="DateHistSeance" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="Seance">
           <Key>
@@ -284,8 +327,11 @@
         <EntityContainer Name="H18_Proj_Eq07Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Agent" EntityType="Self.Agent" />
           <EntitySet Name="Facture" EntityType="Self.Facture" />
+          <EntitySet Name="Hist_Facture" EntityType="Self.Hist_Facture" />
           <EntitySet Name="Photographe" EntityType="Self.Photographe" />
+          <EntitySet Name="Hist_Photo" EntityType="Self.Hist_Photo" />
           <EntitySet Name="Photo" EntityType="Self.Photo" />
+          <EntitySet Name="Hist_Seance" EntityType="Self.Hist_Seance" />
           <EntitySet Name="Seance" EntityType="Self.Seance" />
           <AssociationSet Name="FK_Seance_Agent" Association="Self.FK_Seance_Agent">
             <End Role="Agent" EntitySet="Agent" />
@@ -303,46 +349,7 @@
             <End Role="Seance" EntitySet="Seance" />
             <End Role="Photo" EntitySet="Photo" />
           </AssociationSet>
-          <EntitySet Name="Hist_Facture" EntityType="H18_Proj_Eq07Model.Hist_Facture" />
-          <EntitySet Name="Hist_Photo" EntityType="H18_Proj_Eq07Model.Hist_Photo" />
-          <EntitySet Name="Hist_Seance" EntityType="H18_Proj_Eq07Model.Hist_Seance" />
         </EntityContainer>
-        <EntityType Name="Hist_Facture">
-          <Key>
-            <PropertyRef Name="Hist_Facture_ID" />
-          </Key>
-          <Property Name="Hist_Facture_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Seance_ID" Type="Int32" Nullable="false" />
-          <Property Name="Prix" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="EstPayee" Type="Int32" Nullable="false" />
-          <Property Name="DateHistFacture" Type="DateTime" Nullable="false" Precision="7" />
-        </EntityType>
-        <EntityType Name="Hist_Photo">
-          <Key>
-            <PropertyRef Name="Hist_Photo_ID" />
-          </Key>
-          <Property Name="Hist_Photo_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Photo_ID" Type="Int32" Nullable="false" />
-          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Seance_ID" Type="Int32" Nullable="false" />
-          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DateHistPhoto" Type="DateTime" Nullable="false" Precision="7" />
-        </EntityType>
-        <EntityType Name="Hist_Seance">
-          <Key>
-            <PropertyRef Name="Hist_Seance_ID" />
-          </Key>
-          <Property Name="Hist_Seance_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Seance_ID" Type="Int32" Nullable="false" />
-          <Property Name="Photographe_ID" Type="Int32" Nullable="false" />
-          <Property Name="Agent_ID" Type="Int32" Nullable="false" />
-          <Property Name="Adresse" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Ville" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Statut" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="DateSeance" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="DateFinSeance" Type="DateTime" Precision="7" />
-          <Property Name="DateHistSeance" Type="DateTime" Nullable="false" Precision="7" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -368,6 +375,20 @@
                 <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
                 <ScalarProperty Name="Prix" ColumnName="Prix" />
                 <ScalarProperty Name="EstPayee" ColumnName="EstPayee" />
+                <ScalarProperty Name="DateFacturation" ColumnName="DateFacturation" />
+                <ScalarProperty Name="Forfait" ColumnName="Forfait" />
+                <ScalarProperty Name="Commentaire" ColumnName="Commentaire" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hist_Facture">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Hist_Facture">
+              <MappingFragment StoreEntitySet="Hist_Facture">
+                <ScalarProperty Name="Hist_Facture_ID" ColumnName="Hist_Facture_ID" />
+                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="EstPayee" ColumnName="EstPayee" />
+                <ScalarProperty Name="DateHistFacture" ColumnName="DateHistFacture" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -382,14 +403,42 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Hist_Photo">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Hist_Photo">
+              <MappingFragment StoreEntitySet="Hist_Photo">
+                <ScalarProperty Name="Hist_Photo_ID" ColumnName="Hist_Photo_ID" />
+                <ScalarProperty Name="Photo_ID" ColumnName="Photo_ID" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="DateHistPhoto" ColumnName="DateHistPhoto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Photo">
             <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Photo">
               <MappingFragment StoreEntitySet="Photo">
-                <ScalarProperty Name="Commentaire" ColumnName="Commentaire" />
                 <ScalarProperty Name="Photo_ID" ColumnName="Photo_ID" />
                 <ScalarProperty Name="Photo1" ColumnName="Photo" />
                 <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
                 <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Commentaire" ColumnName="Commentaire" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hist_Seance">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Hist_Seance">
+              <MappingFragment StoreEntitySet="Hist_Seance">
+                <ScalarProperty Name="Hist_Seance_ID" ColumnName="Hist_Seance_ID" />
+                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
+                <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
+                <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
+                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+                <ScalarProperty Name="Ville" ColumnName="Ville" />
+                <ScalarProperty Name="Statut" ColumnName="Statut" />
+                <ScalarProperty Name="DateSeance" ColumnName="DateSeance" />
+                <ScalarProperty Name="DateFinSeance" ColumnName="DateFinSeance" />
+                <ScalarProperty Name="DateHistSeance" ColumnName="DateHistSeance" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -404,45 +453,6 @@
                 <ScalarProperty Name="Ville" ColumnName="Ville" />
                 <ScalarProperty Name="Statut" ColumnName="Statut" />
                 <ScalarProperty Name="DateFinSeance" ColumnName="DateFinSeance" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Hist_Facture">
-            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Hist_Facture">
-              <MappingFragment StoreEntitySet="Hist_Facture">
-                <ScalarProperty Name="DateHistFacture" ColumnName="DateHistFacture" />
-                <ScalarProperty Name="EstPayee" ColumnName="EstPayee" />
-                <ScalarProperty Name="Prix" ColumnName="Prix" />
-                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
-                <ScalarProperty Name="Hist_Facture_ID" ColumnName="Hist_Facture_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Hist_Photo">
-            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Hist_Photo">
-              <MappingFragment StoreEntitySet="Hist_Photo">
-                <ScalarProperty Name="DateHistPhoto" ColumnName="DateHistPhoto" />
-                <ScalarProperty Name="Nom" ColumnName="Nom" />
-                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
-                <ScalarProperty Name="Photo_ID" ColumnName="Photo_ID" />
-                <ScalarProperty Name="Hist_Photo_ID" ColumnName="Hist_Photo_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Hist_Seance">
-            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Hist_Seance">
-              <MappingFragment StoreEntitySet="Hist_Seance">
-                <ScalarProperty Name="DateHistSeance" ColumnName="DateHistSeance" />
-                <ScalarProperty Name="DateFinSeance" ColumnName="DateFinSeance" />
-                <ScalarProperty Name="DateSeance" ColumnName="DateSeance" />
-                <ScalarProperty Name="Statut" ColumnName="Statut" />
-                <ScalarProperty Name="Ville" ColumnName="Ville" />
-                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
-                <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
-                <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
-                <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
-                <ScalarProperty Name="Hist_Seance_ID" ColumnName="Hist_Seance_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

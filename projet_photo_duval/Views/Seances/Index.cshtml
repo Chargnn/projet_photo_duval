@@ -57,9 +57,9 @@
         <th></th>
     </tr>
 
-@{int i = 0;}
+@{int nombreEntree = 0;}
 @foreach (var item in Model) {
-    i++;
+    nombreEntree++;
     <tr>
         <td>-
             @Html.DisplayFor(modelItem => item.Adresse)
@@ -73,8 +73,18 @@
         <td>
             @Html.DisplayFor(modelItem => item.Statut)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateFinSeance)
+        <td>           
+            @if (Model != null)
+            {
+                if (item.DateFinSeance != null)
+                {
+                    @Html.DisplayFor(modelItem => item.DateFinSeance)
+                }
+                else
+                {
+                    <font color="red"><b><u>À décider</u></b></font>
+                }
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Agent.Nom), @Html.DisplayFor(modelItem => item.Agent.Prenom)       
@@ -90,21 +100,19 @@
                     <font color="red"><b><u>À décider</u></b></font>
                 }
             }
-
-            
         </td>
         <td>
             @Html.ActionLink("Détails du rendez-vous", "Details", new { id=item.Seance_ID }) <br />
-            @Html.ActionLink("Gérer les photos","AddImage","Photos", new {id=item.Seance_ID},null)<br />
-            @Html.ActionLink("Voir photos", "ShowImage", "Photos", new { id = item.Seance_ID }, null)
+            @Html.ActionLink("Gérer les photos","AddImage","Photos", new {id=item.Seance_ID})<br />
+            @Html.ActionLink("Voir photos", "ShowImage", "Photos", new { id = item.Seance_ID })
         </td>
     </tr>
 }
 
-@if (i == 0)
+@if (nombreEntree == 0)
 {
     <tr>
-        <td width="70%">
+        <td width="50%">
             Aucune entrée pour votre recherche à été trouvé
         </td>
     </tr>
