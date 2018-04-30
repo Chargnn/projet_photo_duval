@@ -80,7 +80,12 @@
             @Html.DisplayFor(modelItem => item.Agent.Nom), @Html.DisplayFor(modelItem => item.Agent.Prenom)       
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Photographe.Nom), @Html.DisplayFor(modelItem => item.Photographe.Prenom)
+            @if (item.Photographe.Nom == "" || item.Photographe.Nom == null)
+            {
+                <font color="red">@Html.Display("À décider")</font>
+            } else {
+                @Html.DisplayFor(modelItem => item.Photographe.Nom), @Html.DisplayFor(modelItem => item.Photographe.Prenom)
+            }
         </td>
         <td>
             @Html.ActionLink("Détails du rendez-vous", "Details", new { id=item.Seance_ID }) <br />
