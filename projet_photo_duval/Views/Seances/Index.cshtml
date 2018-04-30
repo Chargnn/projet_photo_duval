@@ -80,12 +80,18 @@
             @Html.DisplayFor(modelItem => item.Agent.Nom), @Html.DisplayFor(modelItem => item.Agent.Prenom)       
         </td>
         <td>
-            @if (item.Photographe.Nom == "" || item.Photographe.Nom == null)
+            @if (Model != null)
             {
-                <font color="red">@Html.Display("À décider")</font>
-            } else {
-                @Html.DisplayFor(modelItem => item.Photographe.Nom), @Html.DisplayFor(modelItem => item.Photographe.Prenom)
+                if (item.Photographe != null)
+                {
+                    @Html.DisplayFor(modelItem => item.Photographe.Nom); @Html.DisplayFor(modelItem => item.Photographe.Prenom);
+                } else
+                {
+                    <font color="red"><b><u>À décider</u></b></font>
+                }
             }
+
+            
         </td>
         <td>
             @Html.ActionLink("Détails du rendez-vous", "Details", new { id=item.Seance_ID }) <br />
