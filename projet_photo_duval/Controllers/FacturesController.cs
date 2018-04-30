@@ -69,34 +69,34 @@ namespace projet_photo_duval.Controllers
         }
 
         // GET: Factures/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
 
-            //var res = db.Facture.Find(id);
+        //    //var res = db.Facture.Find(id);
 
-            //var res = from facture in db.Facture
-            //          join agent in db.Agent on facture.Seance.Agent_ID equals agent.Agent_ID
-            //          join photographe in db.Photographe on facture.Seance.Photographe_ID equals photographe.Photographe_ID
-            //          where facture.Facture_ID == id
-            //          select new ViewModelDetailsFacture { nomAgent = agent.Nom + ", " + agent.Prenom, nomPhotographe = photographe.Nom + ", " + photographe.Prenom, prix = facture.Prix, estPayee = facture.EstPayee, adresse = facture.Seance.Adresse, date = facture.Seance.DateSeance };
+        //    //var res = from facture in db.Facture
+        //    //          join agent in db.Agent on facture.Seance.Agent_ID equals agent.Agent_ID
+        //    //          join photographe in db.Photographe on facture.Seance.Photographe_ID equals photographe.Photographe_ID
+        //    //          where facture.Facture_ID == id
+        //    //          select new ViewModelDetailsFacture { nomAgent = agent.Nom + ", " + agent.Prenom, nomPhotographe = photographe.Nom + ", " + photographe.Prenom, prix = facture.Prix, estPayee = facture.EstPayee, adresse = facture.Seance.Adresse, date = facture.Seance.DateSeance };
 
-            var res = db.Facture
-                      .Include(i => i.Seance)
-                      .SingleOrDefault(x => x.Facture_ID == id);
+        //    var res = db.Facture
+        //              .Include(i => i.Seance)
+        //              .SingleOrDefault(x => x.Facture_ID == id);
 
-            ViewModelDetailsFacture details = new ViewModelDetailsFacture { nomAgent = res.Seance.Agent.Nom + ", " + res.Seance.Agent.Prenom, nomPhotographe = res.Seance.Photographe.Nom + ", " + res.Seance.Photographe.Prenom, prix = res.Prix, estPayee = res.EstPayee, adresse = res.Seance.Adresse, date = res.Seance.DateSeance };
+        //    ViewModelDetailsFacture details = new ViewModelDetailsFacture { nomAgent = res.Seance.Agent.Nom + ", " + res.Seance.Agent.Prenom, nomPhotographe = res.Seance.Photographe.Nom + ", " + res.Seance.Photographe.Prenom, prix = res.Prix, estPayee = res.EstPayee, adresse = res.Seance.Adresse, date = res.Seance.DateSeance };
 
-            if (res == null)
-            {
-                return HttpNotFound();
-            }
+        //    if (res == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            return View(details);
-        }
+        //    return View(details);
+        //}
 
         // GET: Factures/Create
         public ActionResult Create()

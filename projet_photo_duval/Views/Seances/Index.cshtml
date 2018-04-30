@@ -103,8 +103,8 @@
         </td>
         <td>
             @Html.ActionLink("Détails du rendez-vous", "Details", new { id=item.Seance_ID }) <br />
-            @Html.ActionLink("Gérer les photos","AddImage","Photos", new {id=item.Seance_ID})<br />
-            @Html.ActionLink("Voir photos", "ShowImage", "Photos", new { id = item.Seance_ID })
+            @Html.ActionLink("Gérer les photos","AddImage","Photos", new {id=item.Seance_ID},null)<br />
+            @Html.ActionLink("Voir photos", "ShowImage", "Photos", new { id = item.Seance_ID},null)
         </td>
     </tr>
 }
