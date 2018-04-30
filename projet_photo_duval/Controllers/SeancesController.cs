@@ -8,12 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 using projet_photo_duval.Models;
 using PagedList;
+using projet_photo_duval.DAL;
 
 namespace projet_photo_duval.Controllers
 {
     public class SeancesController : Controller
     {
-        private H18_Proj_Eq07Entities1 db = new H18_Proj_Eq07Entities1();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Seances
         public ActionResult Index(string ordreTri, string chaineFiltre, string dateFiltre, string filtreCourantNom, string filtreCourantDate,  int? page, string MessageError)
@@ -36,12 +37,18 @@ namespace projet_photo_duval.Controllers
             ViewBag.filtreCourantNom = chaineFiltre;
             ViewBag.filtreCourantDate = dateFiltre;
 
-            var seances = db.Seance.Include(s => s.Agent).Include(s => s.Photographe).Where(s => s.DateSeance.Day == DateTime.Now.Day);
+            var seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe").Where(s => s.DateSeance.Day == DateTime.Now.Day);
 
             if (!string.IsNullOrEmpty(chaineFiltre))
             {
-                seances = seances.Where(seance => seance.Photographe.Nom.Contains(chaineFiltre) ||
-                seance.Photographe.Prenom.Contains(chaineFiltre));
+                if (seances.First().Photographe != null) { 
+                    seances = seances.Where(seance => seance.Photographe.Nom.Contains(chaineFiltre) ||
+                    seance.Photographe.Prenom.Contains(chaineFiltre));
+                }
+                else
+                {
+                    seances = seances.Where(seance => seance.Seance_ID == 0);
+                }
             }
 
             if (!string.IsNullOrEmpty(dateFiltre))
@@ -64,8 +71,8 @@ namespace projet_photo_duval.Controllers
                 {
                     DateTime date = DateTime.Parse(dateFiltre);
 
-                    seances = seances.Where(seance => seance.Photographe.Nom.Contains(chaineFiltre) ||
-                    seance.Photographe.Prenom.Contains(chaineFiltre) && seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
+                    seances = seances.Where(seance => seance.Photographe.Nom.ToLower().Contains(chaineFiltre.ToLower()) ||
+                    seance.Photographe.Prenom.ToLower().Contains(chaineFiltre.ToLower()) && seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
                 } catch (Exception e)
                 {
                     ViewBag.MessageError = "La date entrée n'est pas valide";
@@ -101,7 +108,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Seance seance = db.Seance.Find(id);
+            Seance seance = unitOfWork.SeanceRepository.GetByID(id);
             if (seance == null)
             {
                 return HttpNotFound();
@@ -113,7 +120,7 @@ namespace projet_photo_duval.Controllers
         public ActionResult Create()
         {
             ViewBag.MessageError = "";
-            ViewBag.Agent_ID = new SelectList(db.Agent, "Agent_ID", "Nom");
+            ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom");
             return View();
         }
 
@@ -129,8 +136,8 @@ namespace projet_photo_duval.Controllers
 
             if (ModelState.IsValid && seance.DateSeance >= DateTime.Now && seance.DateFinSeance >= seance.DateSeance)
             {
-                db.Seance.Add(seance);
-                db.SaveChanges();
+                unitOfWork.SeanceRepository.Insert(seance);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             } else
             {
@@ -140,7 +147,7 @@ namespace projet_photo_duval.Controllers
                     ViewBag.MessageError = "La date choisi n'est pas valide. (Une date plus tard qu'aujourd'hui)";
             }
 
-            ViewBag.Agent_ID = new SelectList(db.Agent, "Agent_ID", "Nom", seance.Agent_ID);
+            ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
             return View(seance);
         }
 
@@ -151,13 +158,13 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Seance seance = db.Seance.Find(id);
+            Seance seance = unitOfWork.SeanceRepository.GetByID(id);
             if (seance == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Agent_ID = new SelectList(db.Agent, "Agent_ID", "Nom", seance.Agent_ID);
-            ViewBag.Photographe_ID = new SelectList(db.Photographe, "Photographe_ID", "Nom", seance.Photographe_ID);
+            ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
+            ViewBag.Photographe_ID = new SelectList(unitOfWork.PhotoRepository.Get(), "Photographe_ID", "Nom", seance.Photographe_ID);
             return View(seance);
         }
 
@@ -170,12 +177,12 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(seance).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.SeanceRepository.Update(seance);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.Agent_ID = new SelectList(db.Agent, "Agent_ID", "Nom", seance.Agent_ID);
-            ViewBag.Photographe_ID = new SelectList(db.Photographe, "Photographe_ID", "Nom", seance.Photographe_ID);
+            ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
+            ViewBag.Photographe_ID = new SelectList(unitOfWork.PhotoRepository.Get(), "Photographe_ID", "Nom", seance.Photographe_ID);
             return View(seance);
         }
 
@@ -186,7 +193,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Seance seance = db.Seance.Find(id);
+            Seance seance = unitOfWork.SeanceRepository.GetByID(id);
             if (seance == null)
             {
                 return HttpNotFound();
@@ -199,17 +206,14 @@ namespace projet_photo_duval.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Seance seance = db.Seance.Find(id);
-            db.Seance.Remove(seance);
-            db.SaveChanges();
+            Seance seance = unitOfWork.SeanceRepository.GetByID(id);
+            unitOfWork.SeanceRepository.Delete(id);
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            unitOfWork.Dispose();
             base.Dispose(disposing);
         }
     }
