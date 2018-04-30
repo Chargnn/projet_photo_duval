@@ -112,6 +112,7 @@ namespace projet_photo_duval.Controllers
         // GET: Seances/Create
         public ActionResult Create()
         {
+            ViewBag.MessageError = "";
             ViewBag.Agent_ID = new SelectList(db.Agent, "Agent_ID", "Nom");
             return View();
         }
@@ -126,11 +127,17 @@ namespace projet_photo_duval.Controllers
             seance.Photographe_ID = null;
             seance.Statut = "demandée";
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && seance.DateSeance >= DateTime.Now && seance.DateFinSeance >= seance.DateSeance)
             {
                 db.Seance.Add(seance);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            } else
+            {
+                if(seance.DateSeance > seance.DateFinSeance)
+                    ViewBag.MessageError = "La date choisi n'est pas valide. (La date de fin est plus tôt que la date de réservation)";
+                else
+                    ViewBag.MessageError = "La date choisi n'est pas valide. (Une date plus tard qu'aujourd'hui)";
             }
 
             ViewBag.Agent_ID = new SelectList(db.Agent, "Agent_ID", "Nom", seance.Agent_ID);
