@@ -6,6 +6,12 @@
 
 <h2>Réservation de rendez-vous</h2>
 
+@if (ViewBag.MessageError != "")
+{
+    @Html.Raw("<div class='alert alert-danger'><strong>Erreur! </strong>")
+    @ViewBag.MessageError
+    @Html.Raw("</div>")
+}
 
 @using (Html.BeginForm()) 
 {
@@ -64,7 +70,7 @@
 }
 
 <div>
-    @Html.ActionLink("Retour", "Index")
+    @Html.ActionLink("Retour", "Index") | <a href="../Home/Index">Retour à l'accueil</a>
 </div>
 
 @section Scripts {
