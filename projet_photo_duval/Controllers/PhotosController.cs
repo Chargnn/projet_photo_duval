@@ -106,7 +106,7 @@ namespace projet_photo_duval.Controllers
         private List<Photo> GetPhotoListSeance(int id)
         {
             List<Photo> lstPhoto = new List<Photo>();
-            var query = unitOfWork.PhotoRepository.Get().Where(p => p.Seance_ID.Equals(id));
+            var query = unitOfWork.PhotoRepository.Get(filter: p => p.Seance_ID.Equals(id));
             return query.ToList();
         }
         [HttpGet]
