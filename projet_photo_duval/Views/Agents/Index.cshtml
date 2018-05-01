@@ -1,15 +1,11 @@
 ﻿@model IEnumerable<projet_photo_duval.Models.Agent>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Liste des agents";
     var pagedlist = (PagedList.IPagedList)Model;
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<h2>Liste des agents</h2>
 
 @using (Html.BeginForm("Index", "Agents", FormMethod.Get))
 {
@@ -58,9 +54,10 @@
             }
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Agent_ID }) |
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.Agent_ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.Agent_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Agent_ID })
+            @Html.ActionLink("Delete", "Delete", new { id=item.Agent_ID })*@
+            @Html.ActionLink("Voir mes séances", "IndexSeancesAgent","Seances", new { agentID = item.Agent_ID },null)
         </td>
     </tr>
 }
