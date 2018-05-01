@@ -129,22 +129,22 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Seance_ID,Photographe_ID,Agent_ID,Adresse,DateSeance,Ville,Statut,DateFinSeance")] Seance seance)
+        public ActionResult Create([Bind(Include = "Seance_ID,Photographe_ID,Agent_ID,Adresse,DateSeance,Ville,Statut")] Seance seance)
         {
             seance.Photographe_ID = null;
             seance.Statut = "demandée";
 
-            if (ModelState.IsValid && seance.DateSeance >= DateTime.Now && seance.DateFinSeance >= seance.DateSeance)
+            if (ModelState.IsValid && seance.DateSeance >= DateTime.Now)
             {
                 unitOfWork.SeanceRepository.Insert(seance);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             } else
             {
-                if(seance.DateSeance > seance.DateFinSeance)
-                    ViewBag.MessageError = "La date choisi n'est pas valide. (La date de fin est plus tôt que la date de réservation)";
-                else
-                    ViewBag.MessageError = "La date choisi n'est pas valide. (Une date plus tard qu'aujourd'hui)";
+                //if(seance.DateSeance > seance.DateFinSeance)
+                //    ViewBag.MessageError = "La date choisi n'est pas valide. (La date de fin est plus tôt que la date de réservation)";
+                //else
+                //    ViewBag.MessageError = "La date choisi n'est pas valide. (Une date plus tard qu'aujourd'hui)";
             }
 
             ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
