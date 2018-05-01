@@ -11,13 +11,14 @@ using PagedList;
 using projet_photo_duval.ViewModels;
 using static projet_photo_duval.MetaData.Facture;
 using System.ComponentModel.DataAnnotations;
+using projet_photo_duval.DAL;
 
 namespace projet_photo_duval.Controllers
 {
     [MetadataType(typeof(FactureMetaData))]
     public partial class FacturesController : Controller
     {
-        private H18_Proj_Eq07Entities1 db = new H18_Proj_Eq07Entities1();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Factures
         public ActionResult Index(string ordreTri, string dateFiltre, string filtreCourantNom, string filtreCourantDate, int? page, string MessageError)
@@ -40,7 +41,7 @@ namespace projet_photo_duval.Controllers
             ViewBag.triCourant = ordreTri;
             ViewBag.filtreCourantDate = dateFiltre;
 
-            var facture = db.Facture.Include(f => f.Seance).Where(x => x.DateFacturation.Year == currentYear && x.DateFacturation.Month == currentMonth);
+            var facture = unitOfWork.FactureRepository.Get(includeProperties: "Seance", filter: x => x.DateFacturation.Year == currentYear && x.DateFacturation.Month == currentMonth);
 
             if (!string.IsNullOrEmpty(dateFiltre))
             {
@@ -94,8 +95,7 @@ namespace projet_photo_duval.Controllers
             //          where facture.Facture_ID == id
             //          select new ViewModelDetailsFacture { nomAgent = agent.Nom + ", " + agent.Prenom, nomPhotographe = photographe.Nom + ", " + photographe.Prenom, prix = facture.Prix, estPayee = facture.EstPayee, adresse = facture.Seance.Adresse, date = facture.DateFacturation };
 
-            var res = db.Facture
-                      .Include(i => i.Seance)
+            var res = unitOfWork.FactureRepository.Get(includeProperties:"Seance")
                       .SingleOrDefault(x => x.Facture_ID == id);
 
             ViewModelDetailsFacture details = new ViewModelDetailsFacture { nomAgent = res.Seance.Agent.Nom + ", " + res.Seance.Agent.Prenom, nomPhotographe = res.Seance.Photographe.Nom + ", " + res.Seance.Photographe.Prenom, prix = (decimal)res.Prix, estPayee = res.EstPayee, adresse = res.Seance.Adresse, date = res.Seance.DateSeance };
@@ -122,7 +122,7 @@ namespace projet_photo_duval.Controllers
         // GET: Factures/Create
         public ActionResult Create()
         {
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse");
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse");
             return View();
         }
 
@@ -135,12 +135,12 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Facture.Add(facture);
-                db.SaveChanges();
+                unitOfWork.FactureRepository.Insert(facture);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", facture.Seance_ID);
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse", facture.Seance_ID);
             return View(facture);
         }
 
@@ -151,12 +151,12 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Facture facture = db.Facture.Find(id);
+            Facture facture = unitOfWork.FactureRepository.GetByID(id);
             if (facture == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", facture.Seance_ID);
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse", facture.Seance_ID);
             return View(facture);
         }
 
@@ -169,11 +169,11 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(facture).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.FactureRepository.UpdateEntry(facture);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", facture.Seance_ID);
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse", facture.Seance_ID);
             return View(facture);
         }
 
@@ -184,7 +184,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Facture facture = db.Facture.Find(id);
+            Facture facture = unitOfWork.FactureRepository.GetByID(id);
             if (facture == null)
             {
                 return HttpNotFound();
@@ -197,9 +197,9 @@ namespace projet_photo_duval.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Facture facture = db.Facture.Find(id);
-            db.Facture.Remove(facture);
-            db.SaveChanges();
+            Facture facture = unitOfWork.FactureRepository.GetByID(id);
+            unitOfWork.FactureRepository.Delete(facture);
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -207,7 +207,7 @@ namespace projet_photo_duval.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }

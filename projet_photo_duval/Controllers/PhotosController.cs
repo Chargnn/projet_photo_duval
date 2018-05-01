@@ -9,14 +9,13 @@ using System.Web.Mvc;
 using projet_photo_duval.Models;
 using Ionic.Zip;
 using System.IO;
+using projet_photo_duval.DAL;
 
 namespace projet_photo_duval.Controllers
 {
     public class PhotosController : Controller
     {
-        private H18_Proj_Eq07Entities1 db = new H18_Proj_Eq07Entities1();
-
-
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         public ActionResult AddImage()
         {
@@ -80,7 +79,7 @@ namespace projet_photo_duval.Controllers
 
                         //file.InputStream.Read(photo.Photo1, 0, file.ContentLength);
                         //file.InputStream.Close();
-                        db.Photo.Add(photo);
+                        unitOfWork.PhotoRepository.Insert(photo);
                     }
                     cpt++;
                 } 
@@ -92,7 +91,7 @@ namespace projet_photo_duval.Controllers
             }
             else if (uploadValide)
             {
-                db.SaveChanges();
+                unitOfWork.Save();
                 ViewBag.Message = "Les photos ont été correctemment téléversées";
             }
             return View();
@@ -101,13 +100,13 @@ namespace projet_photo_duval.Controllers
 
         private List<Photo> GetPhotoList() {
             List<Photo> lstPhoto = new List<Photo>();
-            var query = db.Photo;
+            var query = unitOfWork.PhotoRepository.Get();
             return query.ToList();
         }
         private List<Photo> GetPhotoListSeance(int id)
         {
             List<Photo> lstPhoto = new List<Photo>();
-            var query = db.Photo.Where(p => p.Seance_ID.Equals(id));
+            var query = unitOfWork.PhotoRepository.Get(filter: p => p.Seance_ID.Equals(id));
             return query.ToList();
         }
         [HttpGet]
@@ -155,7 +154,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Photo photo = db.Photo.Find(photoId);
+            Photo photo = unitOfWork.PhotoRepository.GetByID(photoId);
             if (photo == null)
             {
                 return HttpNotFound();
@@ -167,8 +166,8 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(photo).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.PhotoRepository.UpdateEntry(photo);
+                unitOfWork.Save();
                 return RedirectToAction("ShowImage", "Photos",new { id= photo.Seance_ID});
             }
             //ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", photo.Seance_ID);
@@ -177,14 +176,14 @@ namespace projet_photo_duval.Controllers
 
         public ActionResult ShowImage(int id)
         {
-            var photo = db.Photo;
+            var photo = unitOfWork.PhotoRepository.Get();
             return View(photo.ToList());
         }
 
         // GET: Photos
         public ActionResult Index()
         {
-            var photo = db.Photo.Include(p => p.Seance);
+            var photo = unitOfWork.PhotoRepository.Get(includeProperties: "Seance");
             return View(photo.ToList());
         }
 
@@ -195,7 +194,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Photo photo = db.Photo.Find(id);
+            Photo photo = unitOfWork.PhotoRepository.GetByID(id);
             if (photo == null)
             {
                 return HttpNotFound();
@@ -206,7 +205,7 @@ namespace projet_photo_duval.Controllers
         // GET: Photos/Create
         public ActionResult Create()
         {
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse");
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse");
             return View();
         }
 
@@ -219,12 +218,12 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Photo.Add(photo);
-                db.SaveChanges();
+                unitOfWork.PhotoRepository.Insert(photo);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", photo.Seance_ID);
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse", photo.Seance_ID);
             return View(photo);
         }
 
@@ -235,12 +234,12 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Photo photo = db.Photo.Find(id);
+            Photo photo = unitOfWork.PhotoRepository.GetByID(id);
             if (photo == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", photo.Seance_ID);
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse", photo.Seance_ID);
             return View(photo);
         }
 
@@ -253,11 +252,11 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(photo).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.PhotoRepository.UpdateEntry(photo);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse", photo.Seance_ID);
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse", photo.Seance_ID);
             return View(photo);
         }
 
@@ -268,7 +267,7 @@ namespace projet_photo_duval.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Photo photo = db.Photo.Find(id);
+            Photo photo = unitOfWork.PhotoRepository.GetByID(id);
             if (photo == null)
             {
                 return HttpNotFound();
@@ -281,9 +280,9 @@ namespace projet_photo_duval.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Photo photo = db.Photo.Find(id);
-            db.Photo.Remove(photo);
-            db.SaveChanges();
+            Photo photo = unitOfWork.PhotoRepository.GetByID(id);
+            unitOfWork.PhotoRepository.Delete(photo);
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -291,7 +290,7 @@ namespace projet_photo_duval.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
