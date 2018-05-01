@@ -35,7 +35,7 @@
             <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Statut</a>
         </th>
         <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom })">Statut du paiement</a>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom })">Date de la facturation</a>
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Forfait)
@@ -68,7 +68,18 @@
             @Html.DisplayFor(modelItem => item.DateFacturation)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Forfait)
+            @if (item.Forfait == 1)
+            {
+                <p>Bronze</p>
+            }
+            else if (item.Forfait == 2)
+            {
+                <p>Argent</p>
+            }
+            else
+            {
+                <p>Or</p>
+            }
         </td>
         <td>
             @if (item.Commentaire == null)

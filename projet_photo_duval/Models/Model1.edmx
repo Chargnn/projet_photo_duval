@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="H18_Proj_Eq07Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="Agent_ID" />
@@ -22,7 +22,7 @@
           </Key>
           <Property Name="Facture_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Seance_ID" Type="int" Nullable="false" />
-          <Property Name="Prix" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Prix" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="EstPayee" Type="int" Nullable="false" />
           <Property Name="DateFacturation" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="Forfait" Type="smallint" Nullable="false" />
@@ -97,18 +97,6 @@
           <Property Name="Statut" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="DateFinSeance" Type="datetime2" Precision="7" />
         </EntityType>
-        <Association Name="FK_Facture_Seance">
-          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
-          <End Role="Facture" Type="Self.Facture" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Seance">
-              <PropertyRef Name="Seance_ID" />
-            </Principal>
-            <Dependent Role="Facture">
-              <PropertyRef Name="Seance_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Seance_Agent">
           <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
           <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
@@ -154,10 +142,6 @@
           <EntitySet Name="Photo" EntityType="Self.Photo" Schema="Photos" store:Type="Tables" />
           <EntitySet Name="Hist_Seance" EntityType="Self.Hist_Seance" Schema="Seances" store:Type="Tables" />
           <EntitySet Name="Seance" EntityType="Self.Seance" Schema="Seances" store:Type="Tables" />
-          <AssociationSet Name="FK_Facture_Seance" Association="Self.FK_Facture_Seance">
-            <End Role="Seance" EntitySet="Seance" />
-            <End Role="Facture" EntitySet="Facture" />
-          </AssociationSet>
           <AssociationSet Name="FK_Seance_Agent" Association="Self.FK_Seance_Agent">
             <End Role="Agent" EntitySet="Agent" />
             <End Role="Seance" EntitySet="Seance" />
@@ -171,8 +155,7 @@
             <End Role="Seance" EntitySet="Seance" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="H18_Proj_Eq07Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -194,7 +177,7 @@
           </Key>
           <Property Name="Facture_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Seance_ID" Type="Int32" Nullable="false" />
-          <Property Name="Prix" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Prix" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="EstPayee" Type="Int32" Nullable="false" />
           <Property Name="DateFacturation" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Forfait" Type="Int16" Nullable="false" />

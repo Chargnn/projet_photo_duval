@@ -21,8 +21,7 @@ namespace projet_photo_duval.MetaData
             public int Seance_ID { get; set; }
 
             [Required(ErrorMessage ="Ce champ est obligatoire.")]
-            [RegularExpression(@"^\d+(.\d{1,2})?$")]
-            [Range(1.00,10000.00)]
+            [Range(0, 9999999999.99)]
             public decimal Prix { get; set; }
 
             [Display(Name ="État du paiement")]

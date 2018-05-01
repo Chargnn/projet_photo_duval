@@ -9,10 +9,13 @@ using System.Web.Mvc;
 using projet_photo_duval.Models;
 using PagedList;
 using projet_photo_duval.ViewModels;
+using static projet_photo_duval.MetaData.Facture;
+using System.ComponentModel.DataAnnotations;
 
 namespace projet_photo_duval.Controllers
 {
-    public class FacturesController : Controller
+    [MetadataType(typeof(FactureMetaData))]
+    public partial class FacturesController : Controller
     {
         private H18_Proj_Eq07Entities1 db = new H18_Proj_Eq07Entities1();
 
