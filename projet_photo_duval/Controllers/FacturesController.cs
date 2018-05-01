@@ -20,6 +20,7 @@ namespace projet_photo_duval.Controllers
         public ActionResult Index(string ordreTri, string dateFiltre, string filtreCourantNom, string filtreCourantDate, int? page, string MessageError)
         {
             ViewBag.TriStatut = string.IsNullOrEmpty(ordreTri) ? "statut_desc" : "";
+            ViewBag.TriDate = ordreTri == "date" ? "date_desc" : "date";
             ViewBag.MessageError = "";
             int currentMonth = DateTime.Now.Month;
             int currentYear = DateTime.Now.Year;
@@ -36,7 +37,7 @@ namespace projet_photo_duval.Controllers
             ViewBag.triCourant = ordreTri;
             ViewBag.filtreCourantDate = dateFiltre;
 
-            var facture = db.Facture.Include(f => f.Seance).Where(x =>x.Seance.DateSeance.Year == currentYear && x.Seance.DateSeance.Month == currentMonth);
+            var facture = db.Facture.Include(f => f.Seance).Where(x => x.DateFacturation.Year == currentYear && x.DateFacturation.Month == currentMonth);
 
             if (!string.IsNullOrEmpty(dateFiltre))
             {
@@ -44,7 +45,7 @@ namespace projet_photo_duval.Controllers
                 {
                     DateTime date = DateTime.Parse(dateFiltre);
 
-                    facture = facture.Where(x => x.Seance.DateSeance.Year == date.Year && x.Seance.DateSeance.Month == date.Month);
+                    facture = facture.Where(x => x.DateFacturation.Year == date.Year && x.DateFacturation.Month == date.Month);
                 }
                 catch (Exception e)
                 {
@@ -56,6 +57,12 @@ namespace projet_photo_duval.Controllers
             {
                 case "statut_desc":
                     facture = facture.OrderByDescending(x => x.EstPayee);
+                    break;
+                case "date":
+                    facture = facture.OrderBy(x => x.DateFacturation);
+                    break;
+                case "date_desc":
+                    facture = facture.OrderByDescending(x => x.DateFacturation);
                     break;
                 default:
                     facture = facture.OrderBy(x => x.EstPayee);
@@ -69,41 +76,50 @@ namespace projet_photo_duval.Controllers
         }
 
         // GET: Factures/Details/5
-        //public ActionResult Details(int? id)
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //var res = db.Facture.Find(id);
+
+            //var res = from facture in db.Facture
+            //          join agent in db.Agent on facture.Seance.Agent_ID equals agent.Agent_ID
+            //          join photographe in db.Photographe on facture.Seance.Photographe_ID equals photographe.Photographe_ID
+            //          where facture.Facture_ID == id
+            //          select new ViewModelDetailsFacture { nomAgent = agent.Nom + ", " + agent.Prenom, nomPhotographe = photographe.Nom + ", " + photographe.Prenom, prix = facture.Prix, estPayee = facture.EstPayee, adresse = facture.Seance.Adresse, date = facture.DateFacturation };
+
+            var res = db.Facture
+                      .Include(i => i.Seance)
+                      .SingleOrDefault(x => x.Facture_ID == id);
+
+            ViewModelDetailsFacture details = new ViewModelDetailsFacture { nomAgent = res.Seance.Agent.Nom + ", " + res.Seance.Agent.Prenom, nomPhotographe = res.Seance.Photographe.Nom + ", " + res.Seance.Photographe.Prenom, prix = (decimal)res.Prix, estPayee = res.EstPayee, adresse = res.Seance.Adresse, date = res.Seance.DateSeance };
+
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(details);
+
+        //if (id == null)
         //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-
-        //    //var res = db.Facture.Find(id);
-
-        //    //var res = from facture in db.Facture
-        //    //          join agent in db.Agent on facture.Seance.Agent_ID equals agent.Agent_ID
-        //    //          join photographe in db.Photographe on facture.Seance.Photographe_ID equals photographe.Photographe_ID
-        //    //          where facture.Facture_ID == id
-        //    //          select new ViewModelDetailsFacture { nomAgent = agent.Nom + ", " + agent.Prenom, nomPhotographe = photographe.Nom + ", " + photographe.Prenom, prix = facture.Prix, estPayee = facture.EstPayee, adresse = facture.Seance.Adresse, date = facture.Seance.DateSeance };
-
-        //    var res = db.Facture
-        //              .Include(i => i.Seance)
-        //              .SingleOrDefault(x => x.Facture_ID == id);
-
-        //    ViewModelDetailsFacture details = new ViewModelDetailsFacture { nomAgent = res.Seance.Agent.Nom + ", " + res.Seance.Agent.Prenom, nomPhotographe = res.Seance.Photographe.Nom + ", " + res.Seance.Photographe.Prenom, prix = res.Prix, estPayee = res.EstPayee, adresse = res.Seance.Adresse, date = res.Seance.DateSeance };
-
-        //    if (res == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    return View(details);
+        //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         //}
+        //Facture facture = db.Facture.Find(id);
+        //if (facture == null)
+        //{
+        //    return HttpNotFound();
+        //}
+        //return View(facture);
+       }
 
         // GET: Factures/Create
         public ActionResult Create()
         {
-            var enumForfaits = Enum.GetValues(typeof(EnumForfaits)).Cast<EnumForfaits>().Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() });
-            ViewBag.Forfaits = enumForfaits;
-            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "DateSeance");
+            ViewBag.Seance_ID = new SelectList(db.Seance, "Seance_ID", "Adresse");
             return View();
         }
 
@@ -112,7 +128,7 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Facture_ID,Seance_ID,Prix,EstPayee")] Facture facture)
+        public ActionResult Create([Bind(Include = "Facture_ID,Seance_ID,Prix,EstPayee,DateFacturation,Forfait,Commentaire")] Facture facture)
         {
             if (ModelState.IsValid)
             {
@@ -146,7 +162,7 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Facture_ID,Seance_ID,Prix,EstPayee")] Facture facture)
+        public ActionResult Edit([Bind(Include = "Facture_ID,Seance_ID,Prix,EstPayee,DateFacturation,Forfait,Commentaire")] Facture facture)
         {
             if (ModelState.IsValid)
             {

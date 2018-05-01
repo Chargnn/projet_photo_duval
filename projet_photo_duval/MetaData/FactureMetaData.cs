@@ -16,16 +16,21 @@ namespace projet_photo_duval.MetaData
 
             public int Facture_ID { get; set; }
 
+            [Display(Name = "Seance")]
             [Required(ErrorMessage = "Ce champ est obligatoire.")]
             public int Seance_ID { get; set; }
 
             [Required(ErrorMessage ="Ce champ est obligatoire.")]
-            [Range(1, 100000)]
+            [RegularExpression(@"^\d+(.\d{1,2})?$")]
+            [Range(1.00,10000.00)]
             public decimal Prix { get; set; }
 
             [Display(Name ="État du paiement")]
             [Range(0,1)]
             public bool EstPayee { get; set; }
+
+            [Display(Name = "Date de la facturation")]
+            public DateTime DateFacturation { get; set; }
         }
     }
 }

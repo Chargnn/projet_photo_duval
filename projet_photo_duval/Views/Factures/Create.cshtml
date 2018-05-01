@@ -4,13 +4,11 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Créer une facture</h2>
-
+<h2>Create</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
     
     <div class="form-horizontal">
         <h4>Facture</h4>
@@ -21,12 +19,6 @@
             <div class="col-md-10">
                 @Html.DropDownList("Seance_ID", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Seance_ID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <label class ="control-label col-md-2">Forfait</label>
-            <div class="col-md-10">
-                @Html.DropDownList("Forfaits", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
@@ -47,6 +39,30 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.DateFacturation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateFacturation, new { htmlAttributes = new { @class = "form-control", type= "datetime_local" } })
+                @Html.ValidationMessageFor(model => model.DateFacturation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Forfait, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Forfait, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Forfait, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Commentaire, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Commentaire, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Commentaire, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
@@ -55,7 +71,7 @@
 }
 
 <div>
-    @Html.ActionLink("Retour à la liste", "Index")
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {

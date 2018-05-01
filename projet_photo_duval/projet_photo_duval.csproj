@@ -291,17 +291,12 @@
     <Content Include="Views\Photos\Index.cshtml" />
     <Content Include="Views\Photos\AddImage.cshtml" />
     <Content Include="Views\Photos\ShowImage.cshtml" />
-    <Content Include="Views\Factures\Create.cshtml" />
-    <Content Include="Views\Factures\Delete.cshtml" />
-    <Content Include="Views\Factures\Edit.cshtml" />
-    <Content Include="Views\Factures\Index.cshtml" />
     <Content Include="Views\Seances\Delete.cshtml" />
     <Content Include="Views\Seances\Details.cshtml" />
     <Content Include="Views\Seances\Edit.cshtml" />
     <Content Include="Views\Seances\Index.cshtml" />
     <Content Include="Views\Seances\Create.cshtml" />
     <Content Include="Views\Photos\PhotoDetails.cshtml" />
-    <Content Include="Views\Factures\Details.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Agents\Create.cshtml" />
     <Content Include="Views\Agents\Delete.cshtml" />
@@ -310,6 +305,11 @@
     <Content Include="Views\Agents\Index.cshtml" />
     <Content Include="Views\Photos\AjouterCommentaire.cshtml" />
     <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Views\Factures\Create.cshtml" />
+    <Content Include="Views\Factures\Delete.cshtml" />
+    <Content Include="Views\Factures\Edit.cshtml" />
+    <Content Include="Views\Factures\Index.cshtml" />
+    <Content Include="Views\Factures\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,7 +8,7 @@
     $('.jquery_datepicker').datepicker(); //Initialise any date pickers
 </script>
 @{
-    ViewBag.Title = "Factures";
+    ViewBag.Title = "Index";
     var pagedlist = (PagedList.IPagedList)Model;
 }
 
@@ -17,19 +17,13 @@
 <p>
     @Html.ActionLink("Créer une nouvelle facture", "Create")
 </p>
-@using (Html.BeginForm("Index", "Factures", FormMethod.Get))
+
+@using (Html.BeginForm("Index", "Seances", FormMethod.Get))
 {
     <p>
         Rechercher par date: @Html.TextBox("DateFiltre", ViewBag.filtreCourantDate as string, new { @class = "jquery_datepicker", type = "date" })
         <input type="submit" value="Rechercher" />
     </p>
-}
-
-@if (ViewBag.MessageError != "")
-{
-    @Html.Raw("<div class='alert alert-danger'><strong>Erreur! </strong>")
-    @ViewBag.MessageError
-    @Html.Raw("</div>")
 }
 
 <table class="table">
@@ -39,6 +33,15 @@
         </th>
         <th>
             <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Statut</a>
+        </th>
+        <th>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom })">Statut du paiement</a>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Forfait)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Commentaire)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Seance.Adresse)
@@ -62,10 +65,28 @@
             }
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.DateFacturation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Forfait)
+        </td>
+        <td>
+            @if (item.Commentaire == null)
+            {
+                <p>Aucun commentaire</p>
+            }
+            else
+            {
+                Html.DisplayFor(modelItem => item.Commentaire);
+            }
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Seance.Adresse)
         </td>
         <td>
-            @Html.ActionLink("Details", "Details", new { id=item.Facture_ID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.Facture_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Facture_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Facture_ID })
         </td>
     </tr>
 }

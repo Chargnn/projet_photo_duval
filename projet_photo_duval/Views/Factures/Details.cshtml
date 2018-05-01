@@ -4,14 +4,14 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Détails de la facture</h2>
+<h2>Details</h2>
 
 <div>
-    <h4></h4>
+    <h4>ViewModelDetailsFacture</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            Nom de l'agent :
+            @Html.DisplayNameFor(model => model.nomAgent)
         </dt>
 
         <dd>
@@ -19,7 +19,7 @@
         </dd>
 
         <dt>
-            Nom du photographe :
+            @Html.DisplayNameFor(model => model.nomPhotographe)
         </dt>
 
         <dd>
@@ -27,30 +27,30 @@
         </dd>
 
         <dt>
-            Prix de la facture :
+            @Html.DisplayNameFor(model => model.prix)
         </dt>
 
         <dd>
-            @Model.prix $
+            @Html.DisplayFor(model => model.prix)
         </dd>
 
         <dt>
-            Statut du paiement :
+            @Html.DisplayNameFor(model => model.estPayee)
         </dt>
 
         <dd>
-            @if (Model.estPayee == 1)
+            @if (Model.estPayee == 0)
             {
-                <p>Payée</p>
+                <span style="color:red">Impayé</span>
             }
             else
             {
-                <p>Pas payée</p>
+                <span style="color:green">Payé</span>
             }
         </dd>
 
         <dt>
-            Adresse :
+            @Html.DisplayNameFor(model => model.adresse)
         </dt>
 
         <dd>
@@ -58,7 +58,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.date) :
+            @Html.DisplayNameFor(model => model.date)
         </dt>
 
         <dd>
@@ -68,5 +68,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Retour à la liste", "Index")
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
 </p>
