@@ -77,5 +77,10 @@ namespace projet_photo_duval.DAL
             dbSet.Attach(entityToUpdate);
             context.Entry(entityToUpdate).State = EntityState.Modified;
         }
+
+        public virtual void UpdateEntry(TEntity entityToEntry)
+        {
+            context.Entry(entityToEntry).State = EntityState.Modified;
+        }
     }
 }
