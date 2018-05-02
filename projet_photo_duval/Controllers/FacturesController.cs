@@ -133,9 +133,31 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Facture_ID,Seance_ID,Prix,EstPayee,Forfait,Commentaire")] Facture facture)
+        public ActionResult Create([Bind(Include = "Facture_ID,Seance_ID,Forfait,Commentaire")] Facture facture)
         {
-            facture.DateFacturation = DateTime.Now.AddSeconds(3);
+            facture.DateFacturation = DateTime.Now.AddSeconds(2);
+            string forfaitChoisi = Request.Form["Forfait"].ToString();
+            decimal prix = 0;
+
+            switch (forfaitChoisi)
+            {
+                case "0":
+                    prix = (decimal)125.00;
+                    break;
+                case "1":
+                    prix = (decimal)150.00;
+                    break;
+                case "2":
+                    prix = (decimal)175.00;
+                    break;
+            }
+
+            decimal prixAdditionel = Convert.ToDecimal(Request.Form["Prix"].ToString());
+            prix += prixAdditionel;
+
+            facture.Prix = prix;
+            facture.EstPayee = 0;
+
             if (ModelState.IsValid)
             {
                 unitOfWork.FactureRepository.Insert(facture);

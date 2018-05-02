@@ -188,6 +188,7 @@
     <Compile Include="Models\Agent.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EnumEtatPaiement.cs" />
     <Compile Include="Models\EnumForfaits.cs" />
     <Compile Include="Models\Facture.cs">
       <DependentUpon>Model1.tt</DependentUpon>
