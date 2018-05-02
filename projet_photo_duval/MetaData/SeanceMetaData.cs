@@ -15,6 +15,7 @@ namespace projet_photo_duval.MetaData
         {
             public int Seance_ID { get; set; }
             public int? Photographe_ID { get; set; }
+            [Required(ErrorMessage = "Un agent doit être choisi pour la réservation")]
             public int Agent_ID { get; set; }
 
             [Required(ErrorMessage = "L'adresse est requise")]

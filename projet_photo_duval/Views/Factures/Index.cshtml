@@ -68,11 +68,11 @@
             @Html.DisplayFor(modelItem => item.DateFacturation)
         </td>
         <td>
-            @if (item.Forfait == 1)
+            @if (item.Forfait == 0)
             {
                 <p>Bronze</p>
             }
-            else if (item.Forfait == 2)
+            else if (item.Forfait == 1)
             {
                 <p>Argent</p>
             }
