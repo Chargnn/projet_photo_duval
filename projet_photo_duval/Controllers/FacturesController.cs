@@ -122,6 +122,8 @@ namespace projet_photo_duval.Controllers
         // GET: Factures/Create
         public ActionResult Create()
         {
+            EnumForfaits enumForfaits = new EnumForfaits();
+            ViewBag.Forfaits = enumForfaits;
             ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse");
             return View();
         }
@@ -131,8 +133,9 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Facture_ID,Seance_ID,Prix,EstPayee,DateFacturation,Forfait,Commentaire")] Facture facture)
+        public ActionResult Create([Bind(Include = "Facture_ID,Seance_ID,Prix,EstPayee,Forfait,Commentaire")] Facture facture)
         {
+            facture.DateFacturation = DateTime.Now.AddSeconds(3);
             if (ModelState.IsValid)
             {
                 unitOfWork.FactureRepository.Insert(facture);

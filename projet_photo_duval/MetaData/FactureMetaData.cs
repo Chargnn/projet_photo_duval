@@ -13,7 +13,6 @@ namespace projet_photo_duval.MetaData
     {
         internal sealed class FactureMetaData
         {
-
             public int Facture_ID { get; set; }
 
             [Display(Name = "Seance")]
