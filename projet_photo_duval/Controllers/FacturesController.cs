@@ -124,7 +124,7 @@ namespace projet_photo_duval.Controllers
         {
             EnumForfaits enumForfaits = new EnumForfaits();
             ViewBag.Forfaits = enumForfaits;
-            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(), "Seance_ID", "Adresse");
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(filter: x=>x.Photographe != null), "Seance_ID", "Adresse");
             return View();
         }
 
