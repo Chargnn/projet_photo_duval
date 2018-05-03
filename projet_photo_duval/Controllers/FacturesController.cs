@@ -60,16 +60,16 @@ namespace projet_photo_duval.Controllers
             switch (ordreTri)
             {
                 case "statut_desc":
-                    facture = facture.OrderByDescending(x => x.EstPayee);
+                    facture = facture.OrderByDescending(x => x.EstPayee).ThenBy(x=>x.DateFacturation);
                     break;
                 case "date":
-                    facture = facture.OrderBy(x => x.DateFacturation);
+                    facture = facture.OrderBy(x => x.DateFacturation).ThenBy(x => x.DateFacturation);
                     break;
                 case "date_desc":
-                    facture = facture.OrderByDescending(x => x.DateFacturation);
+                    facture = facture.OrderByDescending(x => x.DateFacturation).ThenByDescending(x => x.EstPayee);
                     break;
                 default:
-                    facture = facture.OrderBy(x => x.EstPayee);
+                    facture = facture.OrderBy(x => x.EstPayee).ThenByDescending(x => x.EstPayee);
                     break;
             }
 
@@ -123,8 +123,18 @@ namespace projet_photo_duval.Controllers
         public ActionResult Create()
         {
             EnumForfaits enumForfaits = new EnumForfaits();
+            List<int> listeSeancesPrises = new List<int>();
+
             ViewBag.Forfaits = enumForfaits;
-            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get(filter: x=>x.Photographe != null), "Seance_ID", "Adresse");
+
+            IEnumerable<Facture> gen = unitOfWork.FactureRepository.Get();
+
+            foreach (Facture fact in gen)
+            {
+                listeSeancesPrises.Add(fact.Seance_ID);
+            }
+
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get().Where(x=>x.Photographe != null && !listeSeancesPrises.Contains(x.Seance_ID)), "Seance_ID", "Adresse");
             return View();
         }
 
