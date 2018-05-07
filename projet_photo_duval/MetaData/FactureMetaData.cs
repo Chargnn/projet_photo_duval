@@ -19,9 +19,10 @@ namespace projet_photo_duval.MetaData
             [Required(ErrorMessage = "Ce champ est obligatoire.")]
             public int Seance_ID { get; set; }
 
+            
             [DefaultValue(0)]
             [Range(0, 99999.99)]
-            public decimal Prix { get; set; }
+            public decimal? Prix { get; set; }
 
             [Display(Name ="État du paiement")]
             [Range(0,1)]

@@ -18,6 +18,7 @@ namespace projet_photo_duval.Models
         public Photographe()
         {
             this.Seance = new HashSet<Seance>();
+            this.Disponibilite = new HashSet<Disponibilite>();
         }
     
         public int Photographe_ID { get; set; }
@@ -28,5 +29,7 @@ namespace projet_photo_duval.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Seance> Seance { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Disponibilite> Disponibilite { get; set; }
     }
 }

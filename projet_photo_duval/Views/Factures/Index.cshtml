@@ -18,7 +18,7 @@
     @Html.ActionLink("Créer une nouvelle facture", "Create")
 </p>
 
-@using (Html.BeginForm("Index", "Seances", FormMethod.Get))
+@using (Html.BeginForm("Index", "Factures", FormMethod.Get))
 {
     <p>
         Rechercher par date: @Html.TextBox("DateFiltre", ViewBag.filtreCourantDate as string, new { @class = "jquery_datepicker", type = "date" })
@@ -95,9 +95,7 @@
             @Html.DisplayFor(modelItem => item.Seance.Adresse)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Facture_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Facture_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Facture_ID })
+            @Html.ActionLink("Détails", "Details", new { id=item.Facture_ID })
         </td>
     </tr>
 }

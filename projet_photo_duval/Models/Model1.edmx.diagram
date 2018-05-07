@@ -17,6 +17,8 @@
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Facture_Seance" ManuallyRouted="false" />
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photographe" ManuallyRouted="false" />
         <AssociationConnector Association="H18_Proj_Eq07Model.FK_Seance_Photo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="H18_Proj_Eq07Model.Disponibilite" Width="1.5" PointX="3" PointY="11" />
+        <AssociationConnector Association="H18_Proj_Eq07Model.FK__Disponibi__Photo__236943A5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

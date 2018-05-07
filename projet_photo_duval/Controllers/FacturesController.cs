@@ -24,7 +24,7 @@ namespace projet_photo_duval.Controllers
         public ActionResult Index(string ordreTri, string dateFiltre, string filtreCourantNom, string filtreCourantDate, int? page, string MessageError)
         {
             ViewBag.TriStatut = string.IsNullOrEmpty(ordreTri) ? "statut_desc" : "";
-            ViewBag.TriDate = ordreTri == "date" ? "date_desc" : "date";
+            ViewBag.TriDate = ordreTri == "date_desc" ? "date" : "date_desc";
             ViewBag.MessageError = "";
             int currentMonth = DateTime.Now.Month;
             int currentYear = DateTime.Now.Year;
@@ -134,7 +134,7 @@ namespace projet_photo_duval.Controllers
                 listeSeancesPrises.Add(fact.Seance_ID);
             }
 
-            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get().Where(x=>x.Photographe != null && !listeSeancesPrises.Contains(x.Seance_ID)), "Seance_ID", "Adresse");
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get().Where(x=>x.Photographe != null && !listeSeancesPrises.Contains(x.Seance_ID) && x.DateSeance <= DateTime.Now), "Seance_ID", "Adresse");
             return View();
         }
 
@@ -162,7 +162,11 @@ namespace projet_photo_duval.Controllers
                     break;
             }
 
-            decimal prixAdditionel = Convert.ToDecimal(Request.Form["Prix"].ToString());
+            decimal prixAdditionel = (decimal)0.00;
+
+            if(Request.Form["Prix"] != "")
+                prixAdditionel = Convert.ToDecimal(Request.Form["Prix"].ToString());
+
             prix += prixAdditionel;
 
             facture.Prix = prix;

@@ -11,18 +11,13 @@ namespace projet_photo_duval.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using static MetaData.Photo;
-
-    [MetadataType(typeof(PhotoMetaData))]
-    public partial class Photo
-    {
-        public int Photo_ID { get; set; }
-        public byte[] Photo1 { get; set; }
-        public int Seance_ID { get; set; }
-        public string Nom { get; set; }
-        public string Commentaire { get; set; }
     
-        public virtual Seance Seance { get; set; }
+    public partial class Disponibilite
+    {
+        public int Photographe_ID { get; set; }
+        public System.DateTime DateDebutDisponibilite { get; set; }
+        public System.DateTime DateFinDisponibilite { get; set; }
+    
+        public virtual Photographe Photographe { get; set; }
     }
 }

@@ -38,6 +38,15 @@
           <Property Name="EstPayee" Type="int" Nullable="false" />
           <Property Name="DateHistFacture" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
+        <EntityType Name="Disponibilite">
+          <Key>
+            <PropertyRef Name="Photographe_ID" />
+            <PropertyRef Name="DateDebutDisponibilite" />
+          </Key>
+          <Property Name="Photographe_ID" Type="int" Nullable="false" />
+          <Property Name="DateDebutDisponibilite" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="DateFinDisponibilite" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
         <EntityType Name="Photographe">
           <Key>
             <PropertyRef Name="Photographe_ID" />
@@ -97,6 +106,18 @@
           <Property Name="Statut" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="DateFinSeance" Type="datetime2" Precision="7" />
         </EntityType>
+        <Association Name="FK__Disponibi__Photo__236943A5">
+          <End Role="Photographe" Type="Self.Photographe" Multiplicity="1" />
+          <End Role="Disponibilite" Type="Self.Disponibilite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photographe">
+              <PropertyRef Name="Photographe_ID" />
+            </Principal>
+            <Dependent Role="Disponibilite">
+              <PropertyRef Name="Photographe_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Seance_Agent">
           <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
           <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
@@ -137,11 +158,16 @@
           <EntitySet Name="Agent" EntityType="Self.Agent" Schema="Agents" store:Type="Tables" />
           <EntitySet Name="Facture" EntityType="Self.Facture" Schema="Factures" store:Type="Tables" />
           <EntitySet Name="Hist_Facture" EntityType="Self.Hist_Facture" Schema="Factures" store:Type="Tables" />
+          <EntitySet Name="Disponibilite" EntityType="Self.Disponibilite" Schema="Photographes" store:Type="Tables" />
           <EntitySet Name="Photographe" EntityType="Self.Photographe" Schema="Photographes" store:Type="Tables" />
           <EntitySet Name="Hist_Photo" EntityType="Self.Hist_Photo" Schema="Photos" store:Type="Tables" />
           <EntitySet Name="Photo" EntityType="Self.Photo" Schema="Photos" store:Type="Tables" />
           <EntitySet Name="Hist_Seance" EntityType="Self.Hist_Seance" Schema="Seances" store:Type="Tables" />
           <EntitySet Name="Seance" EntityType="Self.Seance" Schema="Seances" store:Type="Tables" />
+          <AssociationSet Name="FK__Disponibi__Photo__236943A5" Association="Self.FK__Disponibi__Photo__236943A5">
+            <End Role="Photographe" EntitySet="Photographe" />
+            <End Role="Disponibilite" EntitySet="Disponibilite" />
+          </AssociationSet>
           <AssociationSet Name="FK_Seance_Agent" Association="Self.FK_Seance_Agent">
             <End Role="Agent" EntitySet="Agent" />
             <End Role="Seance" EntitySet="Seance" />
@@ -204,6 +230,7 @@
           <Property Name="Telephone" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Courriel" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photographe" FromRole="Photographe" ToRole="Seance" />
+          <NavigationProperty Name="Disponibilite" Relationship="H18_Proj_Eq07Model.FK__Disponibi__Photo__236943A5" FromRole="Photographe" ToRole="Disponibilite" />
         </EntityType>
         <EntityType Name="Hist_Photo">
           <Key>
@@ -332,7 +359,34 @@
             <End Role="Seance" EntitySet="Seance" />
             <End Role="Photo" EntitySet="Photo" />
           </AssociationSet>
+          <EntitySet Name="Disponibilite" EntityType="H18_Proj_Eq07Model.Disponibilite" />
+          <AssociationSet Name="FK__Disponibi__Photo__236943A5" Association="H18_Proj_Eq07Model.FK__Disponibi__Photo__236943A5">
+            <End Role="Photographe" EntitySet="Photographe" />
+            <End Role="Disponibilite" EntitySet="Disponibilite" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Disponibilite">
+          <Key>
+            <PropertyRef Name="Photographe_ID" />
+            <PropertyRef Name="DateDebutDisponibilite" />
+          </Key>
+          <Property Name="Photographe_ID" Type="Int32" Nullable="false" />
+          <Property Name="DateDebutDisponibilite" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="DateFinDisponibilite" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Photographe" Relationship="H18_Proj_Eq07Model.FK__Disponibi__Photo__236943A5" FromRole="Disponibilite" ToRole="Photographe" />
+        </EntityType>
+        <Association Name="FK__Disponibi__Photo__236943A5">
+          <End Type="H18_Proj_Eq07Model.Photographe" Role="Photographe" Multiplicity="1" />
+          <End Type="H18_Proj_Eq07Model.Disponibilite" Role="Disponibilite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Photographe">
+              <PropertyRef Name="Photographe_ID" />
+            </Principal>
+            <Dependent Role="Disponibilite">
+              <PropertyRef Name="Photographe_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -436,6 +490,15 @@
                 <ScalarProperty Name="Ville" ColumnName="Ville" />
                 <ScalarProperty Name="Statut" ColumnName="Statut" />
                 <ScalarProperty Name="DateFinSeance" ColumnName="DateFinSeance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Disponibilite">
+            <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Disponibilite">
+              <MappingFragment StoreEntitySet="Disponibilite">
+                <ScalarProperty Name="DateFinDisponibilite" ColumnName="DateFinDisponibilite" />
+                <ScalarProperty Name="DateDebutDisponibilite" ColumnName="DateDebutDisponibilite" />
+                <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
