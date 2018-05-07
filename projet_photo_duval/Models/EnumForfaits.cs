@@ -9,7 +9,6 @@ namespace projet_photo_duval.Models
     {
         Bronze,
         Argent,
-        Or,
-        Autre
+        Or
     }
 }

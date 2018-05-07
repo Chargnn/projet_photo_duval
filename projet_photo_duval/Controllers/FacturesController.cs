@@ -162,7 +162,11 @@ namespace projet_photo_duval.Controllers
                     break;
             }
 
-            decimal prixAdditionel = Convert.ToDecimal(Request.Form["Prix"].ToString());
+            decimal prixAdditionel = (decimal)0.00;
+
+            if(Request.Form["Prix"] != "")
+                prixAdditionel = Convert.ToDecimal(Request.Form["Prix"].ToString());
+
             prix += prixAdditionel;
 
             facture.Prix = prix;
