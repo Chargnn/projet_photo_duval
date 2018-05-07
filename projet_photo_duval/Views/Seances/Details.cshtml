@@ -55,7 +55,18 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Agent.Nom), @Html.DisplayFor(model => model.Agent.Prenom)
+            @if (Model != null)
+            {
+                if (Model.Agent != null)
+                {
+                    @Html.DisplayFor(model => model.Agent.Nom);<text>,</text> @Html.DisplayFor(model => model.Agent.Prenom);
+                }
+                else
+                {
+                    <font color="red"><b><u>À décider</u></b></font>
+                }
+            }
+            
         </dd>
 
         <dt>
@@ -63,7 +74,17 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Photographe.Nom), @Html.DisplayFor(model => model.Photographe.Prenom)
+            @if (Model != null)
+            {
+                if (Model.Photographe != null)
+                {
+                    @Html.DisplayFor(model => model.Photographe.Nom);<text>,</text> @Html.DisplayFor(model => model.Photographe.Prenom);
+                }
+                else
+                {
+                    <font color="red"><b><u>À décider</u></b></font>
+                }
+            }
         </dd>
 
     </dl>

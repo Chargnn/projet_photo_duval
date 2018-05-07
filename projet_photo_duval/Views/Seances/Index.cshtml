@@ -94,7 +94,7 @@
             {
                 if (item.Photographe != null)
                 {
-                    @Html.DisplayFor(modelItem => item.Photographe.Nom); @Html.DisplayFor(modelItem => item.Photographe.Prenom);
+                    @Html.DisplayFor(modelItem => item.Photographe.Nom);<text>,</text> @Html.DisplayFor(modelItem => item.Photographe.Prenom);
                 } else
                 {
                     <font color="red"><b><u>À décider</u></b></font>
