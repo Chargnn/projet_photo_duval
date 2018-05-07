@@ -91,10 +91,30 @@ namespace projet_photo_duval.Controllers
             }
             else if (uploadValide)
             {
-                unitOfWork.Save();
+               unitOfWork.Save();
                 ViewBag.Message = "Les photos ont été correctemment téléversées";
             }
             return View();
+        }
+        public ActionResult DeletePhoto(int id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Photo photo = unitOfWork.PhotoRepository.GetByID(id);
+            int seanceID = photo.Seance_ID;
+            if (photo == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                unitOfWork.PhotoRepository.Delete(photo);
+                unitOfWork.Save();
+            }
+            return RedirectToAction("AddImage", new { id = seanceID });
+               
         }
 
 

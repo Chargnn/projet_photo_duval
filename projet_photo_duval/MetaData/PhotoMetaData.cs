@@ -13,7 +13,7 @@ namespace projet_photo_duval.MetaData
     {
         internal sealed class PhotoMetaData
         {
-            [Required(ErrorMessage ="Ce champ est obligatoire")]
+            //[Required(ErrorMessage ="Ce champ est obligatoire")]
             [MinLength(5,ErrorMessage = "Le commentaire doit comprendre entre 5 et 250 caractères")]
             [MaxLength(250,ErrorMessage = "Le commentaire doit comprendre entre 5 et 250 caractères")]
             public string Commentaire { get; set; }
