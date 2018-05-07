@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-using static projet_photo_duval.MetaData.Photo;
-
 namespace projet_photo_duval.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using static MetaData.Photo;
+
     [MetadataType(typeof(PhotoMetaData))]
     public partial class Photo
     {
