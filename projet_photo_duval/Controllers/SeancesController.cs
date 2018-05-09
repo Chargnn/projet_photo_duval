@@ -199,8 +199,16 @@ namespace projet_photo_duval.Controllers
             int pageNo = page ?? 1;
             int taillePage = 5;
 
+            decimal prix = (decimal)0.00;
+
+            foreach (Seance s in seances)
+            {
+                if (s.Prix != null)
+                    prix += (decimal)s.Prix;
+            }
             if (agent)
             {
+                ViewBag.Prix = prix;
                 return View("IndexSeancesAgent", seances.ToPagedList(pageNo, taillePage));
             }
             else
