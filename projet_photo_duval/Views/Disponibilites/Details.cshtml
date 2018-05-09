@@ -1,0 +1,42 @@
+﻿@model projet_photo_duval.Models.Disponibilite
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Disponibilite</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateDebutDisponibilite)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateDebutDisponibilite)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateFinDisponibilite)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateFinDisponibilite)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Photographe.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Photographe.Nom)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Disponibilite_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

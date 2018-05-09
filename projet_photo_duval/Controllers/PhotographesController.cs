@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using projet_photo_duval.Models;
+using projet_photo_duval.ViewModels;
 
 namespace projet_photo_duval.Controllers
 {
@@ -122,6 +123,14 @@ namespace projet_photo_duval.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public JsonResult GetEvents(int photographeID)
+        {
+            using (H18_Proj_Eq07Entities1 dc = new H18_Proj_Eq07Entities1())
+            {
+                List<ViewModelDispo> events = dc.Disponibilite.Where(p => p.Photographe_ID == photographeID).Select(x => new ViewModelDispo { dispoID = x.Disponibilite_ID, DateDebutDisponibilite = x.DateDebutDisponibilite, DateFinDisponibilite = x.DateFinDisponibilite }).ToList();
+                return new JsonResult { Data = events, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
         }
     }
 }

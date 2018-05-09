@@ -37,9 +37,10 @@ namespace projet_photo_duval.Controllers
         }
 
         // GET: Disponibilites/Create
-        public ActionResult Create()
+        public ActionResult Create(int photographeID)
         {
-            ViewBag.Photographe_ID = new SelectList(db.Photographe, "Photographe_ID", "Nom");
+            ViewBag.Test = photographeID;
+            ViewBag.Photographe_ID = new SelectList(db.Photographe.Where(p=>p.Photographe_ID==photographeID), "Photographe_ID", "Photographe_ID");
             return View();
         }
 
@@ -48,17 +49,17 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Photographe_ID,DateDebutDisponibilite,DateFinDisponibilite")] Disponibilite disponibilite)
+        public ActionResult Create([Bind(Include = "Disponibilite_ID,Photographe_ID,DateDebutDisponibilite,DateFinDisponibilite")] Disponibilite disponibilite)
         {
             if (ModelState.IsValid)
             {
                 db.Disponibilite.Add(disponibilite);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Create", new { photographeID = disponibilite.Photographe_ID });
             }
 
             ViewBag.Photographe_ID = new SelectList(db.Photographe, "Photographe_ID", "Nom", disponibilite.Photographe_ID);
-            return View(disponibilite);
+            return RedirectToAction("Create", new { photographeID = disponibilite.Photographe_ID });
         }
 
         // GET: Disponibilites/Edit/5
@@ -82,7 +83,7 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Photographe_ID,DateDebutDisponibilite,DateFinDisponibilite")] Disponibilite disponibilite)
+        public ActionResult Edit([Bind(Include = "Disponibilite_ID,Photographe_ID,DateDebutDisponibilite,DateFinDisponibilite")] Disponibilite disponibilite)
         {
             if (ModelState.IsValid)
             {
@@ -127,6 +128,11 @@ namespace projet_photo_duval.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public ActionResult AddDisponibilite(int photographeID)
+        {
+            ViewBag.Test = photographeID;
+            return View();
         }
     }
 }

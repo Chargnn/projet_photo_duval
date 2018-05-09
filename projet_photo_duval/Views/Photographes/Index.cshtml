@@ -43,6 +43,9 @@
         <td>
             @Html.ActionLink("Voir mes séances", "IndexSeancesPhotographe", "Seances", new { photographeID = item.Photographe_ID}, null)
         </td>
+        <td>
+            @Html.ActionLink("Gérer mes disponibilités", "Create", "Disponibilites", new { photographeID = item.Photographe_ID }, null)
+        </td>
     </tr>
 }
 

@@ -1,8 +1,4 @@
 ﻿
-@{
-    ViewBag.Title = "View";
-}
-
 <h2>Ajout de disponibilité</h2>
 <div id="calender"></div>
 
@@ -23,6 +19,9 @@
     </div>
 </div>
 
+
+
+
 <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet" />
 <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.css" rel="stylesheet" media="print" />
 
@@ -35,7 +34,8 @@
             var events = [];
             $.ajax({
                 type: "GET",
-                url: "/home/GetEvents",
+                url: "/photographes/GetEvents",
+                data:{photographeID: @ViewBag.Test},
                 success: function (data) {
                     $.each(data, function (i, v) {
                         events.push({
@@ -79,3 +79,4 @@
         })
     </script>
     @Scripts.Render("~/bundles/jqueryval")
+}
