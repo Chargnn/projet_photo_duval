@@ -17,88 +17,11 @@ namespace projet_photo_duval.Controllers
         private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Seances
-        public ActionResult Index(string ordreTri, string chaineFiltre, string dateFiltre, string filtreCourantNom, string filtreCourantDate,  int? page, string MessageError)
+        public ActionResult Index()
         {
-            ViewBag.TriDate = string.IsNullOrEmpty(ordreTri) ? "date_desc" : "";
-            ViewBag.TriStatut = ordreTri == "statut" ? "statut_desc" : "statut";
             ViewBag.MessageError = "";
 
-            if (chaineFiltre != null || dateFiltre != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                chaineFiltre = filtreCourantNom;
-                dateFiltre = filtreCourantDate;
-            }
- 
-            ViewBag.triCourant = ordreTri;
-            ViewBag.filtreCourantNom = chaineFiltre;
-            ViewBag.filtreCourantDate = dateFiltre;
-
-            var seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Day == DateTime.Now.Day);
-
-            if (!string.IsNullOrEmpty(chaineFiltre))
-            {
-                if (seances.First().Photographe != null) { 
-                    seances = seances.Where(seance => seance.Photographe.Nom.Contains(chaineFiltre) ||
-                    seance.Photographe.Prenom.Contains(chaineFiltre));
-                }
-                else
-                {
-                    seances = seances.Where(seance => seance.Seance_ID == 0);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(dateFiltre))
-            {
-                try
-                {
-                    DateTime date = DateTime.Parse(dateFiltre);
-
-                    seances = seances.Where(seance => seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
-                }
-                catch (Exception e)
-                {
-                    ViewBag.MessageError = "La date entrée n'est pas valide";
-                }               
-            }
-
-            if (!string.IsNullOrEmpty(chaineFiltre) && !string.IsNullOrEmpty(dateFiltre))
-            {
-                try
-                {
-                    DateTime date = DateTime.Parse(dateFiltre);
-
-                    seances = seances.Where(seance => seance.Photographe.Nom.ToLower().Contains(chaineFiltre.ToLower()) ||
-                    seance.Photographe.Prenom.ToLower().Contains(chaineFiltre.ToLower()) && seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
-                } catch (Exception e)
-                {
-                    ViewBag.MessageError = "La date entrée n'est pas valide";
-                }            
-            }
-
-            switch (ordreTri)
-            {
-                case "date_desc":
-                    seances = seances.OrderByDescending(seance => seance.DateSeance);
-                    break;
-                case "statut_desc":
-                    seances = seances.OrderByDescending(seance => seance.Statut);
-                    break;
-                case "statut":
-                    seances = seances.OrderBy(seance => seance.Statut);
-                    break;
-                default:
-                    seances = seances.OrderBy(seance => seance.DateSeance);
-                    break;
-            }
-
-            int pageNo = page ?? 1;
-            int taillePage = 5;
-
-            return View(seances.ToPagedList(pageNo, taillePage));
+            return View();
         }
         public ActionResult IndexSeancesAgent(string ordreTri, string chaineFiltre, string dateFiltre, string filtreCourantNom, string filtreCourantDate, int? page, string MessageError, int agentID)
         {
@@ -131,11 +54,11 @@ namespace projet_photo_duval.Controllers
             IEnumerable<Seance> seances;
             if (agent)
             {
-                seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Day == DateTime.Now.Day && s.Agent_ID == ID);
+                seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Year == DateTime.Now.Year && s.Agent_ID == ID);
             }
             else
             {
-                seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Day == DateTime.Now.Day && s.Photographe_ID == ID);
+                seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Year == DateTime.Now.Year && s.Photographe_ID == ID);
             }
 
             if (!string.IsNullOrEmpty(chaineFiltre))
@@ -161,7 +84,7 @@ namespace projet_photo_duval.Controllers
                 }
                 catch (Exception e)
                 {
-                    ViewBag.MessageError = "La date entrée n'est pas valide";
+                    ViewBag.MessageError = "La date entrée n'est pas d'un format valide";
                 }
             }
 
@@ -176,7 +99,7 @@ namespace projet_photo_duval.Controllers
                 }
                 catch (Exception e)
                 {
-                    ViewBag.MessageError = "La date entrée n'est pas valide";
+                    ViewBag.MessageError = "La date entrée n'est pas d'un format valide";
                 }
             }
 
@@ -199,8 +122,16 @@ namespace projet_photo_duval.Controllers
             int pageNo = page ?? 1;
             int taillePage = 5;
 
+            decimal prix = (decimal)0.00;
+
+            foreach (Seance s in seances)
+            {
+                if (s.Prix != null)
+                    prix += (decimal)s.Prix;
+            }
             if (agent)
             {
+                ViewBag.Prix = prix;
                 return View("IndexSeancesAgent", seances.ToPagedList(pageNo, taillePage));
             }
             else
@@ -208,7 +139,6 @@ namespace projet_photo_duval.Controllers
                 return View("IndexSeancesPhotographe", seances.ToPagedList(pageNo, taillePage));
             }
         }
-
         // GET: Seances/Details/5
         public ActionResult Details(int? id)
         {
@@ -249,14 +179,15 @@ namespace projet_photo_duval.Controllers
                 return RedirectToAction("Index");
             } else
             {
-                //if(seance.DateSeance > seance.DateFinSeance)
-                //    ViewBag.MessageError = "La date choisi n'est pas valide. (La date de fin est plus tôt que la date de réservation)";
-                //else
-                //    ViewBag.MessageError = "La date choisi n'est pas valide. (Une date plus tard qu'aujourd'hui)";
+                if(seance.DateSeance > seance.DateFinSeance)
+                    ViewBag.MessageError = "La date choisie n'est pas valide. (La date de fin est plus tôt que la date de réservation)";
+                else
+                    ViewBag.MessageError = "La date choisie n'est pas valide. (Une date plus tard que maintenant)";
             }
 
             ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
-            return View(seance);
+
+            return View();
         }
 
         // GET: Seances/Edit/5
@@ -271,8 +202,9 @@ namespace projet_photo_duval.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
-            ViewBag.Photographe_ID = new SelectList(unitOfWork.PhotoRepository.Get(), "Photographe_ID", "Nom", seance.Photographe_ID);
+
+            ViewBag.Photographe_ID = new SelectList(unitOfWork.PhotographeRepository.Get(), "Photographe_ID", "Prenom", seance.Photographe_ID);
+
             return View(seance);
         }
 
@@ -281,16 +213,32 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Seance_ID,Agent_ID,Adresse,DateSeance,Ville,Statut,DateFinSeance")] Seance seance)
+        public ActionResult Edit([Bind(Include = "Seance_ID,Agent_ID,Photographe_ID,Adresse,DateSeance,Ville,Statut,DateFinSeance")] Seance seance)
         {
-            if (ModelState.IsValid)
+            bool dateBonne = true;
+
+            try
+            {
+                DateTime date = DateTime.Parse(seance.DateSeance.ToString());
+
+                if (date < DateTime.Now)
+                    dateBonne = false;
+            }
+            catch (Exception e)
+            {
+                ViewBag.MessageError = "La date entrée n'est pas d'un format valide";
+                dateBonne = false;
+            }
+
+            if (ModelState.IsValid && dateBonne)
             {
                 unitOfWork.SeanceRepository.Update(seance);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
-            ViewBag.Photographe_ID = new SelectList(unitOfWork.PhotoRepository.Get(), "Photographe_ID", "Nom", seance.Photographe_ID);
+
+            ViewBag.Photographe_ID = new SelectList(unitOfWork.PhotographeRepository.Get(), "Photographe_ID", "Prenom", seance.Photographe_ID);
+
             return View(seance);
         }
 
@@ -309,6 +257,80 @@ namespace projet_photo_duval.Controllers
             return View(seance);
         }
 
+        // Partial view
+        public PartialViewResult AvoirSeances(string ordreTri, string chaineFiltre, string dateFiltre, string statutFiltre, string filtreCourantNom, string filtreCourantDate, string filtreCourantStatut, int? page, string MessageError)
+        {
+            ViewBag.TriDate = string.IsNullOrEmpty(ordreTri) ? "date_desc" : "";
+            ViewBag.TriStatut = ordreTri == "statut" ? "statut_desc" : "statut";
+            ViewBag.MessageError = "";
+
+            if (chaineFiltre != null || dateFiltre != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                chaineFiltre = filtreCourantNom;
+                dateFiltre = filtreCourantDate;
+                statutFiltre = filtreCourantStatut;
+            }
+
+            ViewBag.triCourant = ordreTri;
+            ViewBag.filtreCourantNom = chaineFiltre;
+            ViewBag.filtreCourantDate = dateFiltre;
+            ViewBag.filtreCourantStatut = statutFiltre;
+
+            var seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Day == DateTime.Now.Day);
+
+            if (!string.IsNullOrEmpty(chaineFiltre))
+            {
+                var s = seances.Where(seance => seance.Photographe != null);
+
+                seances = s.Where(seance => seance.Photographe.Nom.ToLower().Contains(chaineFiltre.ToLower()) ||
+                seance.Photographe.Prenom.ToLower().Contains(chaineFiltre.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(dateFiltre))
+            {
+                try
+                {
+                    DateTime date = DateTime.Parse(dateFiltre);
+
+                    seances = seances.Where(seance => seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
+                }
+                catch (Exception e)
+                {
+                    ViewBag.MessageError = "La date entrée n'est pas valide";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(statutFiltre))
+            {
+                seances = seances.Where(seance => seance.Statut == statutFiltre);
+            }
+
+            switch (ordreTri)
+            {
+                case "date_desc":
+                    seances = seances.OrderByDescending(seance => seance.DateSeance);
+                    break;
+                case "statut_desc":
+                    seances = seances.OrderByDescending(seance => seance.Statut);
+                    break;
+                case "statut":
+                    seances = seances.OrderBy(seance => seance.Statut);
+                    break;
+                default:
+                    seances = seances.OrderBy(seance => seance.DateSeance);
+                    break;
+            }
+
+            int pageNo = page ?? 1;
+            int taillePage = 5;
+
+            return PartialView("ListeSeances", seances.ToPagedList(pageNo, taillePage));
+        }
+
         // POST: Seances/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -319,6 +341,8 @@ namespace projet_photo_duval.Controllers
             unitOfWork.Save();
             return RedirectToAction("Index");
         }
+    
+
         protected override void Dispose(bool disposing)
         {
             unitOfWork.Dispose();

@@ -434,6 +434,7 @@
     <Content Include="Views\Seances\IndexSeancesPhotographe.cshtml" />
     <Content Include="Views\Photos\PhotoDetailsAgent.cshtml" />
     <Content Include="Views\Photos\PhotoDetailsPhotographe.cshtml" />
+    <Content Include="Views\Seances\ListeSeances.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
