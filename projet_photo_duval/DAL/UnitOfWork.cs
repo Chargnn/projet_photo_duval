@@ -16,18 +16,18 @@ namespace projet_photo_duval.DAL
         private GenericRepository<Seance> seanceRepository;
         private GenericRepository<Facture> factureRepository;
         private GenericRepository<Agent> agentRepository;
-        private GenericRepository<Photographe> photographeRepository;
+        private GenericRepository<Disponibilite> disponibiliteRepository;
 
-        public GenericRepository<Photographe> PhotographeRepository
+        public GenericRepository<Disponibilite> DisponibiliteRepository
         {
             get
             {
 
-                if (this.photographeRepository == null)
+                if (this.disponibiliteRepository == null)
                 {
-                    this.photographeRepository = new GenericRepository<Photographe>(context);
+                    this.disponibiliteRepository = new GenericRepository<Disponibilite>(context);
                 }
-                return photographeRepository;
+                return disponibiliteRepository;
             }
         }
 

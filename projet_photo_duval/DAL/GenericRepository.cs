@@ -82,5 +82,10 @@ namespace projet_photo_duval.DAL
         {
             context.Entry(entityToEntry).State = EntityState.Modified;
         }
+
+        public virtual List<TEntity> ToList()
+        {
+            return dbSet.ToList();
+        }
     }
 }
