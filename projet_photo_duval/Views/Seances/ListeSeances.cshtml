@@ -1,0 +1,99 @@
+﻿@model IEnumerable<projet_photo_duval.Models.Seance>
+@using PagedList.Mvc;
+@{
+    var pagedlist = (PagedList.IPagedList)Model;
+}
+
+<table class="table">
+    <tr>
+        <th width="20%">
+            Adresse
+        </th>
+        <th>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Date de la séance</a>
+        </th>
+        <th>
+            Ville
+        </th>
+        <th>
+            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Statut</a>
+        </th>
+        <th>
+            Date de fin de la séance
+        </th>
+        <th>
+            Nom de l'agent
+        </th>
+        <th>
+            Nom du photographe
+        </th>
+        <th></th>
+    </tr>
+
+    @{int nombreEntree = 0;}
+    @foreach (var item in Model)
+    {
+        nombreEntree++;
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adresse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateSeance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ville)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statut)
+            </td>
+            <td>
+                @if (Model != null)
+                {
+                    if (item.DateFinSeance != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.DateFinSeance)
+                    }
+                    else
+                    {
+                        <font color="red"><b><u>À décider</u></b></font>
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Agent.Nom), @Html.DisplayFor(modelItem => item.Agent.Prenom)
+            </td>
+            <td>
+                @if (Model != null)
+                {
+                    if (item.Photographe != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Photographe.Nom);<text>,</text> @Html.DisplayFor(modelItem => item.Photographe.Prenom);
+                    }
+                    else
+                    {
+                        <font color="red"><b><u>À décider</u></b></font>
+                    }
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Détails du rendez-vous", "Details", new { id = item.Seance_ID }) <br />
+                @Html.ActionLink("Gérer les photos", "AddImage", "Photos", new { id = item.Seance_ID }, null)<br />
+                @Html.ActionLink("Voir photos", "ShowImage", "Photos", new { id = item.Seance_ID }, null)
+            </td>
+        </tr>
+    }
+
+    @if (nombreEntree == 0)
+    {
+        <tr>
+            <td width="51%">
+                Aucune entrée pour votre recherche à été trouvé
+            </td>
+        </tr>
+    }
+
+</table>
+Page @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) de @pagedlist.PageCount
+
+@Html.PagedListPager(pagedlist, page => Url.Action("Index", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant }))
