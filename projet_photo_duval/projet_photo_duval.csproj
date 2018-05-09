@@ -436,10 +436,10 @@
     <Content Include="Views\Photos\PhotoDetailsAgent.cshtml" />
     <Content Include="Views\Photos\PhotoDetailsPhotographe.cshtml" />
     <Content Include="Views\Seances\ListeSeances.cshtml" />
+    <Content Include="Views\Disponibilites\AddDisponibilite.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Disponibilites\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
