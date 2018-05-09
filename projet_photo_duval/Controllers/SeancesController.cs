@@ -215,7 +215,22 @@ namespace projet_photo_duval.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Seance_ID,Agent_ID,Photographe_ID,Adresse,DateSeance,Ville,Statut,DateFinSeance")] Seance seance)
         {
-            if (ModelState.IsValid)
+            bool dateBonne = true;
+
+            try
+            {
+                DateTime date = DateTime.Parse(seance.DateSeance.ToString());
+
+                if (date < DateTime.Now)
+                    dateBonne = false;
+            }
+            catch (Exception e)
+            {
+                ViewBag.MessageError = "La date entrée n'est pas d'un format valide";
+                dateBonne = false;
+            }
+
+            if (ModelState.IsValid && dateBonne)
             {
                 unitOfWork.SeanceRepository.Update(seance);
                 unitOfWork.Save();
