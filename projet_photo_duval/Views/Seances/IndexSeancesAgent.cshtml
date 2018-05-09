@@ -116,6 +116,9 @@
 }
 
 </table>
+<div>
+
+</div>
 Page @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) de @pagedlist.PageCount
 
 @Html.PagedListPager(pagedlist, page => Url.Action("Index", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant }))
