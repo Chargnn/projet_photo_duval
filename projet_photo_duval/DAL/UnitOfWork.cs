@@ -16,6 +16,20 @@ namespace projet_photo_duval.DAL
         private GenericRepository<Seance> seanceRepository;
         private GenericRepository<Facture> factureRepository;
         private GenericRepository<Agent> agentRepository;
+        private GenericRepository<Disponibilite> disponibiliteRepository;
+
+        public GenericRepository<Disponibilite> DisponibiliteRepository
+        {
+            get
+            {
+
+                if (this.disponibiliteRepository == null)
+                {
+                    this.disponibiliteRepository = new GenericRepository<Disponibilite>(context);
+                }
+                return disponibiliteRepository;
+            }
+        }
 
         public GenericRepository<Photo> PhotoRepository
         {

@@ -14,7 +14,7 @@
 
 <h2>Mes séances</h2>
 
-@using (Html.BeginForm("Index", "Seances", FormMethod.Get))
+@*@using (Html.BeginForm("IndexSeancesAgent", "Seances", FormMethod.Get))
 {
 <p>
     Rechercher par nom/prénom: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourantNom as string)
@@ -22,7 +22,7 @@
     Rechercher par date: @Html.TextBox("DateFiltre", ViewBag.filtreCourantDate as string, new { @class = "jquery_datepicker", type = "date" })
     <input type="submit" value="Rechercher" />
 </p>
-}
+}*@
 
 @if (ViewBag.MessageError != "")
 {
@@ -54,8 +54,11 @@
         <th></th>
     </tr>
 
-@{int nombreEntree = 0;}
+@{int nombreEntree = 0;
+  int id = 0;
+ }
 @foreach (var item in Model) {
+    id = item.Agent_ID;
     nombreEntree++;
     <tr>
         <td>-
@@ -116,6 +119,9 @@
 }
 
 </table>
+<div>
+    <strong>Prix total : @ViewBag.Prix $</strong><br /><br />
+</div>
 Page @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) de @pagedlist.PageCount
 
-@Html.PagedListPager(pagedlist, page => Url.Action("Index", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant }))
+@Html.PagedListPager(pagedlist, page => Url.Action("IndexSeancesAgent", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant, agentID = id }))

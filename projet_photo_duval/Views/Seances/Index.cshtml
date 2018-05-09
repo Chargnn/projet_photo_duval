@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<projet_photo_duval.Models.Seance>
-@using PagedList.Mvc;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" rel="stylesheet">
@@ -9,7 +8,6 @@
 </script>
 @{
     ViewBag.Title = "Index";
-    var pagedlist = (PagedList.IPagedList)Model;
 }
 
 <h2>Liste de séance(s)</h2>
@@ -17,9 +15,49 @@
 @using (Html.BeginForm("Index", "Seances", FormMethod.Get))
 {
 <p>
+    @{
+        List<SelectListItem> listItems = new List<SelectListItem>();
+        listItems.Add(new SelectListItem
+        {
+            Text = "Demandée",
+            Value = "demandée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Confirmée",
+            Value = "confirmée",
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Réalisée",
+            Value = "réalisée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Payée",
+            Value = "payée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Reportée",
+            Value = "reportée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Livrée",
+            Value = "livrée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Facturée",
+            Value = "facturée"
+        });
+    }
     Rechercher par nom/prénom: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourantNom as string)
 
     Rechercher par date: @Html.TextBox("DateFiltre", ViewBag.filtreCourantDate as string, new { @class = "jquery_datepicker", type = "date" })
+
+    Rechercher par statut: @Html.DropDownList("StatutFiltre", listItems, "Choisir un statut", ViewBag.filtreCourantStatut as string)
     <input type="submit" value="Rechercher" /> 
 </p>
 }
@@ -31,94 +69,4 @@
     @Html.Raw("</div>")
 }
 
-<table class="table">
-    <tr>
-        <th width="20%">
-            Adresse
-        </th>
-        <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Date de la séance</a>
-        </th>
-        <th>
-            Ville
-        </th>
-        <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Statut</a>
-        </th>
-        <th>
-            Date de fin de la séance
-        </th>
-        <th>
-            Nom de l'agent
-        </th>
-        <th>
-            Nom du photographe
-        </th>
-        <th></th>
-    </tr>
-
-@{int nombreEntree = 0;}
-@foreach (var item in Model) {
-    nombreEntree++;
-    <tr>
-        <td>-
-            @Html.DisplayFor(modelItem => item.Adresse)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateSeance)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ville)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Statut)
-        </td>
-        <td>           
-            @if (Model != null)
-            {
-                if (item.DateFinSeance != null)
-                {
-                    @Html.DisplayFor(modelItem => item.DateFinSeance)
-                }
-                else
-                {
-                    <font color="red"><b><u>À décider</u></b></font>
-                }
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Agent.Nom), @Html.DisplayFor(modelItem => item.Agent.Prenom)       
-        </td>
-        <td>
-            @if (Model != null)
-            {
-                if (item.Photographe != null)
-                {
-                    @Html.DisplayFor(modelItem => item.Photographe.Nom);<text>,</text> @Html.DisplayFor(modelItem => item.Photographe.Prenom);
-                } else
-                {
-                    <font color="red"><b><u>À décider</u></b></font>
-                }
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Détails du rendez-vous", "Details", new { id=item.Seance_ID }) <br />
-            @Html.ActionLink("Gérer les photos","AddImage","Photos", new {id=item.Seance_ID},null)<br />
-            @Html.ActionLink("Voir photos", "ShowImage", "Photos", new { id = item.Seance_ID},null)
-        </td>
-    </tr>
-}
-
-@if (nombreEntree == 0)
-{
-    <tr>
-        <td width="51%">
-            Aucune entrée pour votre recherche à été trouvé
-        </td>
-    </tr>
-}
-
-</table>
-Page @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) de @pagedlist.PageCount
-
-@Html.PagedListPager(pagedlist, page => Url.Action("Index", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant }))
+@Html.Action("AvoirSeances")

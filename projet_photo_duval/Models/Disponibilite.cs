@@ -14,6 +14,7 @@ namespace projet_photo_duval.Models
     
     public partial class Disponibilite
     {
+        public int Disponibilite_ID { get; set; }
         public int Photographe_ID { get; set; }
         public System.DateTime DateDebutDisponibilite { get; set; }
         public System.DateTime DateFinDisponibilite { get; set; }

@@ -1,4 +1,8 @@
-﻿@model projet_photo_duval.Models.Seance
+﻿<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" rel="stylesheet">
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@model projet_photo_duval.Models.Seance
 
 @{
     ViewBag.Title = "Edit";
@@ -6,30 +10,61 @@
 
 <h2>Edit</h2>
 
+@{
+        List<SelectListItem> listItems = new List<SelectListItem>();
+        listItems.Add(new SelectListItem
+        {
+            Text = "Demandée",
+            Value = "demandée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Confirmée",
+            Value = "confirmée",
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Réalisée",
+            Value = "réalisée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Payée",
+            Value = "payée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Reportée",
+            Value = "reportée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Livrée",
+            Value = "livrée"
+        });
+        listItems.Add(new SelectListItem
+        {
+            Text = "Facturée",
+            Value = "facturée"
+        });
+    }
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Seance</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Seance_ID)
 
+
         <div class="form-group">
             @Html.LabelFor(model => model.Photographe_ID, "Photographe_ID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Photographe_ID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Photographe_ID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Agent_ID, "Agent_ID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Agent_ID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Agent_ID, "", new { @class = "text-danger" })
+                @Html.DropDownList("Photographe_ID", (SelectList)ViewBag.Photographe_ID, htmlAttributes: new { @class = "form-control" })          
             </div>
         </div>
 
@@ -44,7 +79,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateSeance, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateSeance, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.DateSeance, new { htmlAttributes = new { @class = "form-control", type = "datetime-local", @id = "date" } })
                 @Html.ValidationMessageFor(model => model.DateSeance, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -60,16 +95,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Statut, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Statut, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Statut, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateFinSeance, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateFinSeance, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateFinSeance, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Statut, listItems, Model.Statut, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 

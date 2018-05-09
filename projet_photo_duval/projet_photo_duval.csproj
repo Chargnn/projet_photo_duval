@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ViewModelDetailsFacture.cs" />
+    <Compile Include="ViewModels\ViewModelDispo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -386,7 +387,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -432,6 +435,7 @@
     <Content Include="Views\Seances\IndexSeancesPhotographe.cshtml" />
     <Content Include="Views\Photos\PhotoDetailsAgent.cshtml" />
     <Content Include="Views\Photos\PhotoDetailsPhotographe.cshtml" />
+    <Content Include="Views\Seances\ListeSeances.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
