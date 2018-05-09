@@ -11,10 +11,7 @@ namespace projet_photo_duval.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using static MetaData.Seance;
-
-    [MetadataType(typeof(SeanceMetaData))]
+    
     public partial class Seance
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -32,6 +29,7 @@ namespace projet_photo_duval.Models
         public string Ville { get; set; }
         public string Statut { get; set; }
         public Nullable<System.DateTime> DateFinSeance { get; set; }
+        public Nullable<decimal> Prix { get; set; }
     
         public virtual Agent Agent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

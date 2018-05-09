@@ -54,11 +54,11 @@ namespace projet_photo_duval.Controllers
             IEnumerable<Seance> seances;
             if (agent)
             {
-                seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Day == DateTime.Now.Day && s.Agent_ID == ID);
+                seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Year == DateTime.Now.Year && s.Agent_ID == ID);
             }
             else
             {
-                seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Day == DateTime.Now.Day && s.Photographe_ID == ID);
+                seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: s => s.DateSeance.Year == DateTime.Now.Year && s.Photographe_ID == ID);
             }
 
             if (!string.IsNullOrEmpty(chaineFiltre))
@@ -122,8 +122,16 @@ namespace projet_photo_duval.Controllers
             int pageNo = page ?? 1;
             int taillePage = 5;
 
+            decimal prix = (decimal)0.00;
+
+            foreach (Seance s in seances)
+            {
+                if (s.Prix != null)
+                    prix += (decimal)s.Prix;
+            }
             if (agent)
             {
+                ViewBag.Prix = prix;
                 return View("IndexSeancesAgent", seances.ToPagedList(pageNo, taillePage));
             }
             else
@@ -131,7 +139,6 @@ namespace projet_photo_duval.Controllers
                 return View("IndexSeancesPhotographe", seances.ToPagedList(pageNo, taillePage));
             }
         }
-
         // GET: Seances/Details/5
         public ActionResult Details(int? id)
         {

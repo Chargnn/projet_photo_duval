@@ -44,8 +44,8 @@
             <PropertyRef Name="DateDebutDisponibilite" />
           </Key>
           <Property Name="Photographe_ID" Type="int" Nullable="false" />
-          <Property Name="DateDebutDisponibilite" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="DateFinDisponibilite" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="DateDebutDisponibilite" Type="datetime" Nullable="false" />
+          <Property Name="DateFinDisponibilite" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Photographe">
           <Key>
@@ -105,6 +105,7 @@
           <Property Name="Ville" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Statut" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="DateFinSeance" Type="datetime2" Precision="7" />
+          <Property Name="Prix" Type="decimal" Precision="10" Scale="2" />
         </EntityType>
         <Association Name="FK__Disponibi__Photo__236943A5">
           <End Role="Photographe" Type="Self.Photographe" Multiplicity="1" />
@@ -115,6 +116,18 @@
             </Principal>
             <Dependent Role="Disponibilite">
               <PropertyRef Name="Photographe_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facture_Seance_Seance_ID">
+          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
+          <End Role="Facture" Type="Self.Facture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seance">
+              <PropertyRef Name="Seance_ID" />
+            </Principal>
+            <Dependent Role="Facture">
+              <PropertyRef Name="Seance_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -167,6 +180,10 @@
           <AssociationSet Name="FK__Disponibi__Photo__236943A5" Association="Self.FK__Disponibi__Photo__236943A5">
             <End Role="Photographe" EntitySet="Photographe" />
             <End Role="Disponibilite" EntitySet="Disponibilite" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facture_Seance_Seance_ID" Association="Self.FK_Facture_Seance_Seance_ID">
+            <End Role="Seance" EntitySet="Seance" />
+            <End Role="Facture" EntitySet="Facture" />
           </AssociationSet>
           <AssociationSet Name="FK_Seance_Agent" Association="Self.FK_Seance_Agent">
             <End Role="Agent" EntitySet="Agent" />
@@ -285,6 +302,7 @@
           <NavigationProperty Name="Facture" Relationship="Self.FK_Facture_Seance" FromRole="Seance" ToRole="Facture" />
           <NavigationProperty Name="Photographe" Relationship="Self.FK_Seance_Photographe" FromRole="Seance" ToRole="Photographe" />
           <NavigationProperty Name="Photo" Relationship="Self.FK_Seance_Photo" FromRole="Seance" ToRole="Photo" />
+          <Property Name="Prix" Type="Decimal" Precision="10" Scale="2" />
         </EntityType>
         <Association Name="FK_Seance_Agent">
           <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
@@ -371,8 +389,8 @@
             <PropertyRef Name="DateDebutDisponibilite" />
           </Key>
           <Property Name="Photographe_ID" Type="Int32" Nullable="false" />
-          <Property Name="DateDebutDisponibilite" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="DateFinDisponibilite" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="DateDebutDisponibilite" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateFinDisponibilite" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Photographe" Relationship="H18_Proj_Eq07Model.FK__Disponibi__Photo__236943A5" FromRole="Disponibilite" ToRole="Photographe" />
         </EntityType>
         <Association Name="FK__Disponibi__Photo__236943A5">
@@ -482,6 +500,7 @@
           <EntitySetMapping Name="Seance">
             <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Seance">
               <MappingFragment StoreEntitySet="Seance">
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
                 <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
                 <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
                 <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />

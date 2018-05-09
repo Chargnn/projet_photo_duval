@@ -26,6 +26,13 @@
     </p>
 }
 
+@if (ViewBag.MessageError != "")
+{
+    @Html.Raw("<div class='alert alert-danger'><strong>Erreur! </strong>")
+    @ViewBag.MessageError
+    @Html.Raw("</div>")
+}
+
 <table class="table">
     <tr>
         <th>
