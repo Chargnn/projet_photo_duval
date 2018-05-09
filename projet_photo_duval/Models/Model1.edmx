@@ -40,9 +40,9 @@
         </EntityType>
         <EntityType Name="Disponibilite">
           <Key>
-            <PropertyRef Name="Photographe_ID" />
-            <PropertyRef Name="DateDebutDisponibilite" />
+            <PropertyRef Name="Disponibilite_ID" />
           </Key>
+          <Property Name="Disponibilite_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Photographe_ID" Type="int" Nullable="false" />
           <Property Name="DateDebutDisponibilite" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="DateFinDisponibilite" Type="datetime2" Precision="7" Nullable="false" />
@@ -105,8 +105,9 @@
           <Property Name="Ville" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Statut" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="DateFinSeance" Type="datetime2" Precision="7" />
+          <Property Name="Prix" Type="decimal" Precision="10" Scale="2" />
         </EntityType>
-        <Association Name="FK__Disponibi__Photo__236943A5">
+        <Association Name="FK__Disponibi__Photo__671F4F74">
           <End Role="Photographe" Type="Self.Photographe" Multiplicity="1" />
           <End Role="Disponibilite" Type="Self.Disponibilite" Multiplicity="*" />
           <ReferentialConstraint>
@@ -115,6 +116,18 @@
             </Principal>
             <Dependent Role="Disponibilite">
               <PropertyRef Name="Photographe_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facture_Seance_Seance_ID">
+          <End Role="Seance" Type="Self.Seance" Multiplicity="1" />
+          <End Role="Facture" Type="Self.Facture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seance">
+              <PropertyRef Name="Seance_ID" />
+            </Principal>
+            <Dependent Role="Facture">
+              <PropertyRef Name="Seance_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -164,9 +177,13 @@
           <EntitySet Name="Photo" EntityType="Self.Photo" Schema="Photos" store:Type="Tables" />
           <EntitySet Name="Hist_Seance" EntityType="Self.Hist_Seance" Schema="Seances" store:Type="Tables" />
           <EntitySet Name="Seance" EntityType="Self.Seance" Schema="Seances" store:Type="Tables" />
-          <AssociationSet Name="FK__Disponibi__Photo__236943A5" Association="Self.FK__Disponibi__Photo__236943A5">
+          <AssociationSet Name="FK__Disponibi__Photo__671F4F74" Association="Self.FK__Disponibi__Photo__671F4F74">
             <End Role="Photographe" EntitySet="Photographe" />
             <End Role="Disponibilite" EntitySet="Disponibilite" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facture_Seance_Seance_ID" Association="Self.FK_Facture_Seance_Seance_ID">
+            <End Role="Seance" EntitySet="Seance" />
+            <End Role="Facture" EntitySet="Facture" />
           </AssociationSet>
           <AssociationSet Name="FK_Seance_Agent" Association="Self.FK_Seance_Agent">
             <End Role="Agent" EntitySet="Agent" />
@@ -230,7 +247,7 @@
           <Property Name="Telephone" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Courriel" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Seance" Relationship="Self.FK_Seance_Photographe" FromRole="Photographe" ToRole="Seance" />
-          <NavigationProperty Name="Disponibilite" Relationship="H18_Proj_Eq07Model.FK__Disponibi__Photo__236943A5" FromRole="Photographe" ToRole="Disponibilite" />
+          <NavigationProperty Name="Disponibilite" Relationship="H18_Proj_Eq07Model.FK__Disponibi__Photo__671F4F74" FromRole="Photographe" ToRole="Disponibilite" />
         </EntityType>
         <EntityType Name="Hist_Photo">
           <Key>
@@ -285,6 +302,7 @@
           <NavigationProperty Name="Facture" Relationship="Self.FK_Facture_Seance" FromRole="Seance" ToRole="Facture" />
           <NavigationProperty Name="Photographe" Relationship="Self.FK_Seance_Photographe" FromRole="Seance" ToRole="Photographe" />
           <NavigationProperty Name="Photo" Relationship="Self.FK_Seance_Photo" FromRole="Seance" ToRole="Photo" />
+          <Property Name="Prix" Type="Decimal" Precision="10" Scale="2" />
         </EntityType>
         <Association Name="FK_Seance_Agent">
           <End Role="Agent" Type="Self.Agent" Multiplicity="1" />
@@ -360,22 +378,22 @@
             <End Role="Photo" EntitySet="Photo" />
           </AssociationSet>
           <EntitySet Name="Disponibilite" EntityType="H18_Proj_Eq07Model.Disponibilite" />
-          <AssociationSet Name="FK__Disponibi__Photo__236943A5" Association="H18_Proj_Eq07Model.FK__Disponibi__Photo__236943A5">
+          <AssociationSet Name="FK__Disponibi__Photo__671F4F74" Association="H18_Proj_Eq07Model.FK__Disponibi__Photo__671F4F74">
             <End Role="Photographe" EntitySet="Photographe" />
             <End Role="Disponibilite" EntitySet="Disponibilite" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Disponibilite">
           <Key>
-            <PropertyRef Name="Photographe_ID" />
-            <PropertyRef Name="DateDebutDisponibilite" />
+            <PropertyRef Name="Disponibilite_ID" />
           </Key>
+          <Property Name="Disponibilite_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Photographe_ID" Type="Int32" Nullable="false" />
           <Property Name="DateDebutDisponibilite" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="DateFinDisponibilite" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Photographe" Relationship="H18_Proj_Eq07Model.FK__Disponibi__Photo__236943A5" FromRole="Disponibilite" ToRole="Photographe" />
+          <NavigationProperty Name="Photographe" Relationship="H18_Proj_Eq07Model.FK__Disponibi__Photo__671F4F74" FromRole="Disponibilite" ToRole="Photographe" />
         </EntityType>
-        <Association Name="FK__Disponibi__Photo__236943A5">
+        <Association Name="FK__Disponibi__Photo__671F4F74">
           <End Type="H18_Proj_Eq07Model.Photographe" Role="Photographe" Multiplicity="1" />
           <End Type="H18_Proj_Eq07Model.Disponibilite" Role="Disponibilite" Multiplicity="*" />
           <ReferentialConstraint>
@@ -482,6 +500,7 @@
           <EntitySetMapping Name="Seance">
             <EntityTypeMapping TypeName="H18_Proj_Eq07Model.Seance">
               <MappingFragment StoreEntitySet="Seance">
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
                 <ScalarProperty Name="Seance_ID" ColumnName="Seance_ID" />
                 <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
                 <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
@@ -499,6 +518,7 @@
                 <ScalarProperty Name="DateFinDisponibilite" ColumnName="DateFinDisponibilite" />
                 <ScalarProperty Name="DateDebutDisponibilite" ColumnName="DateDebutDisponibilite" />
                 <ScalarProperty Name="Photographe_ID" ColumnName="Photographe_ID" />
+                <ScalarProperty Name="Disponibilite_ID" ColumnName="Disponibilite_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
