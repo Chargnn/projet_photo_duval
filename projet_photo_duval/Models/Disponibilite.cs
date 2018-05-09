@@ -18,8 +18,6 @@ namespace projet_photo_duval.Models
         public int Photographe_ID { get; set; }
         public System.DateTime DateDebutDisponibilite { get; set; }
         public System.DateTime DateFinDisponibilite { get; set; }
-        public int Disponibilite_ID { get; set; }
-    
         public virtual Photographe Photographe { get; set; }
     }
 }
