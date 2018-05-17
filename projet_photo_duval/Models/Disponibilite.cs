@@ -11,7 +11,10 @@ namespace projet_photo_duval.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using static MetaData.Disponibilite;
+
+    [MetadataType(typeof(DisponibiliteMetaData))]
     public partial class Disponibilite
     {
         public int Disponibilite_ID { get; set; }

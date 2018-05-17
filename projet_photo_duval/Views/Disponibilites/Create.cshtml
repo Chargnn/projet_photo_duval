@@ -1,10 +1,9 @@
 ﻿@model projet_photo_duval.Models.Disponibilite
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Ajout de disponibilité";
 }
 
-<h2>Create</h2>
 
 @using (Html.BeginForm()) 
 {
@@ -41,10 +40,10 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group">    
             @Html.LabelFor(model => model.DateDebutDisponibilite, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateDebutDisponibilite, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
+                @Html.EditorFor(model => model.DateDebutDisponibilite, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local", @Value = DateTime.Today.ToString("yyyy-MM-dd")+"T"+ DateTime.Now.ToString("HH:mm")} })
                 @Html.ValidationMessageFor(model => model.DateDebutDisponibilite, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -52,7 +51,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateFinDisponibilite, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateFinDisponibilite, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
+                @Html.EditorFor(model => model.DateFinDisponibilite, new { htmlAttributes = new { @class = "form-control", type = "datetime-local"} })
                 @Html.ValidationMessageFor(model => model.DateFinDisponibilite, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -107,6 +106,8 @@
                     timeFormat: 'h(:mm)a',
                     eventLimit: true,
                     events: events,
+                    minTime: "08:00:00",
+                    maxTime:"21:00:00",
                     allDaySlot: false,
                     eventClick: function (calEvent, jsEvent, view) {
                         $('#myModal #eventTitle').text(calEvent.title);
@@ -115,8 +116,11 @@
                         if (calEvent.end != null) {
                             $description.append($('<p/>').html('<b>End:</b>' + calEvent.end.format("DD-MMM-YYYY HH:mm a")));
                         }
-                        $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
-                        $('#myModal #pDetails').empty().html($description);
+                        if(calEvent.description != null){
+                            $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
+                        }
+                            $('#myModal #pDetails').empty().html($description);
+                        
 
                         $('#myModal').modal();
                     }
