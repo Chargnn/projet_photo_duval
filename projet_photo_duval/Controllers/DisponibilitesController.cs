@@ -51,7 +51,9 @@ namespace projet_photo_duval.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Disponibilite_ID,Photographe_ID,DateDebutDisponibilite,DateFinDisponibilite")] Disponibilite disponibilite)
         {
-            if (ModelState.IsValid)
+            if (TryValidateModel(disponibilite))// ModelState.IsValid)
+
+
             {
                 int heureDebut = disponibilite.DateDebutDisponibilite.Hour;
                 int heureFin = disponibilite.DateFinDisponibilite.Hour;
@@ -63,8 +65,8 @@ namespace projet_photo_duval.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Create", new { photographeID = disponibilite.Photographe_ID });
             }
-
             ViewBag.Photographe_ID = new SelectList(db.Photographe, "Photographe_ID", "Nom", disponibilite.Photographe_ID);
+            //return View(disponibilite);
             return RedirectToAction("Create", new { photographeID = disponibilite.Photographe_ID });
         }
 
@@ -88,7 +90,7 @@ namespace projet_photo_duval.Controllers
         // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]  
         public ActionResult Edit([Bind(Include = "Disponibilite_ID,Photographe_ID,DateDebutDisponibilite,DateFinDisponibilite")] Disponibilite disponibilite)
         {
             if (ModelState.IsValid)

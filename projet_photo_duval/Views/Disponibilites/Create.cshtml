@@ -43,7 +43,7 @@
         <div class="form-group">    
             @Html.LabelFor(model => model.DateDebutDisponibilite, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateDebutDisponibilite, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local", @Value = DateTime.Today.ToString("yyyy-MM-dd")+"T"+ DateTime.Now.ToString("HH:mm")} })
+                @Html.EditorFor(model => model.DateDebutDisponibilite, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local", @Value = DateTime.Today.ToString("yyyy-MM-dd")+"T"+ DateTime.Now.AddHours(1).ToString("HH:mm"), @min = DateTime.Today.ToString("yyyy-MM-dd") + "T" + DateTime.Now.ToString("HH:mm") } })
                 @Html.ValidationMessageFor(model => model.DateDebutDisponibilite, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -51,7 +51,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateFinDisponibilite, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateFinDisponibilite, new { htmlAttributes = new { @class = "form-control", type = "datetime-local"} })
+                @Html.EditorFor(model => model.DateFinDisponibilite, new { htmlAttributes = new { @class = "form-control", type = "datetime-local", @Value = DateTime.Today.ToString("yyyy-MM-dd") + "T" + DateTime.Now.AddHours(2).ToString("HH:mm"), @min = DateTime.Today.ToString("yyyy-MM-dd") + "T" + DateTime.Now.ToString("HH:mm") } })
                 @Html.ValidationMessageFor(model => model.DateFinDisponibilite, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -65,7 +65,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retour vers la liste", "Index", "Photographes", null, null)
 </div>
 <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet" />
 <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.css" rel="stylesheet" media="print" />
