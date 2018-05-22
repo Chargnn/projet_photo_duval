@@ -53,7 +53,13 @@ namespace projet_photo_duval.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Disponibilite.Add(disponibilite);
+                int heureDebut = disponibilite.DateDebutDisponibilite.Hour;
+                int heureFin = disponibilite.DateFinDisponibilite.Hour;
+                int nbHeures = heureFin - heureDebut;
+                for (int i = 0; i < nbHeures; i++)
+                {
+                    db.Disponibilite.Add(new Disponibilite { Photographe_ID = disponibilite.Photographe_ID, DateDebutDisponibilite = disponibilite.DateDebutDisponibilite.AddHours(i), DateFinDisponibilite = disponibilite.DateDebutDisponibilite.AddHours(i + 1)});
+                }
                 db.SaveChanges();
                 return RedirectToAction("Create", new { photographeID = disponibilite.Photographe_ID });
             }
