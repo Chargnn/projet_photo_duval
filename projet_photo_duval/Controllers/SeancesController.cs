@@ -159,7 +159,7 @@ namespace projet_photo_duval.Controllers
         {
             ViewBag.MessageError = "";
             ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom");
-            ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get(), "DateDebutDisponibilite", "Disponibilite");
+            ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get().OrderBy(x => x.DateDebutDisponibilite), "DateDebutDisponibilite", "DateDebutDisponibilite");
 
             return View();
         }
@@ -169,15 +169,18 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Seance_ID,Photographe_ID,Agent_ID,Adresse,Disponibilite,Ville,Statut")] Seance seance)
+        public ActionResult Create([Bind(Include = "Seance_ID,Photographe_ID,Agent_ID,Adresse,DateSeance,Ville,Statut")] Seance seance)
         {
             seance.Photographe_ID = null;
             seance.Statut = "demandée";
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
 
             if (ModelState.IsValid && seance.DateSeance >= DateTime.Now)
             {
                 unitOfWork.SeanceRepository.Insert(seance);
                 unitOfWork.Save();
+
                 return RedirectToAction("Index");
             }
             else
@@ -189,7 +192,7 @@ namespace projet_photo_duval.Controllers
             }
 
             ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
-            //ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get(), "Disponibilites", "DateDebutDisponibilite");
+            ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get().OrderBy(x => x.DateDebutDisponibilite), "DateDebutDisponibilite", "DateDebutDisponibilite");
 
             return View();
         }
