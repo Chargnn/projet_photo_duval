@@ -159,6 +159,8 @@ namespace projet_photo_duval.Controllers
         {
             ViewBag.MessageError = "";
             ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom");
+            ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get(), "DateDebutDisponibilite", "Disponibilite");
+
             return View();
         }
 
@@ -167,7 +169,7 @@ namespace projet_photo_duval.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Seance_ID,Photographe_ID,Agent_ID,Adresse,DateSeance,Ville,Statut")] Seance seance)
+        public ActionResult Create([Bind(Include = "Seance_ID,Photographe_ID,Agent_ID,Adresse,Disponibilite,Ville,Statut")] Seance seance)
         {
             seance.Photographe_ID = null;
             seance.Statut = "demandée";
@@ -186,6 +188,7 @@ namespace projet_photo_duval.Controllers
             }
 
             ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
+            //ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get(), "Disponibilites", "DateDebutDisponibilite");
 
             return View();
         }
@@ -264,7 +267,7 @@ namespace projet_photo_duval.Controllers
             ViewBag.TriStatut = ordreTri == "statut" ? "statut_desc" : "statut";
             ViewBag.MessageError = "";
 
-            if (chaineFiltre != null || dateFiltre != null)
+            if (chaineFiltre != null || dateFiltre != null || statutFiltre != null)
             {
                 page = 1;
             }
@@ -296,7 +299,7 @@ namespace projet_photo_duval.Controllers
                 {
                     DateTime date = DateTime.Parse(dateFiltre);
 
-                    seances = seances.Where(seance => seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
+                    seances = unitOfWork.SeanceRepository.Get(includeProperties: "Agent,Photographe", filter: seance => seance.DateSeance.Day == date.Day && seance.DateSeance.Month == date.Month);
                 }
                 catch (Exception e)
                 {
