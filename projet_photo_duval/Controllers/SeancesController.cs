@@ -159,7 +159,7 @@ namespace projet_photo_duval.Controllers
         {
             ViewBag.MessageError = "";
             ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom");
-            ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get().OrderBy(x => x.DateDebutDisponibilite), "DateDebutDisponibilite", "DateDebutDisponibilite");
+            ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get().OrderBy(x => x.DateDebutDisponibilite).Where(x => x.DateDebutDisponibilite >= DateTime.Now), "DateDebutDisponibilite", "DateDebutDisponibilite");
 
             return View();
         }
@@ -191,7 +191,7 @@ namespace projet_photo_duval.Controllers
             }
 
             ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom", seance.Agent_ID);
-            ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get().OrderBy(x => x.DateDebutDisponibilite), "DateDebutDisponibilite", "DateDebutDisponibilite");
+            ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get().OrderBy(x => x.DateDebutDisponibilite).Where(x => x.DateDebutDisponibilite >= DateTime.Now), "DateDebutDisponibilite", "DateDebutDisponibilite");
 
             return View();
         }
