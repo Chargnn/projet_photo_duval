@@ -361,7 +361,8 @@ namespace projet_photo_duval.Controllers
             seance.Statut = "confirmée";
             unitOfWork.SeanceRepository.Update(seance);
             unitOfWork.Save();
-
+            unitOfWork.DisponibiliteRepository.Delete(unitOfWork.DisponibiliteRepository.Get(filter: d=>d.DateDebutDisponibilite==seance.DateSeance && d.Photographe_ID == idphotographe).First().Disponibilite_ID);
+            unitOfWork.Save();
             return View("IndexDemandesSeances", unitOfWork.SeanceRepository.Get(filter: s => s.DateSeance.Year == DateTime.Now.Year && s.Photographe_ID == idphotographe && s.Statut == "demandée").ToPagedList(1,5));
         }
 
