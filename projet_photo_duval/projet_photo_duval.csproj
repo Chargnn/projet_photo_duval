@@ -446,6 +446,7 @@
     <Content Include="Views\Disponibilites\Details.cshtml" />
     <Content Include="Views\Disponibilites\Edit.cshtml" />
     <Content Include="Views\Disponibilites\Index.cshtml" />
+    <Content Include="Views\Seances\IndexDemandesSeances.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
