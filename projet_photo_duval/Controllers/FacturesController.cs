@@ -134,7 +134,7 @@ namespace projet_photo_duval.Controllers
                 listeSeancesPrises.Add(fact.Seance_ID);
             }
 
-            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get().Where(x=>x.Photographe != null && !listeSeancesPrises.Contains(x.Seance_ID) && x.DateSeance <= DateTime.Now), "Seance_ID", "Adresse");
+            ViewBag.Seance_ID = new SelectList(unitOfWork.SeanceRepository.Get().Where(x=>x.Photographe_ID != null && !listeSeancesPrises.Contains(x.Seance_ID) && x.DateSeance <= DateTime.Now), "Seance_ID", "Adresse");
             return View();
         }
 

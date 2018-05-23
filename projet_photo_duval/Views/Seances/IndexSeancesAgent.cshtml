@@ -37,13 +37,13 @@
             Adresse
         </th>
         <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Date de la séance</a>
+            <a href="@Url.Action("IndexSeancesAgent", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate, agentID = Model.First().Agent_ID })">Date de la séance</a>
         </th>
         <th>
             Ville
         </th>
         <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Statut</a>
+            <a href="@Url.Action("IndexSeancesAgent", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate, agentID = Model.First().Agent_ID })">Statut</a>
         </th>
         <th>
             Date de fin de la séance

@@ -10,12 +10,15 @@
 @{
     ViewBag.Title = "Mes séances";
     var pagedlist = (PagedList.IPagedList)Model;
-    var IDPhotographeID = Model.First().Photographe_ID.GetValueOrDefault();
 }
 
 <h2>Mes séances</h2>
 
-@using (Html.BeginForm("IndexSeancesPhotographe", "Seances",new { photographeID = IDPhotographeID }, FormMethod.Get,null))
+@{
+    var IDPhotographeID = Model.First().Photographe_ID;
+}
+
+@*@using (Html.BeginForm("IndexSeancesPhotographe", "Seances",new { photographeID = IDPhotographeID }, FormMethod.Get,null))
 {
 <p>
     Rechercher par nom/prénom: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourantNom as string)
@@ -24,7 +27,7 @@
     <input type="submit" value="Rechercher" />
 </p>
 
-}
+}*@
 
 @if (ViewBag.MessageError != "")
 {
@@ -33,19 +36,20 @@
     @Html.Raw("</div>")
 }
 
+
 <table class="table">
     <tr>
         <th width="20%">
             Adresse
         </th>
         <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Date de la séance</a>
+            <a href="@Url.Action("IndexSeancesPhotographe", new { ordreTri = ViewBag.TriDate, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate, photographeID = IDPhotographeID })">Date de la séance</a>
         </th>
         <th>
             Ville
         </th>
         <th>
-            <a href="@Url.Action("Index", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate })">Statut</a>
+            <a href="@Url.Action("IndexSeancesPhotographe", new { ordreTri = ViewBag.TriStatut, filtreCourantNom = ViewBag.filtreCourantNom, filtreCourantDate = ViewBag.filtreCourantDate, photographeID = IDPhotographeID })">Statut</a>
         </th>
         <th>
             Date de fin de la séance
