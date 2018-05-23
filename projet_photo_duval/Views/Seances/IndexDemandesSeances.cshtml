@@ -14,15 +14,7 @@
 
 <h2>Mes séances</h2>
 
-@using (Html.BeginForm("Index", "IndexDemandesSeances", FormMethod.Get))
-{
-<p>
-    @*Rechercher par nom/prénom: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourantNom as string)*@
 
-    Rechercher par date: @Html.TextBox("DateFiltre", ViewBag.filtreCourantDate as string, new { @class = "jquery_datepicker", type = "date" })
-    <input type="submit" value="Rechercher" />
-</p>
-}
 
 <table class="table">
     <tr>

@@ -1,11 +1,12 @@
 ﻿@model projet_photo_duval.Models.Seance
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Demander un rendez-vous";
 }
-
-<h2>Réservation de rendez-vous</h2>
-
+<hr />
+<h2>Demande de rendez-vous</h2>
+<hr />
+<h3>Calendrier des disponibilités des photographes</h3>
 <div id="calender"></div>
 
 <div id="myModal" class="modal fade" role="dialog">
@@ -77,7 +78,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Demander un rendez-vous" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -126,6 +127,8 @@
                     timeFormat: 'h(:mm)a',
                     eventLimit: true,
                     events: events,
+                    minTime: "08:00:00",
+                    maxTime: "21:00:00",
                     allDaySlot: false,
                     eventClick: function (calEvent, jsEvent, view) {
                         $('#myModal #eventTitle').text(calEvent.title);

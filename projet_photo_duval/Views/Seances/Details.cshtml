@@ -107,5 +107,5 @@
     {
      @Html.ActionLink("Modifier les informations du rendez-vous", "Edit", new { id = Model.Seance_ID }, null) <br />
     }
-    @Html.ActionLink("Retour à la liste de rendez-vous", "Index")
+    @Html.ActionLink("Retour à la liste de rendez-vous", "IndexSeancesAgent", new { agentID = Model.Agent_ID} , null)
 </p>

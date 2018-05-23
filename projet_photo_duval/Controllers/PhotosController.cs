@@ -196,7 +196,7 @@ namespace projet_photo_duval.Controllers
 
         public ActionResult ShowImage(int id)
         {
-            var photo = unitOfWork.PhotoRepository.Get();
+            var photo = unitOfWork.PhotoRepository.Get().Where(p => p.Seance_ID == id);
             return View(photo.ToList());
         }
 

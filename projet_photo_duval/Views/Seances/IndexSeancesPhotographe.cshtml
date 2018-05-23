@@ -10,11 +10,12 @@
 @{
     ViewBag.Title = "Mes séances";
     var pagedlist = (PagedList.IPagedList)Model;
+    var IDPhotographeID = Model.First().Photographe_ID.GetValueOrDefault();
 }
 
 <h2>Mes séances</h2>
 
-@using (Html.BeginForm("Index", "Seances", FormMethod.Get))
+@using (Html.BeginForm("IndexSeancesPhotographe", "Seances",new { photographeID = IDPhotographeID }, FormMethod.Get,null))
 {
 <p>
     Rechercher par nom/prénom: @Html.TextBox("ChaineFiltre", ViewBag.filtreCourantNom as string)
@@ -22,6 +23,7 @@
     Rechercher par date: @Html.TextBox("DateFiltre", ViewBag.filtreCourantDate as string, new { @class = "jquery_datepicker", type = "date" })
     <input type="submit" value="Rechercher" />
 </p>
+
 }
 
 @if (ViewBag.MessageError != "")
@@ -123,4 +125,4 @@
 </table>
 Page @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) de @pagedlist.PageCount
 
-@Html.PagedListPager(pagedlist, page => Url.Action("Index", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant }))
+@Html.PagedListPager(pagedlist, page => Url.Action("IndexSeancesPhotographe", new { page, ordreTri = ViewBag.triCourant, filtreCourant = ViewBag.filtreCourant, photographeID = IDPhotographeID }))
