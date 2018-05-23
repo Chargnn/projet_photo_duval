@@ -187,7 +187,7 @@ namespace projet_photo_duval.Controllers
                 unitOfWork.SeanceRepository.Insert(seance);
                 unitOfWork.Save();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexSeancesAgent", new { agentID = seance.Agent_ID});
             }
             else
             {
