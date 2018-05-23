@@ -5,11 +5,14 @@
     int cpt = 1;
     int cpt2 = 1;
 }
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<div class="container">
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+<hr />
+<h2>Photos de votre séance</h2>
+<hr />
+
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width:60%;height:50%;margin-right:auto;margin-left:auto;">
         <!-- Indicators -->
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -21,15 +24,13 @@
                 }
                 cpt2++;
             }
-            @*<li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>*@
         </ol>
 
         <!-- Wrapper for slides -->
         <div class="carousel-inner">
 
             <div class="item active">
-                <img src="data:image;base64,@Convert.ToBase64String(Model.First().Photo1)" alt="@Model.First().Nom" style="width:100%;">
+                <img src="data:image;base64,@Convert.ToBase64String(Model.First().Photo1)" alt="@Model.First().Nom" style="width:100%;height:100%;">
                 <div class="carousel-caption">
                     <h3>@Model.First().Nom</h3>
                     <p>@Model.First().Commentaire</p>
@@ -41,7 +42,7 @@
                 if(cpt != 1)
                 {
                 <div class="item">
-                    <img src="data:image;base64,@Convert.ToBase64String(item.Photo1)" alt="@item.Nom" style="width:100%;">
+                    <img src="data:image;base64,@Convert.ToBase64String(item.Photo1)" alt="@item.Nom" style="width:100%;height:100%;">
                     <div class="carousel-caption">
                         <h3>@item.Nom</h3>
                         <p>@item.Commentaire</p>
@@ -62,8 +63,11 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-</div>
+
+
+<hr />
 <h2>Liste des photos de la séance</h2>
+<hr />
 <br />
     <div class="form-group">
         <div class="col-md-8">
