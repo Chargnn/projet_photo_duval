@@ -184,10 +184,12 @@ namespace projet_photo_duval.Controllers
 
             if (ModelState.IsValid && seance.DateSeance >= DateTime.Now)
             {
+                Disponibilite dispo = unitOfWork.DisponibiliteRepository.Get(filter: x => x.DateDebutDisponibilite == seance.DateSeance).FirstOrDefault();
+                seance.Photographe_ID = dispo.Photographe_ID;
                 unitOfWork.SeanceRepository.Insert(seance);
                 unitOfWork.Save();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexSeancesAgent", new { agentID = seance.Agent_ID});
             }
             else
             {
@@ -369,6 +371,7 @@ namespace projet_photo_duval.Controllers
             unitOfWork.Save();
             unitOfWork.DisponibiliteRepository.Delete(unitOfWork.DisponibiliteRepository.Get(filter: d=>d.DateDebutDisponibilite==seance.DateSeance && d.Photographe_ID == idphotographe).First().Disponibilite_ID);
             unitOfWork.Save();
+            ViewBag.MsgReussite = "Reussi";
             return View("IndexDemandesSeances", unitOfWork.SeanceRepository.Get(filter: s => s.DateSeance.Year == DateTime.Now.Year && s.Photographe_ID == idphotographe && s.Statut == "demandée").ToPagedList(1,5));
         }
 

@@ -14,7 +14,11 @@
 
 <h2>Mes séances</h2>
 
-
+@if (ViewBag.MsgReussite != null)
+{
+    @Html.Raw("<div class='alert alert-success'><strong>Vous avez accepté la séance </strong>")
+    @Html.Raw("</div>")
+}
 
 <table class="table">
     <tr>
