@@ -155,10 +155,16 @@ namespace projet_photo_duval.Controllers
         }
 
         // GET: Seances/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             ViewBag.MessageError = "";
-            ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom");
+            if (id == null)
+                ViewBag.Agent_ID = new SelectList(unitOfWork.AgentRepository.Get(), "Agent_ID", "Nom");
+            else
+            {
+                var agent = unitOfWork.AgentRepository.Get(filter: s => s.Agent_ID == id);
+                ViewBag.Agent_ID = new SelectList(agent, "Agent_ID","Nom");
+            } 
             ViewBag.Disponibilites = new SelectList(unitOfWork.DisponibiliteRepository.Get().OrderBy(x => x.DateDebutDisponibilite).Where(x => x.DateDebutDisponibilite >= DateTime.Now), "DateDebutDisponibilite", "DateDebutDisponibilite");
 
             return View();

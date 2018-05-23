@@ -58,6 +58,7 @@
             @Html.ActionLink("Details", "Details", new { id=item.Agent_ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Agent_ID })*@
             @Html.ActionLink("Voir mes séances", "IndexSeancesAgent","Seances", new { agentID = item.Agent_ID },null)
+            @Html.ActionLink("Demander un rendez-vous","Create","Seances", new { id = item.Agent_ID }, null)
         </td>
     </tr>
 }
